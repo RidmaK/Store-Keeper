@@ -19,6 +19,7 @@ class CreateProductsTable extends Migration
             $table->string('pro_code')->nullable()->unique();
             $table->string('pro_short_name')->nullable();
             $table->text('pro_description')->nullable();
+            $table->string('url')->nullable();
             $table->boolean('status')->default('1');
             $table->softDeletes();
             $table->timestamps();

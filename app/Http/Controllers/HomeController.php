@@ -46,6 +46,7 @@ class HomeController extends Controller
                 'pro_name' => $item['pro_name'],
                 'pro_description' => $item['pro_description'],
                 'price' => $item['price'],
+                'url' => $item['url'],
             ]);
         }
         $productCategories = $collection->groupBy('pro_id');

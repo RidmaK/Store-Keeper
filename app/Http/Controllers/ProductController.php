@@ -10,7 +10,7 @@ use App\Models\SubCategory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Storage;
 class ProductController extends Controller
 {
     /**
@@ -60,23 +60,26 @@ class ProductController extends Controller
         }else{
         DB::beginTransaction();
         try {
+
+
+                if ($request->file('images')) {
+                    $name = $request->file('images')->getClientOriginalName();
+
+                    $path = $request->file('images')->store('public/images');
+                  }else{
+                    $path = NULL;
+                  }
+
+
                 $product = new Product();
                 $product->pro_name = $request->pro_name;
                 $product->pro_code = $request->pro_code;
                 $product->pro_short_name = $request->pro_short_name;
                 $product->pro_description = $request->pro_description;
+                $product->url = $path;
                 $product->save();
-                dd($request->images);
-                foreach ($request->file('images') as $imagefile) {
-                    $get_product = Product::orwhere($data)->latest()->first();
 
-                    $image = new Image();
-                    $path = $imagefile->store('/images/resource', ['disk' =>   'my_files']);
-                    $image->url = $path;
-                    $image->product_id = $get_product->pro_id;
-                    $image->save();
-                }
-
+                //   dd($product);
                 foreach($sub_categories as $sub_category){
                 $category = explode(',',$sub_category);
                 $get_product = Product::orwhere($data)->latest()->first();
@@ -139,6 +142,7 @@ class ProductController extends Controller
                 'pro_name' => $item['pro_name'],
                 'pro_description' => $item['pro_description'],
                 'price' => $item['price'],
+                'url' => $item['url'],
             ]);
         }
         $grouped = $collection->groupBy('pro_id');

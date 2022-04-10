@@ -96,7 +96,7 @@
                     @foreach ($productCategories as $product)
                     <div class="col-md-4 mt-4 mb-4">
                             <div class="rounded overflow-hidden shadow-lg">
-                                <img class="w-full" src="https://www.focusmedicaleyecentre.co.uk/wp-content/uploads/2019/10/maui-jim-2.jpg" alt="Mountain">
+                                <img class="w-full" src="storage/{{$product[0]->url}}" />
 
                               <div class="px-6 py-4">
                                 <div class="font-bold text-xl mb-2">{{ $product[0]->pro_name }}</div>
@@ -164,8 +164,7 @@
                        items += `
                        <div class="col-md-4  mt-4 mb-4">
                     <div class="rounded overflow-hidden shadow-sm">
-                        <img class="w-full" src="https://www.focusmedicaleyecentre.co.uk/wp-content/uploads/2019/10/maui-jim-2.jpg" alt="Mountain">
-                      <div class="px-6 py-4">
+                        <img class="w-full" src="storage/${item[0].url}" />                      <div class="px-6 py-4">
                         <div class="font-bold text-xl mb-2">${item[0].pro_name}</div>
                         <p class="text-gray-700 text-base">
                             ${item[0].pro_description}
