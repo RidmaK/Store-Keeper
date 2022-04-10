@@ -114,7 +114,7 @@ class ProductController extends Controller
         // get the search term
         $text = $request->input('text');
         $category_id = $request->category_id;
-
+        // dd($text);
 
         // search the product table
         $productCategory = Product::Leftjoin('category_products as cp','products.pro_id','cp.pro_id')
@@ -125,9 +125,9 @@ class ProductController extends Controller
         ->whereDate('pp.date_from','<=',now());
 
         if ($text && $text != "") {
-            $productCategory->orwhere('c.pro_mc_name', 'Like', '%'.$text.'%');
-            $productCategory->orwhere('sc.pro_sc_name', 'Like', '%'.$text.'%');
-            $productCategory->orwhere('products.pro_name', 'Like', '%'.$text.'%');
+            $productCategory->Where('c.pro_mc_name', 'Like', '%'.$text.'%');
+            $productCategory->orWhere('sc.pro_sc_name', 'Like', '%'.$text.'%');
+            $productCategory->orWhere('products.pro_name', 'Like', '%'.$text.'%');
         }
         if ($category_id && $category_id != "") {
             $productCategory->where('c.pro_mc_id', $category_id);
