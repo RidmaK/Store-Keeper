@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             CategoryAllocationSeeder::class,
             ProductSeeder::class,
             CategoryProductSeeder::class,
+            ProductPriceSeeder::class,
         ]);
     }
 }

@@ -96,7 +96,7 @@
                     @foreach ($productCategories as $product)
                     <div class="col-md-4 mt-4 mb-4">
                             <div class="rounded overflow-hidden shadow-lg">
-                                <img class="w-full" src="storage/{{$product[0]->url}}" />
+                                <img class="w-full" src="{{public_path('/'.$product[0]->url)}}" />
 
                               <div class="px-6 py-4">
                                 <div class="font-bold text-xl mb-2">{{ $product[0]->pro_name }}</div>
