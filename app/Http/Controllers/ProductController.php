@@ -186,7 +186,22 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+        $product = Product::where('products.pro_id',$id)
+        ->Leftjoin('product_prices as pp','products.pro_id','pp.pro_id')
+        ->whereDate('pp.date_to','>=',now())
+        ->whereDate('pp.date_from','<=',now())
+        ->get();
+        // dd($product);
+        $productCategory = CategoryProduct::join('products as p','p.pro_id','category_products.pro_id')
+        ->Leftjoin('product_prices as pp','p.pro_id','pp.pro_id')
+        ->join('categories as c','c.pro_mc_id','category_products.pro_mc_id')
+        ->join('sub_categories as sc','sc.pro_sc_id','category_products.pro_sc_id')
+        ->where('category_products.pro_id',$id)
+        ->whereDate('pp.date_to','>=',now())
+        ->whereDate('pp.date_from','<=',now())
+        ->get();
+
+        return view('contents.product.edit', compact('product','productCategory'));
     }
 
     /**
@@ -198,7 +213,14 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $product = Product::where('pro_id',$id)
+        ->update([
+            'pro_name' => $request->pro_name,
+            'pro_code' => $request->pro_code,
+            'pro_short_name' => $request->pro_short_name,
+            'status' => $request->status,
+        ]);
+            return redirect()->route('product.index')->with('success', 'Record updated successfully !');
     }
 
     /**

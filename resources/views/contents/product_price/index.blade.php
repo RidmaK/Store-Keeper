@@ -20,11 +20,11 @@
                             <thead>
                                 <tr>
                                     <th width="10%" class="text-center">ID</th>
-                                    <th width="20%">Product Name</th>
+                                    <th width="40%">Product Name</th>
                                     <th width="20%">Price Code</th>
                                     <th width="10%">Price</th>
                                     <th width="10%">Status</th>
-                                    <th width="20%" class="text-center">Actions</th>
+                                    {{-- <th width="20%" class="text-center">Actions</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
@@ -43,7 +43,7 @@
                                             @endif
                                         </td>
                                         <td class="text-center">
-                                            <div class="btn-group btn-group-sm" role="group">
+                                            {{-- <div class="btn-group btn-group-sm" role="group">
                                                     <a href="{{url('display-product', $price->pro_id)}}" class="btn btn-outline-primary">
                                                         {{ __('View') }}
                                                     </a>
@@ -53,7 +53,7 @@
                                                     <a type="button" onclick="deleteCategory(event,'delete-form-{{$price->pro_id}}')" class="btn btn-outline-danger">
                                                         {{ __('Delete') }}
                                                     </a>
-                                            </div>
+                                            </div> --}}
                                             <form id="delete-form-{{$price->pro_id}}" action="{{ route('product.destroy', $price->pro_id) }}" method="POST" class="d-none">
                                                 @csrf
                                                 <input type="hidden" name="_method" value="DELETE">

@@ -6,40 +6,51 @@
             <div class="col-md-12">
                 <div class="card mt-4">
                     <div class="card-header">
-                        {{ __('Edit Product '.$sub_category->pro_sc_name ) }}
+                        {{ __('Edit Product '.$product[0]->pro_name ) }}
                         <a href="{{route('product.index')}}" class="btn btn-primary float-end">
                             {{ __('Back to List') }}
                         </a>
                     </div>
 
                     <div class="card-body">
-                        <form action="{{ route('sub_category.update',$sub_category->pro_sc_id) }}" method="POST">
+                        <form action="{{ route('product.update',$product[0]->pro_id) }}" method="POST">
                             @csrf
                             <input type="hidden" name="_method" value="PUT">
-                            <input type="hidden" name="id" value="{{ $sub_category->pro_sc_id }}">
+                            <input type="hidden" name="id" value="{{ $product[0]->pro_id }}">
                             <div class="flex flex-wrap mt-3">
-                                <label for="pro_sc_name" class="block text-gray-700 text-sm font-bold mb-2 sm:mb-4">
-                                    {{ __('Sub Category Name') }}:
+                                <label for="pro_name" class="block text-gray-700 text-sm font-bold mb-2 sm:mb-4">
+                                    {{ __('Product Name') }}:
                                 </label>
 
-                                <input id="pro_sc_name" type="text" class="form-input w-full @error('pro_sc_name')  border-red-500 @enderror"
-                                    name="pro_sc_name" value="{{ $sub_category->pro_sc_name }}" required autocomplete="pro_sc_name" autofocus>
+                                <input id="pro_name" type="text" class="form-input w-full @error('pro_name')  border-red-500 @enderror"
+                                    name="pro_name" value="{{ $product[0]->pro_name }}" required autocomplete="pro_name" autofocus>
                             </div>
                             <div class="flex flex-wrap mt-3">
-                                <label for="pro_sc_code" class="block text-gray-700 text-sm font-bold mb-2 sm:mb-4">
-                                    {{ __('Sub Category Code') }}:
+                                <label for="pro_code" class="block text-gray-700 text-sm font-bold mb-2 sm:mb-4">
+                                    {{ __('Product Code') }}:
                                 </label>
 
-                                <input id="pro_sc_code" type="text" class="form-input w-full @error('pro_sc_code')  border-red-500 @enderror"
-                                    name="pro_sc_code" value="{{ $sub_category->pro_sc_code }}" required autocomplete="pro_sc_code" autofocus>
+                                <input id="pro_code" type="text" class="form-input w-full @error('pro_code')  border-red-500 @enderror"
+                                    name="pro_code" value="{{ $product[0]->pro_code }}" required autocomplete="pro_code" autofocus>
                             </div>
                             <div class="flex flex-wrap mt-3">
-                                <label for="pro_sc_short_name" class="block text-gray-700 text-sm font-bold mb-2 sm:mb-4">
-                                    {{ __('Sub Category Short Name') }}:
+                                <label for="pro_short_name" class="block text-gray-700 text-sm font-bold mb-2 sm:mb-4">
+                                    {{ __('Product Short Name') }}:
                                 </label>
 
-                                <input id="pro_sc_short_name" type="text" class="form-input w-full @error('pro_sc_short_name')  border-red-500 @enderror"
-                                    name="pro_sc_short_name" value="{{ $sub_category->pro_sc_short_name }}" required autocomplete="pro_sc_short_name" autofocus>
+                                <input id="pro_short_name" type="text" class="form-input w-full @error('pro_short_name')  border-red-500 @enderror"
+                                    name="pro_short_name" value="{{ $product[0]->pro_short_name }}" required autocomplete="pro_short_name" autofocus>
+                            </div>
+                            <div class="flex flex-wrap mt-3">
+                                <label for="status" class="block text-gray-700 text-sm font-bold mb-2 sm:mb-4">
+                                    {{ __('Status') }}:
+                                </label>
+
+                                <select id='status'  class="select2 form-control-sm" name='status' style="width: 100%" required>
+                                    <option value="1">ACTIVE</option>
+                                    <option value="0">INACTIVE</option>
+
+                                  </select>
                             </div>
                             <div class="flex flex-wrap mt-3 mt-3 mb-3">
                                 <button type="submit"
@@ -53,4 +64,15 @@
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+    <script>
+        $(document).ready(function() {
+         $("#status").select2({
+                    closeOnSelect:true,
+                    theme: "classic"
+         });
+
+   });
+    </script>
 @endsection
