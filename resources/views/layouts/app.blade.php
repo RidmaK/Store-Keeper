@@ -31,6 +31,13 @@
                     </a>
                 </div>
                 <nav class="space-x-4 text-gray-300 text-sm sm:text-base">
+
+                    @guest
+                        <a class="no-underline" href="{{ route('login') }}">{{ __('Login') }}</a>
+                        @if (Route::has('register'))
+                            <a class="no-underline" href="{{ route('register') }}">{{ __('Register') }}</a>
+                        @endif
+                    @else
                     <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                         ORGANIZATION
                       </button>
@@ -61,12 +68,6 @@
                                 </x-nav-link>
                             </li>
                       </ul>
-                    @guest
-                        <a class="no-underline" href="{{ route('login') }}">{{ __('Login') }}</a>
-                        @if (Route::has('register'))
-                            <a class="no-underline" href="{{ route('register') }}">{{ __('Register') }}</a>
-                        @endif
-                    @else
                         <span>{{ Auth::user()->name }}</span>
 
                         <a href="{{ route('logout') }}"
