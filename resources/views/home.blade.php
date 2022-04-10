@@ -218,8 +218,8 @@
 
         if (checkedValue === true) {
 
-            category_ids.push($id);
-            $('#category_id').val(category_ids);
+            // category_ids.push($id);
+            $('#category_id').val($id);
                 search();
         }else{
             $('#category_id').val('');

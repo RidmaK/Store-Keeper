@@ -130,7 +130,7 @@ class ProductController extends Controller
             $productCategory->orwhere('products.pro_name', 'Like', '%'.$text.'%');
         }
         if ($category_id && $category_id != "") {
-            $productCategory->whereIn('c.pro_mc_id', [$category_id]);
+            $productCategory->where('c.pro_mc_id', $category_id);
         }
         // dd($productCategory->toSql());
         $productCategory = $productCategory->get();
