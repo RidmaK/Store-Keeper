@@ -53,7 +53,7 @@
                                                     <input type="text" id="price_code_1" name="price_code_1" class="col-md-12 form-control form-control-sm" autocomplete="off" required />
                                                 </td>
                                                 <td>
-                                                    <input type="text" id="price_1" name="price_1" class="col-md-12 form-control form-control-sm" autocomplete="off" required />
+                                                    <input type="number" step="0.01" id="price_1" name="price_1" class="col-md-12 form-control form-control-sm" autocomplete="off" required />
                                                 </td>
                                                 <td>
                                                     <input type="date" id="date_to_1" name="date_to_1" class="col-md-12 form-control form-control-sm" autocomplete="off" required />
@@ -110,7 +110,7 @@
                     +'<input type="text" id="price_code_' + num + '" name="price_code_' + num + '" class="col-md-12 form-control form-control-sm" autocomplete="off" required />'
                 + '</td>'
                 + '<td>'
-                    +'<input type="text" id="price_' + num + '" name="price_' + num + '" class="col-md-12 form-control form-control-sm" autocomplete="off" required />'
+                    +'<input type="number" step="0.01" id="price_' + num + '" name="price_' + num + '" class="col-md-12 form-control form-control-sm" autocomplete="off" required />'
                 + '</td>'
                 + '<td>'
                     +'<input type="date" id="date_to_' + num + '" name="date_to_' + num + '" class="col-md-12 form-control form-control-sm" autocomplete="off" required />'
