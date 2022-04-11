@@ -64,13 +64,16 @@ class ProductController extends Controller
 
                 if ($request->file('images')) {
                     $name = $request->file('images')->getClientOriginalName();
-
+                    // $path = $request->file('images')->storeAs('uploads/userProfile', $name, 'public');
                     $path = $request->file('images')->store('public/images');
                   }else{
                     $path = NULL;
                   }
 
 
+
+                  $path = substr($path,7);
+                //   dd($path);
                 $product = new Product();
                 $product->pro_name = $request->pro_name;
                 $product->pro_code = $request->pro_code;

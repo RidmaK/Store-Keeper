@@ -23,6 +23,7 @@
 
     ```
     $ php artisan key:generate
+     $ php artisan storage:link
     ```
 5. Serve the project
 
