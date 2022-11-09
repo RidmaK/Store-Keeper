@@ -21,7 +21,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::paginate(10);
-        return view('contents.product.index', compact('products'));
+        return view('contents.Inventry.index');
     }
 
     /**
@@ -31,10 +31,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $product = Product::get();
-        $categories = Category::get();
-        $sub_categories = SubCategory::get();
-        return view('contents.product.create', compact('product','categories','sub_categories'));
+        return view('contents.Inventry.create');
     }
 
     /**

@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryAllocationController;
-use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PriceAllocationController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SubCategoryController;
@@ -20,15 +20,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 Auth::routes();
 
 Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth'])->group(function () {
-    Route::resource('/category', CategoryController::class)->except('show');
-    Route::get('/category-show/{id}', [CategoryController::class,'show']);
+    Route::resource('/customer', CustomerController::class)->except('show');
+    Route::get('/customer-show/{id}', [CustomerController::class,'show']);
 
     Route::resource('/sub_category', SubCategoryController::class)->except('show');
     Route::get('/sub-category-show/{id}', [SubCategoryController::class,'show']);
