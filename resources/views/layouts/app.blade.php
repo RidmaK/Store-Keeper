@@ -21,11 +21,11 @@
   <!-- CSS Files -->
   <link id="pagestyle" href="{{ asset('css/material-dashboard.css?v=3.0.4') }}" rel="stylesheet" type="text/css" />
 </head>
-{{-- <body class="bg-gray-200"> --}}
+<body class="bg-gray-200">
 
 
         @yield('content')
-{{-- </body> --}}
+</body>
 <!--   Core JS Files   -->
 <script src="{{ asset('js/core/popper.min.js') }}"></script>
 <script src="{{ asset('js/core/bootstrap.min.js') }}"></script>
