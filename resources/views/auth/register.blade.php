@@ -57,15 +57,15 @@
                 </div>
                 <div class="card-body">
                   <form role="form">
-                    <div class="input-group input-group-outline mb-3">
+                    <div class="input-group input-group-outline mb-3 is-filled">
                       <label class="form-label">Name</label>
                       <input type="text" class="form-control">
                     </div>
-                    <div class="input-group input-group-outline mb-3">
+                    <div class="input-group input-group-outline mb-3 is-filled">
                       <label class="form-label">Email</label>
                       <input type="email" class="form-control">
                     </div>
-                    <div class="input-group input-group-outline mb-3">
+                    <div class="input-group input-group-outline mb-3 is-filled">
                       <label class="form-label">Password</label>
                       <input type="password" class="form-control">
                     </div>
