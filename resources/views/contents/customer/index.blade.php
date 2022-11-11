@@ -6,7 +6,6 @@
     <div class="card">
         <div class="card-body px-0 pb-2">
             <div class="table-responsive">
-
                 <x-flash-message type="success" key="success" />
                 <x-flash-message type="error" key="error" />
                 <a href="{{route('customer.create')}}" class="btn btn-primary float-end" style="margin-right: 27px;">
