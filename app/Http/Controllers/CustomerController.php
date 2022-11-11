@@ -16,8 +16,9 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $categories = Customer::paginate(10);
-        return view('contents.customer.index', compact('categories'));
+        $cities = $this->getCities();
+        $customers = Customer::paginate(10);
+        return view('contents.customer.index', compact('customers','cities'));
     }
 
     /**
@@ -27,15 +28,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        $cities = [];
-        foreach(SriLanka::getProvinces() as $province){
-            foreach(SriLanka::getDiscricts($province) as $district){
-                foreach(SriLanka::getCities($district) as $city){
-                   array_push($cities,$city);
-               }
-            }
-        }
-
+        $cities = $this->getCities();
         return view('contents.customer.create', compact('cities'));
     }
 
@@ -47,17 +40,18 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        $data =[
-            'pro_mc_name' => $request->pro_mc_name,
-            'pro_mc_code' => $request->pro_mc_code,
-            'pro_mc_short_name' => $request->pro_mc_short_name,
-        ];
-        $Check_category = Customer::orwhere($data)->get();
-        if(count($Check_category)>0){
+        $requestData['phone'] = $request->phone;
+        $Check_customer = Customer::orwhere($requestData)->get();
+        $requestData['name'] = $request->name;
+        $requestData['address1'] = $request->address1;
+        $requestData['address2'] = $request->address2;
+        $requestData['city'] = $request->city;
+        $requestData['type'] = $request->type;
+        if(count($Check_customer)>0){
             return redirect()->route('customer.index')->with('error', 'Record allready exist !');
 
         }else{
-            Customer::create($request->all());
+            Customer::create($requestData);
             return redirect()->route('customer.index')->with('success', 'Record added successfully !');
         }
 
@@ -71,16 +65,16 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        $category = Category::where('pro_mc_id',$id)->get();
-        $category->transform(function ($cat) {
+        $customer = Customer::where('id',$id)->get();
+        $customer->transform(function ($cat) {
             return [
-                'pro_mc_id'=>$cat->pro_mc_id,
+                'id'=>$cat->id,
                 'pro_mc_name'=>$cat->pro_mc_name,
                 'pro_mc_code'=>$cat->pro_mc_code,
                 'pro_mc_short_name'=>$cat->pro_mc_short_name,
             ];
         });
-        return response()->json($category[0]);
+        return response()->json($customer[0]);
     }
 
     /**
@@ -91,8 +85,9 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::where('pro_mc_id',$id)->latest()->first();
-        return view('contents.category.edit', compact('category'));
+        $cities = $this->getCities();
+        $customer = Customer::where('id',$id)->latest()->first();
+        return view('contents.customer.edit', compact('customer','cities'));
     }
 
     /**
@@ -104,14 +99,14 @@ class CustomerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $Check_category = Category::where('pro_mc_id',$id)
-        ->update([
-            'pro_mc_name' => $request->pro_mc_name,
-            'pro_mc_code' => $request->pro_mc_code,
-            'pro_mc_short_name' => $request->pro_mc_short_name,
-            'status' => $request->status,
-        ]);
-            return redirect()->route('category.index')->with('success', 'Record updated successfully !');
+        $requestData['name'] = $request->name;
+        $requestData['address1'] = $request->address1;
+        $requestData['address2'] = $request->address2;
+        $requestData['city'] = $request->city;
+        $requestData['phone'] = $request->phone;
+        $requestData['type'] = $request->type;
+        $Check_customer = Customer::where('id',$id)->update($requestData);
+            return redirect()->route('customer.index')->with('success', 'Record updated successfully !');
     }
 
     /**
@@ -122,8 +117,8 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
-        $category = Category::where('pro_mc_id',$id)->delete();
-        return redirect()->route('category.index')->with('success', 'Record deleted successfully !');
+        $customer = Customer::where('id',$id)->delete();
+        return redirect()->route('customer.index')->with('success', 'Record deleted successfully !');
     }
 
     public function getCitiesFunction(){
@@ -136,8 +131,17 @@ class CustomerController extends Controller
         return SriLanka::getProvinces(); // Returns all provinces
     }
 
-    public function getDiscrictsFunction(){
-        return SriLanka::getDiscricts('Province'); // Returns disdricts of a province
+    public function getCities(){
+
+        $cities = [];
+        foreach(SriLanka::getProvinces() as $province){
+            foreach(SriLanka::getDiscricts($province) as $district){
+                foreach(SriLanka::getCities($district) as $city){
+                   array_push($cities,$city);
+               }
+            }
+        }
+        return $cities;
     }
 
 }

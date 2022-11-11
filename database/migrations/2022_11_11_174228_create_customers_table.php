@@ -19,8 +19,9 @@ class CreateCustomersTable extends Migration
             $table->string('address1')->nullable();
             $table->string('address2')->nullable();
             $table->integer('city')->nullable();
-            $table->integer('phone')->nullable();
-            $table->integer('type')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('type')->nullable();
+            $table->integer('status')->default(1);
             $table->timestamps();
         });
     }
