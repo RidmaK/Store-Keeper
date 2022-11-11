@@ -19,27 +19,27 @@
                     @csrf
                     <div class="input-group input-group-outline my-3">
                     <label class="form-label">Customer Name</label>
-                    <input type="text" name="name" class="form-control">
+                    <input type="text" name="name" required class="form-control">
                     </div>
                     <div class="input-group input-group-outline my-3">
                     <label class="form-label">Customer Address 1</label>
-                    <input type="text" name="name" class="form-control">
+                    <input type="text" name="address1" required class="form-control">
                     </div>
                     <div class="input-group input-group-outline my-3">
                     <label class="form-label">Customer Address 2</label>
-                    <input type="text" name="name" class="form-control">
+                    <input type="text" name="address2" class="form-control">
                     </div>
                     <div class="input-group input-group-outline my-3">
                     <label class="form-label">City</label>
-                    <input type="email" name="email" class="form-control">
+                    <input type="text" name="city" required class="form-control">
                     </div>
                     <div class="input-group input-group-outline my-3">
                     <label class="form-label">Phone No</label>
-                    <input type="email" name="email" class="form-control">
+                    <input type="text" name="email"  required class="form-control">
                     </div>
                     <div class="input-group input-group-outline my-3">
                     <label class="form-label">Type</label>
-                    <input type="email" name="email" class="form-control">
+                    <input type="text" name="email" required class="form-control">
                     </div>
                     <div class="text-center">
                     <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">ADD</button>
