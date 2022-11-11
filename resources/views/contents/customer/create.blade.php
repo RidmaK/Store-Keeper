@@ -30,16 +30,20 @@
                     <input type="text" name="address2" class="form-control">
                     </div>
                     <div class="input-group input-group-outline my-3">
-                    <label class="form-label">City</label>
-                    <input type="text" name="city" required class="form-control">
+                    <select class="form-control input-group input-group-outline my-3 js-example-basic-single" name="city" >
+                        <option value="">Select City</option>
+                        @foreach ($cities as $key => $city )
+                        <option value="{{ $key }}">{{ $city }}</option>
+                        @endforeach
+                      </select>
                     </div>
                     <div class="input-group input-group-outline my-3">
                     <label class="form-label">Phone No</label>
-                    <input type="text" name="email"  required class="form-control">
+                    <input type="text" name="phone"  required class="form-control">
                     </div>
                     <div class="input-group input-group-outline my-3">
                     <label class="form-label">Type</label>
-                    <input type="text" name="email" required class="form-control">
+                    <input type="text" name="type" required class="form-control">
                     </div>
                     <div class="text-center">
                     <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">ADD</button>

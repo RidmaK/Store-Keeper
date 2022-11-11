@@ -23,6 +23,12 @@
 </head>
         @yield('content')
 <!--   Core JS Files   -->
+<script
+  src="https://code.jquery.com/jquery-3.6.1.js"
+  integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+  crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="{{ asset('js/core/popper.min.js') }}"></script>
 <script src="{{ asset('js/core/bootstrap.min.js') }}"></script>
 <script src="{{ asset('js/plugins/perfect-scrollbar.min.js') }}"></script>
@@ -35,6 +41,10 @@
     }
     Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
   }
+
+  $(document).ready(function() {
+        $('.js-example-basic-single').select2();
+    });
 </script>
 <script>
     var ctx = document.getElementById("chart-bars").getContext("2d");

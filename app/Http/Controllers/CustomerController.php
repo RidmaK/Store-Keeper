@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-
+use Disapamok\Modules\SriLanka;
 class CustomerController extends Controller
 {
     /**
@@ -16,7 +16,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $categories = Category::paginate(10);
+        $categories = Customer::paginate(10);
         return view('contents.customer.index', compact('categories'));
     }
 
@@ -27,8 +27,16 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        $categories = Category::get();
-        return view('contents.customer.create', compact('categories'));
+        $cities = [];
+        foreach(SriLanka::getProvinces() as $province){
+            foreach(SriLanka::getDiscricts($province) as $district){
+                foreach(SriLanka::getCities($district) as $city){
+                   array_push($cities,$city);
+               }
+            }
+        }
+
+        return view('contents.customer.create', compact('cities'));
     }
 
     /**
@@ -44,13 +52,13 @@ class CustomerController extends Controller
             'pro_mc_code' => $request->pro_mc_code,
             'pro_mc_short_name' => $request->pro_mc_short_name,
         ];
-        $Check_category = Category::orwhere($data)->get();
+        $Check_category = Customer::orwhere($data)->get();
         if(count($Check_category)>0){
-            return redirect()->route('category.index')->with('error', 'Record allready exist !');
+            return redirect()->route('customer.index')->with('error', 'Record allready exist !');
 
         }else{
-            Category::create($data);
-            return redirect()->route('category.index')->with('success', 'Record added successfully !');
+            Customer::create($request->all());
+            return redirect()->route('customer.index')->with('success', 'Record added successfully !');
         }
 
     }
@@ -117,4 +125,19 @@ class CustomerController extends Controller
         $category = Category::where('pro_mc_id',$id)->delete();
         return redirect()->route('category.index')->with('success', 'Record deleted successfully !');
     }
+
+    public function getCitiesFunction(){
+
+        dd(SriLanka::getCities('Ampara'));
+        return SriLanka::getCities('District'); // Returns cities of a district
+    }
+
+    public function getProvincesFunction(){
+        return SriLanka::getProvinces(); // Returns all provinces
+    }
+
+    public function getDiscrictsFunction(){
+        return SriLanka::getDiscricts('Province'); // Returns disdricts of a province
+    }
+
 }
