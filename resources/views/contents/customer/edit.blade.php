@@ -18,31 +18,31 @@
                 <form  class="text-start" method="POST" action="{{ route('customer.update',$customer->id) }}">
                     @csrf
                     <input type="hidden" name="_method" value="PUT">
-                    <div class="input-group input-group-outline my-3">
+                    <div class="input-group input-group-outline my-3 is-filled">
                     <label class="form-label">Customer Name</label>
                     <input type="text" name="name" id="name" required class="form-control" value="{{ $customer->name }}">
                     </div>
-                    <div class="input-group input-group-outline my-3">
+                    <div class="input-group input-group-outline my-3 is-filled">
                     <label class="form-label">Customer Address 1</label>
                     <input type="text" name="address1" required class="form-control" value="{{ $customer->address1 }}">
                     </div>
-                    <div class="input-group input-group-outline my-3">
+                    <div class="input-group input-group-outline my-3 is-filled">
                     <label class="form-label">Customer Address 2</label>
                     <input type="text" name="address2" class="form-control" value="{{ $customer->address2 }}">
                     </div>
-                    <div class="input-group input-group-outline my-3">
-                    <select class="form-control input-group input-group-outline my-3 js-example-basic-single" required name="city" >
+                    <div class="input-group input-group-outline my-3 is-filled">
+                    <select class="form-control input-group input-group-outline my-3 is-filled js-example-basic-single" required name="city" >
                         <option value="">Select City</option>
                         @foreach ($cities as $key => $city )
                         <option value="{{ $key + 1 }}" value="{{ ($customer->city == $key + 1) ? 'selected' : ''  }}">{{ $city }}</option>
                         @endforeach
                       </select>
                     </div>
-                    <div class="input-group input-group-outline my-3">
+                    <div class="input-group input-group-outline my-3 is-filled">
                     <label class="form-label">Phone No</label>
                     <input type="number"  name="phone"  required class="form-control" value="{{ $customer->phone }}">
                     </div>
-                    <div class="input-group input-group-outline my-3">
+                    <div class="input-group input-group-outline my-3 is-filled">
                     <label class="form-label">Type</label>
                     <input type="text" name="type" required class="form-control" value="{{ $customer->type }}">
                     </div>

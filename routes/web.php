@@ -28,7 +28,7 @@ Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->nam
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('/customer', CustomerController::class)->except('show');
-    Route::get('/customer-show/{id}', [CustomerController::class,'show']);
+    Route::get('/customer/show/{id}', [CustomerController::class,'show']);
 
     Route::resource('/sub_category', SubCategoryController::class)->except('show');
     Route::get('/sub-category-show/{id}', [SubCategoryController::class,'show']);

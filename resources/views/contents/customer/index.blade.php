@@ -39,7 +39,7 @@
                             </td>
                             <td class="text-center">
                                 <div class="btn-group btn-group-sm" role="group">
-                                        <a href="{{url('display-customer', $customer->id)}}" class="btn btn-outline-primary">
+                                        <a href="{{url('customer/show', $customer->id)}}" class="btn btn-outline-primary">
                                             {{ __('View') }}
                                         </a>
                                         <a href="{{route('customer.edit', $customer->id)}}" class="btn btn-outline-primary">

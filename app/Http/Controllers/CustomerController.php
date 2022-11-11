@@ -65,16 +65,9 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        $customer = Customer::where('id',$id)->get();
-        $customer->transform(function ($cat) {
-            return [
-                'id'=>$cat->id,
-                'pro_mc_name'=>$cat->pro_mc_name,
-                'pro_mc_code'=>$cat->pro_mc_code,
-                'pro_mc_short_name'=>$cat->pro_mc_short_name,
-            ];
-        });
-        return response()->json($customer[0]);
+        $cities = $this->getCities();
+        $customer = Customer::where('id',$id)->latest()->first();
+        return view('contents.customer.show', compact('customer','cities'));
     }
 
     /**
