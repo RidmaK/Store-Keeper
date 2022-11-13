@@ -16,37 +16,57 @@
         <div class="card-footer p-3">
             <form  class="text-start" method="POST" action="{{ route('product.store') }}">
                 @csrf
-                <div class="input-group input-group-outline my-3">
+                <div class="input-group input-group-outline my-3 is-filled">
                 <label class="form-label">Item Name</label>
                 <input type="text" name="name" class="form-control">
                 </div>
-                <div class="input-group input-group-outline my-3">
+                <div class="input-group input-group-outline my-3 is-filled">
                 <label class="form-label">Description</label>
                 <textarea type="text" name="description" class="form-control"></textarea>
                 </div>
-                <div class="input-group input-group-outline my-3">
+                <div class="input-group input-group-outline my-3 is-filled">
                 <label class="form-label">Item Category</label>
-                <input type="email" name="email" class="form-control">
+                <input type="text" name="category" class="form-control">
                 </div>
-                <div class="input-group input-group-outline my-3">
-                <label class="form-label">Weight</label>
-                <input type="email" name="email" class="form-control">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-check form-switch d-flex align-items-center mb-3">
+                        <input class="form-check-input" type="checkbox" id="check_recondition" name="check_recondition" onchange="setReconditionWeight()">
+                        <label class="form-check-label mb-0 ms-3" for="check_recondition">Recondition</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                            <div class="input-group input-group-outline my-3 is-filled weight_recondition" style="display: none">
+                            <label class="form-label">Weight</label>
+                            <input type="number" step="2" name="weight_recondition" id="weight_recondition" class="form-control" onchange="calReconditionPrice()">
+                            </div>
+                    </div>
+                    <div class="col-md-3">
+                            <div class="input-group input-group-outline my-3 is-filled price_recondition" style="display: none">
+                            <label class="form-label">Price</label>
+                            <input type="number" step="2" name="price_recondition" id="price_recondition" class="form-control">
+                            </div>
+                    </div>
                 </div>
-                <div class="input-group input-group-outline my-3">
-                <label class="form-label">Email</label>
-                <input type="email" name="email" class="form-control">
-                </div>
-                <div class="input-group input-group-outline mb-3">
-                <label class="form-label">Password</label>
-                <input type="password" name="password" class="form-control">
-                </div>
-                <div class="form-check form-switch d-flex align-items-center mb-3">
-                <input class="form-check-input" type="checkbox" id="rememberMe" checked>
-                <label class="form-check-label mb-0 ms-3" for="rememberMe">Reusable</label>
-                </div>
-                <div class="form-check form-switch d-flex align-items-center mb-3">
-                <input class="form-check-input" type="checkbox" id="rememberMe" checked>
-                <label class="form-check-label mb-0 ms-3" for="rememberMe">Reusable</label>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-check form-switch d-flex align-items-center mb-3">
+                        <input class="form-check-input" type="checkbox" id="check_reusable" name="check_reusable" onchange="setReusableWeight()">
+                        <label class="form-check-label mb-0 ms-3" for="check_reusable">Reusable</label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                            <div class="input-group input-group-outline my-3 is-filled weight_reusable" style="display: none">
+                            <label class="form-label">Weight</label>
+                            <input type="number" step="2"  name="weight_reusable" id="weight_reusable" class="form-control" onchange="calReusablePrice()">
+                            </div>
+                    </div>
+                    <div class="col-md-3">
+                            <div class="input-group input-group-outline my-3 is-filled price_reusable" style="display: none">
+                            <label class="form-label">Price</label>
+                            <input type="number" step="2" name="price_reusable" id="price_reusable" class="form-control">
+                            </div>
+                    </div>
                 </div>
                 <div class="text-center">
                 <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">ADD</button>
@@ -57,4 +77,45 @@
     </div>
     </div>
   </div>
+@endsection
+@section('scripts')
+  <script type="text/javascript">
+    function setReconditionWeight(){
+        if($('#check_recondition').prop('checked')){
+            $('.weight_recondition').show();
+            $('#weight_recondition').val('');
+            $('.price_recondition').show();
+            calReconditionPrice();
+        }else{
+            $('.weight_recondition').hide();
+            $('.price_recondition').hide();
+        }
+    }
+
+    function setReusableWeight(){
+        if($('#check_reusable').prop('checked')){
+            $('.weight_reusable').show();
+            $('#weight_reusable').val('');
+            $('.price_reusable').show();
+            calReusablePrice();
+        }else{
+            $('.weight_reusable').hide();
+            $('.price_reusable').hide();
+        }
+    }
+
+    function calReconditionPrice(){
+        console.log();
+        var rate = 100;
+        var total = rate * (parseFloat($('#weight_recondition').val()))
+        $('#price_recondition').val(total);
+    }
+
+    function calReusablePrice(){
+        var rate = 100;
+        var total = rate * (parseFloat($('#weight_reusable').val()))
+        $('#price_reusable').val(total);
+    }
+  </script>
+
 @endsection
