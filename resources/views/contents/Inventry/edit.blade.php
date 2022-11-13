@@ -17,7 +17,7 @@
             <form  class="text-start" method="POST" action="{{ route('product.update',$product->id) }}">
                 @csrf
                 <input type="hidden" name="_method" value="PUT">
-                <input type="hidden" name="customer_id" id="customer_id" value="{{ request()->id }}">
+                <input type="hidden" name="customer_id" id="customer_id" value="{{ $product->customer->id }}">
                 <div class="input-group input-group-outline my-3 is-filled">
                 <label class="form-label">Item Name</label>
                 <input type="text" name="name" class="form-control" value="{{ $product->name }}">
