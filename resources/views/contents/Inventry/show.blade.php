@@ -39,13 +39,13 @@
                     </div>
                     <div class="col-md-3">
                             <div class="input-group input-group-outline my-3 is-filled weight_recondition">
-                            <label class="form-label">Weight</label>
+                            <label class="form-label">Weight (Kg)</label>
                             <input type="number" step="0.2" name="weight_recondition" id="weight_recondition" class="form-control" value="{{ $product->weight_recondition }}" onchange="calReconditionPrice()" >
                             </div>
                     </div>
                     <div class="col-md-3">
                             <div class="input-group input-group-outline my-3 is-filled price_recondition">
-                            <label class="form-label">Price</label>
+                            <label class="form-label">Price (LKR)</label>
                             <input type="number" step="0.2" name="price_recondition" id="price_recondition" class="form-control" value="{{ $product->price_recondition }}">
                             </div>
                     </div>
@@ -59,13 +59,13 @@
                     </div>
                     <div class="col-md-3">
                             <div class="input-group input-group-outline my-3 is-filled weight_reusable">
-                            <label class="form-label">Weight</label>
+                            <label class="form-label">Weight (Kg)</label>
                             <input type="number" step="0.2"  name="weight_reusable" id="weight_reusable" class="form-control" value="{{ $product->weight_reusable }}" onchange="calReusablePrice()">
                             </div>
                     </div>
                     <div class="col-md-3">
                             <div class="input-group input-group-outline my-3 is-filled price_reusable">
-                            <label class="form-label">Price</label>
+                            <label class="form-label">Price (LKR)</label>
                             <input type="number" step="0.2" name="price_reusable" id="price_reusable" class="form-control" value="{{ $product->price_reusable }}">
                             </div>
                     </div>

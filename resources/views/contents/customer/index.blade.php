@@ -11,7 +11,7 @@
                 <a href="{{route('customer.create')}}" class="btn btn-primary float-end" style="margin-right: 27px;">
                     {{ __('Add New') }}
                 </a>
-                <table class="table align-items-center mb-0">
+                <table class="table align-items-center mb-0" id="myTable">
                 <thead>
                     <tr>
                     <th class="text-start text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
@@ -39,6 +39,9 @@
                             </td>
                             <td class="text-center">
                                 <div class="btn-group btn-group-sm" role="group">
+                                        <a href="{{route('product.create', ['id' =>$customer->id])}}" class="btn btn-outline-primary">
+                                            {{ __('Add Item') }}
+                                        </a>
                                         <a href="{{url('customer/show', $customer->id)}}" class="btn btn-outline-primary">
                                             {{ __('View') }}
                                         </a>
@@ -72,6 +75,9 @@
   @endsection
   @section('scripts')
   <Script>
+    $(document).ready( function () {
+        $('#myTable').DataTable();
+    } );
     function deleteCustomer(event,form_id) {
         event.preventDefault();
         $.confirm({

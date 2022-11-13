@@ -11,17 +11,17 @@
                 {{-- <a href="{{route('product.create')}}" class="btn btn-primary float-end" style="margin-right: 27px;">
                     {{ __('Add New') }}
                 </a> --}}
-                <table class="table align-items-center mb-0">
+                <table class="table align-items-center mb-0" id="myTable">
                     <thead>
                         <tr>
                         <th class="text-start text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Customer</th>
                         <th class="text-start text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Category</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Weight Recondition</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Price Recondition</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Weight Reusable</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Price Reusable</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Total Price</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Weight Recondition (Kg)</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Price Recondition (LKR)</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Weight Reusable (Kg)</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Price Reusable (LKR)</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Total Price (LKR)</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
                         </tr>
@@ -37,7 +37,7 @@
                                 <td class="text-center">{{$product->price_recondition ?? 'N/A'}}</td>
                                 <td class="text-center">{{$product->weight_reusable ?? 'N/A'}}</td>
                                 <td class="text-center">{{$product->price_reusable ?? 'N/A'}}</td>
-                                <td class="text-center">{{$product->price_reusable + $product->price_recondition}}</td>
+                                <td class="text-center">{{number_format($product->price_reusable + $product->price_recondition, 2)}}</td>
                                 <td class="text-center">
                                     @if ($product->status == 1)
                                     <span class="bg-green-300 text-green-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-900">ACTIVE</span>
@@ -80,6 +80,10 @@
       @endsection
       @section('scripts')
       <Script>
+
+    $(document).ready( function () {
+        $('#myTable').DataTable();
+    } );
         function deleteproduct(event,form_id) {
             event.preventDefault();
             $.confirm({
