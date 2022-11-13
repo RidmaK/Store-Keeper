@@ -69,6 +69,8 @@
 </div>
   </div>
 
+  @endsection
+  @section('scripts')
   <Script>
     function deleteCustomer(event,form_id) {
         event.preventDefault();

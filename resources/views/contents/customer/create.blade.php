@@ -17,36 +17,36 @@
             <div class="card-footer p-3">
                 <form  class="text-start" method="POST" action="{{ route('customer.store') }}">
                     @csrf
-                    <div class="input-group input-group-outline my-3">
+                    <div class="input-group input-group-outline my-3 is-filled">
+                    <label class="form-label">Phone No</label>
+                    <input type="number"  name="phone" id="phone"  required class="form-control" onchange="checkAvailability()">
+                    </div>
+                    <div class="input-group input-group-outline my-3 is-filled">
                     <label class="form-label">Customer Name</label>
-                    <input type="text" name="name" required class="form-control">
+                    <input type="text" name="name" id="name" required class="form-control">
                     </div>
-                    <div class="input-group input-group-outline my-3">
+                    <div class="input-group input-group-outline my-3 is-filled">
                     <label class="form-label">Customer Address 1</label>
-                    <input type="text" name="address1" required class="form-control">
+                    <input type="text" name="address1" id="address1" required class="form-control">
                     </div>
-                    <div class="input-group input-group-outline my-3">
+                    <div class="input-group input-group-outline my-3 is-filled">
                     <label class="form-label">Customer Address 2</label>
-                    <input type="text" name="address2" class="form-control">
+                    <input type="text" name="address2" id="address2" class="form-control">
                     </div>
-                    <div class="input-group input-group-outline my-3">
-                    <select class="form-control input-group input-group-outline my-3 js-example-basic-single" required name="city" >
+                    <div class="input-group input-group-outline my-3 is-filled">
+                    <select class="form-control input-group input-group-outline my-3 is-filled js-example-basic-single" required name="city" id="city" >
                         <option value="">Select City</option>
                         @foreach ($cities as $key => $city )
                         <option value="{{ $key + 1 }}">{{ $city }}</option>
                         @endforeach
                       </select>
                     </div>
-                    <div class="input-group input-group-outline my-3">
-                    <label class="form-label">Phone No</label>
-                    <input type="number"  name="phone"  required class="form-control">
-                    </div>
-                    <div class="input-group input-group-outline my-3">
+                    <div class="input-group input-group-outline my-3 is-filled">
                     <label class="form-label">Type</label>
-                    <input type="text" name="type" required class="form-control">
+                    <input type="text" name="type" id="type" required class="form-control">
                     </div>
                     <div class="text-center">
-                    <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">ADD</button>
+                    <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">NEXT</button>
                     </div>
                 </form>
             </div>
@@ -54,4 +54,27 @@
         </div>
     </div>
   </div>
+@endsection
+@section('scripts')
+  <Script>
+    function checkAvailability() {
+
+
+        $.ajax({
+            type: "GET",
+            url: "{!! route('customer.checkAvailability') !!}",
+            data: {
+                'phone' : $('#phone').val(),
+            }, // serializes the form's elements.
+            success: function(data)
+            {
+                $('#name').val(data.name);
+                $('#address1').val(data.address1);
+                $('#address2').val(data.address2);
+                $('#city').val(data.city);
+                $('#type').val(data.type);
+            }
+        });
+    }
+</script>
 @endsection

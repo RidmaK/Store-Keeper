@@ -48,11 +48,11 @@ class CustomerController extends Controller
         $requestData['city'] = $request->city;
         $requestData['type'] = $request->type;
         if(count($Check_customer)>0){
-            return redirect()->route('customer.index')->with('error', 'Record allready exist !');
+            return redirect()->route('product.create',$Check_customer[0]['id'])->with('error', 'Customer allready exist !');
 
         }else{
-            Customer::create($requestData);
-            return redirect()->route('customer.index')->with('success', 'Record added successfully !');
+           $customer = Customer::create($requestData);
+            return redirect()->route('product.create',$customer->id)->with('success', 'Customer added successfully !');
         }
 
     }
@@ -122,6 +122,12 @@ class CustomerController extends Controller
 
     public function getProvincesFunction(){
         return SriLanka::getProvinces(); // Returns all provinces
+    }
+
+    public function checkAvailability(Request $request){
+
+        $customer = Customer::where('phone',$request->phone)->first();
+        return $customer; // Returns all provinces
     }
 
     public function getCities(){
