@@ -48,11 +48,11 @@ class CustomerController extends Controller
         $requestData['city'] = $request->city;
         $requestData['type'] = $request->type;
         if(count($Check_customer)>0){
-            return redirect()->route('product.create',$Check_customer[0]['id'])->with('error', 'Customer allready exist !');
+            return redirect()->route('product.create',['id' => $Check_customer[0]['id']])->with('error', 'Customer allready exist !');
 
         }else{
            $customer = Customer::create($requestData);
-            return redirect()->route('product.create',$customer->id)->with('success', 'Customer added successfully !');
+            return redirect()->route('product.create',['id' => $customer->id])->with('success', 'Customer added successfully !');
         }
 
     }

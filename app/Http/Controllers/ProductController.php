@@ -21,7 +21,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::paginate(10);
-        return view('contents.Inventry.index');
+        return view('contents.Inventry.index',compact('products'));
     }
 
     /**
@@ -43,59 +43,28 @@ class ProductController extends Controller
     public function store(Request $request)
     {
 
-       $sub_categories = $request->pro_sc_ids;
-
-       $data =[
-        'pro_name' => $request->pro_name,
-        'pro_code' => $request->pro_code,
-        'pro_short_name' => $request->pro_short_name,
+       $data = [
+        "customer_id" => $request["customer_id"],
+        "name" => $request["name"],
+        "description" => $request["description"],
+        "category" => $request["category"],
+        "weight_recondition" => $request["weight_recondition"],
+        "price_recondition" => $request["price_recondition"],
+        "weight_reusable" => $request['weight_reusable'],
+        "price_reusable" => $request['price_reusable'],
         ];
-        $Check_product = Product::orwhere($data)->get();
-        if(count($Check_product)>0){
-            return redirect()->route('product.index')->with('error', 'Record allready exist !');
 
-        }else{
         DB::beginTransaction();
         try {
 
-
-                if ($request->file('images')) {
-                    $name = $request->file('images')->getClientOriginalName();
-                    // $path = $request->file('images')->storeAs('uploads/userProfile', $name, 'public');
-                    $path = $request->file('images')->store('public/images');
-                  }else{
-                    $path = NULL;
-                  }
-
-
-
-                  $path = substr($path,7);
-                //   dd($path);
-                $product = new Product();
-                $product->pro_name = $request->pro_name;
-                $product->pro_code = $request->pro_code;
-                $product->pro_short_name = $request->pro_short_name;
-                $product->pro_description = $request->pro_description;
-                $product->url = $path;
-                $product->save();
-
-                //   dd($product);
-                foreach($sub_categories as $sub_category){
-                $category = explode(',',$sub_category);
-                $get_product = Product::orwhere($data)->latest()->first();
-                    $Category_product = new CategoryProduct();
-                    $Category_product->pro_id = $get_product->pro_id;
-                    $Category_product->pro_mc_id = $category[0];
-                    $Category_product->pro_sc_id = $category[1];
-                    $Category_product->save();
-                }
+            $product = Product::create($data);
             DB::commit();
             return redirect()->route('product.index')->with('success', 'RECORD HAS BEEN SUCCESSFULLY INSERTED!');
             } catch (\Exception $e) {
                 DB::rollback();
                 return redirect()->route('product.index')->with('error', 'RECORD HAS NOT BEEN SUCCESSFULLY INSERTED!');
             }
-        }
+
 
     }
 
@@ -110,74 +79,6 @@ class ProductController extends Controller
 
     }
 
-    public function search(Request $request) {
-        // get the search term
-        $text = $request->input('text');
-        $category_id = $request->category_id;
-        // dd($text);
-
-        // search the product table
-        $productCategory = Product::Leftjoin('category_products as cp','products.pro_id','cp.pro_id')
-        ->Leftjoin('product_prices as pp','products.pro_id','pp.pro_id')
-        ->join('categories as c','c.pro_mc_id','cp.pro_mc_id')
-        ->join('sub_categories as sc','sc.pro_sc_id','cp.pro_sc_id')
-        ->whereDate('pp.date_to','>=',now())
-        ->whereDate('pp.date_from','<=',now());
-
-        if ($text && $text != "") {
-            $productCategory->Where('c.pro_mc_name', 'Like', '%'.$text.'%');
-            $productCategory->orWhere('sc.pro_sc_name', 'Like', '%'.$text.'%');
-            $productCategory->orWhere('products.pro_name', 'Like', '%'.$text.'%');
-        }
-        if ($category_id && $category_id != "") {
-            $productCategory->where('c.pro_mc_id', $category_id);
-        }
-        // dd($productCategory->toSql());
-        $productCategory = $productCategory->get();
-        $collection = new Collection();
-        foreach ($productCategory as $item) {
-
-            $collection->push((object)[
-                'pro_id' => $item['pro_id'],
-                'pro_name' => $item['pro_name'],
-                'pro_description' => $item['pro_description'],
-                'price' => $item['price'],
-                'url' => $item['url'],
-            ]);
-        }
-        $grouped = $collection->groupBy('pro_id');
-
-        $grouped->all();
-        // return the results
-        return response()->json($grouped);
-    }
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function display($id)
-    {
-
-        $product = Product::where('products.pro_id',$id)
-        ->Leftjoin('product_prices as pp','products.pro_id','pp.pro_id')
-        ->whereDate('pp.date_to','>=',now())
-        ->whereDate('pp.date_from','<=',now())
-        ->get();
-        // dd($product);
-        $productCategory = CategoryProduct::join('products as p','p.pro_id','category_products.pro_id')
-        ->Leftjoin('product_prices as pp','p.pro_id','pp.pro_id')
-        ->join('categories as c','c.pro_mc_id','category_products.pro_mc_id')
-        ->join('sub_categories as sc','sc.pro_sc_id','category_products.pro_sc_id')
-        ->where('category_products.pro_id',$id)
-        ->whereDate('pp.date_to','>=',now())
-        ->whereDate('pp.date_from','<=',now())
-        ->get();
-
-        return view('contents.product.view', compact('product','productCategory'));
-    }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -186,22 +87,7 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $product = Product::where('products.pro_id',$id)
-        ->Leftjoin('product_prices as pp','products.pro_id','pp.pro_id')
-        ->whereDate('pp.date_to','>=',now())
-        ->whereDate('pp.date_from','<=',now())
-        ->get();
-        // dd($product);
-        $productCategory = CategoryProduct::join('products as p','p.pro_id','category_products.pro_id')
-        ->Leftjoin('product_prices as pp','p.pro_id','pp.pro_id')
-        ->join('categories as c','c.pro_mc_id','category_products.pro_mc_id')
-        ->join('sub_categories as sc','sc.pro_sc_id','category_products.pro_sc_id')
-        ->where('category_products.pro_id',$id)
-        ->whereDate('pp.date_to','>=',now())
-        ->whereDate('pp.date_from','<=',now())
-        ->get();
 
-        return view('contents.product.edit', compact('product','productCategory'));
     }
 
     /**
@@ -213,13 +99,19 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $product = Product::where('pro_id',$id)
-        ->update([
-            'pro_name' => $request->pro_name,
-            'pro_code' => $request->pro_code,
-            'pro_short_name' => $request->pro_short_name,
-            'status' => $request->status,
-        ]);
+        $data = [
+            "customer_id" => $request["customer_id"],
+            "name" => $request["name"],
+            "description" => $request["description"],
+            "category" => $request["category"],
+            "weight_recondition" => $request["weight_recondition"],
+            "price_recondition" => $request["price_recondition"],
+            "weight_reusable" => $request['weight_reusable'],
+            "price_reusable" => $request['price_reusable'],
+            ];
+        $product = Product::where('id',$id)
+
+        ->update($data);
             return redirect()->route('product.index')->with('success', 'Record updated successfully !');
     }
 
@@ -231,7 +123,7 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product = Product::where('pro_id',$id)->delete();
+        $product = Product::where('id',$id)->delete();
         return redirect()->route('product.index')->with('success', 'Record deleted successfully !');
     }
 }

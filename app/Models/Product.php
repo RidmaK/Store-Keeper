@@ -11,17 +11,4 @@ class Product extends Model
     use HasFactory, SoftDeletes;
 
     protected $guarded =[];
-
-    public function categories()
-    {
-        return $this->belongsToMany(Category::class);
-    }
-    public function product_sub_categories()
-    {
-        return $this->belongsToMany(SubCategory::class);
-    }
-    public function images()
-    {
-    return $this->hasMany(Image::class, 'pro_id', 'pro_id');
-    }
 }

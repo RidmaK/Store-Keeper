@@ -14,12 +14,15 @@ class CreateProductsTable extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->bigIncrements('pro_id');
-            $table->string('pro_name')->nullable();
-            $table->string('pro_code')->nullable()->unique();
-            $table->string('pro_short_name')->nullable();
-            $table->text('pro_description')->nullable();
-            $table->string('url')->nullable();
+            $table->bigIncrements('id');
+            $table->integer('customer_id')->nullable();
+            $table->string('name')->nullable();
+            $table->string('category')->nullable();
+            $table->text('description')->nullable();
+            $table->decimal('weight_recondition',10,2)->nullable();
+            $table->decimal('price_recondition',10,2)->nullable();
+            $table->decimal('weight_reusable',10,2)->nullable();
+            $table->decimal('price_reusable',10,2)->nullable();
             $table->boolean('status')->default('1');
             $table->softDeletes();
             $table->timestamps();

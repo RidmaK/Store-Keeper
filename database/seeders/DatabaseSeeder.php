@@ -20,12 +20,6 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
             PermissionRoleSeeder::class,
             RoleUserSeeder::class,
-            CategorySeeder::class,
-            SubCategorySeeder::class,
-            CategoryAllocationSeeder::class,
-            ProductSeeder::class,
-            CategoryProductSeeder::class,
-            ProductPriceSeeder::class,
         ]);
     }
 }
