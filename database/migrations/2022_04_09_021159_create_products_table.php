@@ -19,10 +19,10 @@ class CreateProductsTable extends Migration
             $table->string('name')->nullable();
             $table->string('category')->nullable();
             $table->text('description')->nullable();
-            $table->decimal('weight_recondition',10,2)->nullable();
-            $table->decimal('price_recondition',10,2)->nullable();
-            $table->decimal('weight_reusable',10,2)->nullable();
-            $table->decimal('price_reusable',10,2)->nullable();
+            $table->decimal('weight_recondition',65,2)->nullable();
+            $table->decimal('price_recondition',65,2)->nullable();
+            $table->decimal('weight_reusable',65,2)->nullable();
+            $table->decimal('price_reusable',65,2)->nullable();
             $table->boolean('status')->default('1');
             $table->softDeletes();
             $table->timestamps();

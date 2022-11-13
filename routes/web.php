@@ -31,16 +31,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/customer/show/{id}', [CustomerController::class,'show']);
     Route::get('/customer/check_availability', [CustomerController::class,'checkAvailability'])->name('customer.checkAvailability');
 
-    Route::resource('/sub_category', SubCategoryController::class)->except('show');
-    Route::get('/sub-category-show/{id}', [SubCategoryController::class,'show']);
 
     Route::resource('/product', ProductController::class)->except('show');
-    Route::get('/product-show/{id}', [ProductController::class,'show']);
-    Route::get('/display-product/{id}', [ProductController::class,'display']);
-    Route::get('/product-search', [ProductController::class,'search']);
+    Route::get('/product/show/{id}', [ProductController::class,'show']);
 
-    Route::resource('/category_allocation', CategoryAllocationController::class)->except('show');
-    Route::get('/load-sub-category', [CategoryAllocationController::class,'load_sub_category']);
-
-    Route::resource('/price_allocation', PriceAllocationController::class)->except('show');
 });

@@ -76,7 +76,8 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-
+        $product = Product::where('id',$id)->latest()->first();
+        return view('contents.Inventry.show', compact('product'));
     }
 
     /**
@@ -87,7 +88,8 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-
+        $product = Product::where('id',$id)->latest()->first();
+        return view('contents.Inventry.edit', compact('product'));
     }
 
     /**
