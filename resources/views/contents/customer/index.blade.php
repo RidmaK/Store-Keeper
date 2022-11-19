@@ -26,10 +26,10 @@
                     @if (count($customers) > 0)
                         @foreach ($customers as $customer)
                         <tr>
-                            <th class="text-start" scope="row">{{$customer->name}}</th>
-                            <td class="text-center">{{$customer->phone}}</td>
-                            <td class="text-center">{{$customer->type}}</td>
-                            <td class="text-center">{{$cities[$customer->city]}}</td>
+                            <th class="text-start" scope="row">{{$customer->name  ?? "-"}}</th>
+                            <td class="text-center">{{$customer->phone ?? "-"}}</td>
+                            <td class="text-center">{{$customer->type ?? "-"}}</td>
+                            <td class="text-center">{{$cities[$customer->city] ?? "-"}}</td>
                             <td class="text-center">
                                 @if ($customer->status == 1)
                                 <span class="bg-green-300 text-green-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-900">ACTIVE</span>

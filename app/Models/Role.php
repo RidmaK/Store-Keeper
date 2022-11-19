@@ -2,23 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use App\BO\Department\v100\Models\Department;
+use Spatie\Permission\Models\Role as SpatieRole;
 
-class Role extends Model
+class Role extends SpatieRole
 {
-    use HasFactory, SoftDeletes;
+    protected $guard_name = [];
 
-    protected $guarded =[];
-
-    public function permissions()
+    public function department()
     {
-        return $this->belongsToMany(Permission::class);
-    }
-
-    public function users()
-    {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(Department::class, 'department_roles');
     }
 }

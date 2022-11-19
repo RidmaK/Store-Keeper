@@ -30,14 +30,14 @@
                         @if (count($products) > 0)
                             @foreach ($products as $product)
                             <tr>
-                                <th class="text-start" scope="row">{{$product->customer->name}}</th>
-                                <th class="text-start" scope="row">{{$product->name}}</th>
-                                <td class="text-center">{{$product->category}}</td>
+                                <th class="text-start" scope="row">{{$product->customer->name ?? "-"}}</th>
+                                <th class="text-start" scope="row">{{$product->name ?? "-"}}</th>
+                                <td class="text-center">{{$product->category ?? "-"}}</td>
                                 <td class="text-center">{{$product->weight_recondition ?? 'N/A'}}</td>
                                 <td class="text-center">{{$product->price_recondition ?? 'N/A'}}</td>
                                 <td class="text-center">{{$product->weight_reusable ?? 'N/A'}}</td>
                                 <td class="text-center">{{$product->price_reusable ?? 'N/A'}}</td>
-                                <td class="text-center">{{number_format($product->price_reusable + $product->price_recondition, 2)}}</td>
+                                <td class="text-center">{{number_format($product->price_reusable + $product->price_recondition, 2) ?? "-"}}</td>
                                 <td class="text-center">
                                     @if ($product->status == 1)
                                     <span class="bg-green-300 text-green-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-900">ACTIVE</span>

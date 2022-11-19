@@ -4,7 +4,9 @@ use App\Http\Controllers\CategoryAllocationController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PriceAllocationController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SubCategoryController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -34,5 +36,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('/product', ProductController::class)->except('show');
     Route::get('/product/show/{id}', [ProductController::class,'show']);
+
+    Route::resource('/user', UserController::class)->except('show');
+    Route::get('/user/show/{id}', [UserController::class,'show'])->name('user.show');
+
+    Route::resource('/user-group', RoleController::class)->except('show');
+    Route::get('/user-group/show/{id}', [RoleController::class,'show'])->name('user-group.show');
 
 });

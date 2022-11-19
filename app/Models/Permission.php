@@ -2,17 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\MainGroup as ModelsMainGroup;
+use Spatie\Permission\Models\Permission as SpatiePermission;
 
-class Permission extends Model
+class Permission extends SpatiePermission
 {
-    use HasFactory, SoftDeletes;
-    protected $guarded =[];
-
-    public function roles()
+    public function mainGroup()
     {
-        return $this->belongsToMany(Role::class);
+        return $this->belongsTo(ModelsMainGroup::class, 'main_group');
+    }
+
+    public function subGroup()
+    {
+        return $this->belongsTo(MainGroup::class, 'sub_group');
     }
 }

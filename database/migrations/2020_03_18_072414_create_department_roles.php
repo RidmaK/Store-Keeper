@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePermissionRoleTable extends Migration
+class CreateDepartmentRoles extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class CreatePermissionRoleTable extends Migration
      */
     public function up()
     {
-        Schema::create('permission_role', function (Blueprint $table) {
-            $table->foreignId('role_id')->cascadeOnDelete();
-            $table->foreignId('permission_id')->cascadeOnDelete();
+        Schema::create('department_roles', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->integer('department_id');
+            $table->integer('role_id');
+            $table->timestamps();
         });
     }
 
@@ -26,6 +28,6 @@ class CreatePermissionRoleTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('permission_role');
+        Schema::dropIfExists('department_roles');
     }
 }

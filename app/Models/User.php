@@ -1,57 +1,68 @@
 <?php
 
 namespace App\Models;
-
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use  HasRoles;
+
+    protected $guard_name = 'web';
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that are mass assignable...
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $fillable = [
         'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
+        'phone',
+        'nic',
+        'image',
+        'description',
+        'organization',
+        'organization_name',
+        'address_1',
+        'address_2',
+        'country_code',
+        'is_super_admin',
+        'group_id',
+        'fire_base_token',
+        'is_verified',
+        'status',
+        'city',
+        'social_account_id',
+        'social_account',
+        'access_token',
+        'coordinates',
+        'multi_login',
+        'type',
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * The attributes that should be hidden for arrays.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'password', 'remember_token',
     ];
 
     /**
-     * The attributes that should be cast.
+     * The attributes that should be cast to native types.
      *
-     * @var array<string, string>
+     * @var array
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    public function __construct(array $attributes = []) {
-        parent::__construct($attributes);
-        self::created(function (User $user) {
-            if (!$user->roles()->get()->contains(config('e_commerce.role_guest'))) {
-                $user->roles()->attach(config('e_commerce.role_guest'));
-            }
-        });
-    }
-
-    public function roles() {
-        return $this->belongsToMany(Role::class);
+    public function getName()
+    {
+        return $this->name;
     }
 }
