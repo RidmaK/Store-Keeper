@@ -44,7 +44,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('contents.Inventry.create');
+        $categories = Category::paginate(10);
+        return view('contents.Inventry.create',compact('categories'));
     }
 
     /**
@@ -101,8 +102,9 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
+        $categories = Category::paginate(10);
         $product = Product::where('id',$id)->latest()->first();
-        return view('contents.Inventry.edit', compact('product'));
+        return view('contents.Inventry.edit', compact('product','categories'));
     }
 
     /**

@@ -26,9 +26,14 @@
                 <textarea type="text" name="description" class="form-control"></textarea>
                 </div>
                 <div class="input-group input-group-outline my-3 is-filled">
-                <label class="form-label">Item Category</label>
-                <input type="text" name="category" class="form-control">
+                    <select class="form-control input-group input-group-outline my-3 is-filled js-example-basic-single" required name="category" id="category" onchange="getRate()">
+                        <option value="">Select Category</option>
+                        @foreach ($categories as $key => $category )
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                      </select>
                 </div>
+                <input type="hidden" name="rate" id="rate">
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-check form-switch d-flex align-items-center mb-3">
@@ -107,15 +112,32 @@
 
     function calReconditionPrice(){
         console.log();
-        var rate = 100;
+        var rate = $('#rate').val();
         var total = rate * (parseFloat($('#weight_recondition').val()))
         $('#price_recondition').val(total);
     }
 
     function calReusablePrice(){
-        var rate = 100;
+        var rate = $('#rate').val();
         var total = rate * (parseFloat($('#weight_reusable').val()))
         $('#price_reusable').val(total);
+    }
+
+
+    function getRate() {
+        $.ajax({
+            type: "GET",
+            url: "{!! route('category.getRate') !!}",
+            data: {
+                'category' : $('#category').val(),
+            }, // serializes the form's elements.
+            success: function(data)
+            {
+                $('#rate').val(data.rate);
+                calReconditionPrice();
+                calReusablePrice();
+            }
+        });
     }
   </script>
 

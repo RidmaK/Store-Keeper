@@ -27,7 +27,7 @@
                         @foreach ($categories as $category)
                         <tr>
                             <th class="text-start" scope="row">{{$category->name  ?? "-"}}</th>
-                            <td class="text-center">{{$category->status ?? "-"}}</td>
+                            <td class="text-center">{{$category->rate ?? "-"}}</td>
                             <td class="text-center">
                                 @if ($category->status == 1)
                                 <span class="bg-green-300 text-green-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-900">ACTIVE</span>

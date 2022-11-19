@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,8 +42,9 @@ class CustomerController extends Controller
      */
     public function create()
     {
+        $companies = Company::paginate(10);
         $cities = $this->getCities();
-        return view('contents.customer.create', compact('cities'));
+        return view('contents.customer.create', compact('cities','companies'));
     }
 
     /**
@@ -91,9 +93,10 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
+        $companies = Company::paginate(10);
         $cities = $this->getCities();
         $customer = Customer::where('id',$id)->latest()->first();
-        return view('contents.customer.edit', compact('customer','cities'));
+        return view('contents.customer.edit', compact('customer','cities','companies'));
     }
 
     /**

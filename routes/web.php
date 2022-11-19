@@ -54,6 +54,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('/category', CategoryController::class)->except('show');
     Route::get('/category/show/{id}', [CategoryController::class,'show'])->name('category.show');
+    Route::get('/category/get_rate', [CategoryController::class,'getRate'])->name('category.getRate');
 
     Route::resource('/company', CompanyController::class)->except('show');
     Route::get('/company/show/{id}', [CompanyController::class,'show'])->name('company.show');

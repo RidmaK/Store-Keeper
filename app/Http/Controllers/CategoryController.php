@@ -107,4 +107,11 @@ class CategoryController extends Controller
         $category = Category::where('id',$id)->delete();
         return redirect()->route('category.index')->with('success', 'Record deleted successfully !');
     }
+
+
+    public function getRate(Request $request){
+
+        $categoey = Category::where('id',$request->category)->first();
+        return $categoey; // Returns all provinces
+    }
 }

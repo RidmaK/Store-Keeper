@@ -42,8 +42,12 @@
                       </select>
                     </div>
                     <div class="input-group input-group-outline my-3 is-filled">
-                    <label class="form-label">Type</label>
-                    <input type="text" name="type" id="type" required class="form-control">
+                        <select class="form-control input-group input-group-outline my-3 is-filled js-example-basic-single" required name="type" id="type" >
+                            <option value="">Select Company</option>
+                            @foreach ($companies as $key => $company )
+                            <option value="{{ $company->name }}">{{ $company->name }}</option>
+                            @endforeach
+                          </select>
                     </div>
                     <div class="text-center">
                     <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">NEXT</button>
