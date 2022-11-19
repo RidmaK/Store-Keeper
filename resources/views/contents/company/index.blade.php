@@ -8,8 +8,8 @@
             <div class="table-responsive">
                 <x-flash-message type="success" key="success" />
                 <x-flash-message type="error" key="error" />
-                @can('customer-create')
-                <a href="{{route('customer.create')}}" class="btn btn-primary float-end" style="margin-right: 27px;">
+                @can('company-create')
+                <a href="{{route('company.create')}}" class="btn btn-primary float-end" style="margin-right: 27px;">
                     {{ __('Add New') }}
                 </a>
                 @endcan
@@ -17,23 +17,17 @@
                 <thead>
                     <tr>
                     <th class="text-start text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Phone</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Type</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">City</th>
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if (count($customers) > 0)
-                        @foreach ($customers as $customer)
+                    @if (count($companies) > 0)
+                        @foreach ($companies as $company)
                         <tr>
-                            <th class="text-start" scope="row">{{$customer->name  ?? "-"}}</th>
-                            <td class="text-center">{{$customer->phone ?? "-"}}</td>
-                            <td class="text-center">{{$customer->type ?? "-"}}</td>
-                            <td class="text-center">{{$cities[$customer->city] ?? "-"}}</td>
+                            <th class="text-start" scope="row">{{$company->name  ?? "-"}}</th>
                             <td class="text-center">
-                                @if ($customer->status == 1)
+                                @if ($company->status == 1)
                                 <span class="bg-green-300 text-green-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-green-200 dark:text-green-900">ACTIVE</span>
                                 @else
                                 <span class="bg-red-300 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">INACTIVE</span>
@@ -41,28 +35,23 @@
                             </td>
                             <td class="text-center">
                                 <div class="btn-group btn-group-sm" role="group">
-                                    @can('inventory-create')
-                                        <a href="{{route('product.create', ['id' =>$customer->id])}}" class="btn btn-outline-primary">
-                                            {{ __('Add Item') }}
-                                        </a>
-                                    @endcan
-                                    @can('customer-list')
-                                        <a href="{{url('customer/show', $customer->id)}}" class="btn btn-outline-primary">
+                                    @can('company-list')
+                                        <a href="{{url('company/show', $company->id)}}" class="btn btn-outline-primary">
                                             {{ __('View') }}
                                         </a>
                                     @endcan
-                                    @can('customer-edit')
-                                        <a href="{{route('customer.edit', $customer->id)}}" class="btn btn-outline-primary">
+                                    @can('company-edit')
+                                        <a href="{{route('company.edit', $company->id)}}" class="btn btn-outline-primary">
                                             {{ __('Edit') }}
                                         </a>
                                     @endcan
-                                    @can('customer-delete')
-                                        <a type="button" onclick="deleteCustomer(event,'delete-form-{{$customer->id}}')" class="btn btn-outline-danger">
+                                    @can('company-delete')
+                                        <a type="button" onclick="deletecompany(event,'delete-form-{{$company->id}}')" class="btn btn-outline-danger">
                                             {{ __('Delete') }}
                                         </a>
                                     @endcan
                                 </div>
-                                <form id="delete-form-{{$customer->id}}" action="{{ route('customer.destroy', $customer->id) }}" method="POST" class="d-none">
+                                <form id="delete-form-{{$company->id}}" action="{{ route('company.destroy', $company->id) }}" method="POST" class="d-none">
                                     @csrf
                                     <input type="hidden" name="_method" value="DELETE">
                                 </form>
@@ -86,11 +75,11 @@
   @section('scripts')
   <Script>
     $(document).ready( function () {
-        if('{!! count($customers) !!}' > 0){
+        if('{!! count($companies) !!}' > 0){
             $('#myTable').DataTable();
         }
     } );
-    function deleteCustomer(event,form_id) {
+    function deletecompany(event,form_id) {
         event.preventDefault();
         $.confirm({
         title: 'Confirm?',

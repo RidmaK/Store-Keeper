@@ -14,6 +14,7 @@
     <hr class="horizontal light mt-0 mb-2">
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
+        @can('dashboard-list')
         <li class="nav-item">
           <a class="nav-link text-white {{ request()->segment(1) == 'home' ? 'active' : '' }} bg-gradient-primary" href="{{ route('home') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -22,6 +23,38 @@
             <span class="nav-link-text ms-1">Dashboard</span>
           </a>
         </li>
+        @endcan
+        @canany('setting-list')
+        <li class="nav-item">
+          <a class="nav-link text-white {{ request()->segment(1) == 'settings'  ? 'active' : '' }}" href="{{ route('settings.index') }}">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">settings</i>
+            </div>
+            <span class="nav-link-text ms-1">Settings</span>
+          </a>
+        </li>
+        @endcan
+        @canany('company-list')
+        <li class="nav-item">
+          <a class="nav-link text-white {{ request()->segment(1) == 'company'  ? 'active' : '' }}" href="{{ route('company.index') }}">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">apartment</i>
+            </div>
+            <span class="nav-link-text ms-1">Comapnies</span>
+          </a>
+        </li>
+        @endcan
+        @canany('category-list')
+        <li class="nav-item">
+          <a class="nav-link text-white {{ request()->segment(1) == 'category'  ? 'active' : '' }}" href="{{ route('category.index') }}">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">category</i>
+            </div>
+            <span class="nav-link-text ms-1">Categories</span>
+          </a>
+        </li>
+        @endcan
+        @canany(['user-list','user-group-list'])
         <li class="nav-item">
           <a class="nav-link text-white {{ (request()->segment(1) == 'user' || request()->segment(1) == 'user-group') ? 'active' : '' }}" href="{{ route('user.index') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -30,14 +63,28 @@
             <span class="nav-link-text ms-1">User Management</span>
           </a>
         </li>
+        @endcan
+        @can('customer-list')
         <li class="nav-item">
           <a class="nav-link text-white {{ request()->segment(1) == 'customer' ? 'active' : '' }}" href="{{ route('customer.index') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">account_tree</i>
+              <i class="material-icons opacity-10">local_mall</i>
             </div>
-            <span class="nav-link-text ms-1">Customers</span>
+            <span class="nav-link-text ms-1">Buying</span>
           </a>
         </li>
+        @endcan
+        @can('selling-list')
+        <li class="nav-item">
+          <a class="nav-link text-white {{ request()->segment(1) == 'selling' ? 'active' : '' }}" href="{{ route('selling.index') }}">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">storefront</i>
+            </div>
+            <span class="nav-link-text ms-1">Selling</span>
+          </a>
+        </li>
+        @endcan
+        @can('inventory-list')
         <li class="nav-item">
           <a class="nav-link text-white {{ request()->segment(1) == 'product' ? 'active' : '' }}" href="{{ route('product.index') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -46,6 +93,8 @@
             <span class="nav-link-text ms-1">Inventry</span>
           </a>
         </li>
+        @endcan
+        @can('inventory-list')
         <li class="nav-item">
           <a class="nav-link text-white " href="{{ route('product.index') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -54,6 +103,7 @@
             <span class="nav-link-text ms-1">Stocks</span>
           </a>
         </li>
+        @endcan
         <li class="nav-item">
           <a class="nav-link text-white " href="../pages/billing.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">

@@ -44,9 +44,11 @@
                         @endforeach
                     </select>
                     </div>
-                <div class="text-center">
-                <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">ADD</button>
-                </div>
+                @can('user-edit')
+                    <div class="text-center">
+                    <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">ADD</button>
+                    </div>
+                @endcan
             </form>
         </div>
       </div>

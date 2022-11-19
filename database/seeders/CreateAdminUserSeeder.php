@@ -18,9 +18,9 @@ class CreateAdminUserSeeder extends Seeder
             'guard_name' => 'web',
             'display_name' => 'Admin',
         ]);
-        $user = \App\Models\User::updateOrCreate(['email' => 'admin@layoutindex.com'], [
+        $user = \App\Models\User::updateOrCreate(['email' => 'admin@sales.com'], [
             'name' => 'Admin',
-            'email' => 'admin@layoutindex.com',
+            'email' => 'admin@sales.com',
             'password' => bcrypt('123456789'),
             'is_super_admin' => 1,
             'type' => 'admin',
@@ -33,11 +33,5 @@ class CreateAdminUserSeeder extends Seeder
         $roleAdmin->syncPermissions($permissions);
 
         $user->assignRole([$roleAdmin->id]);
-
-        $roleLecturer = \App\Models\Role::updateOrCreate(['name' => 'lecturer'], [
-            'name' => 'lecturer',
-            'guard_name' => 'web',
-            'display_name' => 'Lecturer',
-        ]);
     }
 }

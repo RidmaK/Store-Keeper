@@ -1,10 +1,13 @@
 <?php
 
 use App\Http\Controllers\CategoryAllocationController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PriceAllocationController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -42,5 +45,17 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('/user-group', RoleController::class)->except('show');
     Route::get('/user-group/show/{id}', [RoleController::class,'show'])->name('user-group.show');
+
+    Route::resource('/selling', SellingController::class)->except('show');
+    Route::get('/selling/show/{id}', [SellingController::class,'show'])->name('selling.show');
+
+    Route::resource('/settings', SettingController::class)->except('show');
+    Route::get('/settings/show/{id}', [SettingController::class,'show'])->name('settings.show');
+
+    Route::resource('/category', CategoryController::class)->except('show');
+    Route::get('/category/show/{id}', [CategoryController::class,'show'])->name('category.show');
+
+    Route::resource('/company', CompanyController::class)->except('show');
+    Route::get('/company/show/{id}', [CompanyController::class,'show'])->name('company.show');
 
 });

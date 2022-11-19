@@ -9,6 +9,19 @@ use Illuminate\Support\Facades\Validator;
 use Disapamok\Modules\SriLanka;
 class CustomerController extends Controller
 {
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function __construct(Request $request)
+    {
+        $this->middleware('permission:customer-list|customer-create|customer-edit|customer-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:customer-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:customer-delete', ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      *

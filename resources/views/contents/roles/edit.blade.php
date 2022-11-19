@@ -274,10 +274,11 @@
                     {{-- End Form grop  --}}
 
 
-
+                    @can('user-group-edit')
                     <div class="text-center">
                         <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">Submit</button>
                     </div>
+                    @endcan
 
 
                 </div>

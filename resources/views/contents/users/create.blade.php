@@ -22,7 +22,7 @@
                 </div>
                 <div class="input-group input-group-outline my-3 is-filled">
                 <label class="form-label">Email</label>
-                <textarea type="email" name="email" class="form-control"></textarea>
+                <input type="email" name="email" class="form-control">
                 </div>
                 <div class="input-group input-group-outline my-3 is-filled">
                 <label class="form-label">Phone</label>

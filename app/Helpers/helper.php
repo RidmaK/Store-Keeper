@@ -28,13 +28,147 @@ function getAcl()
             ],
         ],
         [
-            'name' => 'Customers',
+            'name' => 'Setting',
+            'icon' => 'fa-tachometer',
+            'order' => 1,
+            'status' => 1,
+            'permissions' => [
+                'setting' => [
+                    'label' => 'setting',
+                    'route' => route('home'),
+                    'status' => 1,
+                    'permissions_list' => [
+                        [
+                            'name' => 'setting-list',
+                            'permission_label' => 'Setting View',
+                            'guard_name' => 'web',
+                            'group' => 'setting',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 1,
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        [
+            'name' => 'Product Category',
+            'icon' => 'fa-users',
+            'order' => 1,
+            'status' => 1,
+            'permissions' => [
+                'category' => [
+                    'label' => 'category',
+                    'route' => route('category.index'),
+                    'status' => 1,
+                    'permissions_list' => [
+                        [
+
+                            'name' => 'category-list',
+                            'permission_label' => 'Category List',
+                            'guard_name' => 'web',
+                            'group' => 'category',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 2,
+                        ],
+
+                        [
+                            'name' => 'category-edit',
+                            'permission_label' => 'Category Edit',
+                            'guard_name' => 'web',
+                            'group' => 'category',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 3,
+                        ],
+
+                        [
+                            'name' => 'category-create',
+                            'permission_label' => 'Category Create',
+                            'guard_name' => 'web',
+                            'group' => 'category',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 4,
+                        ],
+
+                        [
+                            'name' => 'category-delete',
+                            'permission_label' => 'Category Delete',
+                            'guard_name' => 'web',
+                            'group' => 'category',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 4,
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        [
+            'name' => 'Company',
+            'icon' => 'fa-users',
+            'order' => 1,
+            'status' => 1,
+            'permissions' => [
+                'company' => [
+                    'label' => 'company',
+                    'route' => route('company.index'),
+                    'status' => 1,
+                    'permissions_list' => [
+                        [
+
+                            'name' => 'company-list',
+                            'permission_label' => 'Company List',
+                            'guard_name' => 'web',
+                            'group' => 'company',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 2,
+                        ],
+
+                        [
+                            'name' => 'company-edit',
+                            'permission_label' => 'Company Edit',
+                            'guard_name' => 'web',
+                            'group' => 'company',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 3,
+                        ],
+
+                        [
+                            'name' => 'company-create',
+                            'permission_label' => 'Company Create',
+                            'guard_name' => 'web',
+                            'group' => 'company',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 4,
+                        ],
+
+                        [
+                            'name' => 'company-delete',
+                            'permission_label' => 'Company Delete',
+                            'guard_name' => 'web',
+                            'group' => 'company',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 4,
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        [
+            'name' => 'Buying',
             'icon' => 'fa-users',
             'order' => 1,
             'status' => 1,
             'permissions' => [
                 'customer' => [
-                    'label' => 'customer',
+                    'label' => 'buying',
                     'route' => route('customer.index'),
                     'status' => 1,
                     'permissions_list' => [
@@ -64,6 +198,71 @@ function getAcl()
                             'permission_label' => 'Customer Create',
                             'guard_name' => 'web',
                             'group' => 'customer',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 4,
+                        ],
+
+                        [
+                            'name' => 'customer-delete',
+                            'permission_label' => 'Customer Delete',
+                            'guard_name' => 'web',
+                            'group' => 'customer',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 4,
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        [
+            'name' => 'Selling',
+            'icon' => 'fa-users',
+            'order' => 1,
+            'status' => 1,
+            'permissions' => [
+                'selling' => [
+                    'label' => 'selling',
+                    'route' => route('selling.index'),
+                    'status' => 1,
+                    'permissions_list' => [
+                        [
+
+                            'name' => 'selling-list',
+                            'permission_label' => 'Selling List',
+                            'guard_name' => 'web',
+                            'group' => 'selling',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 2,
+                        ],
+
+                        [
+                            'name' => 'selling-edit',
+                            'permission_label' => 'Selling Edit',
+                            'guard_name' => 'web',
+                            'group' => 'selling',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 3,
+                        ],
+
+                        [
+                            'name' => 'selling-create',
+                            'permission_label' => 'Selling Create',
+                            'guard_name' => 'web',
+                            'group' => 'selling',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 4,
+                        ],
+
+                        [
+                            'name' => 'selling-delete',
+                            'permission_label' => 'Selling Delete',
+                            'guard_name' => 'web',
+                            'group' => 'selling',
                             'sub_group' => 0,
                             'main_order' => 1,
                             'sub_order' => 4,
@@ -113,6 +312,15 @@ function getAcl()
                             'main_order' => 1,
                             'sub_order' => 7,
                         ],
+                        [
+                            'name' => 'inventory-delete',
+                            'permission_label' => 'Inventory Delete',
+                            'guard_name' => 'web',
+                            'group' => 'inventory',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 4,
+                        ],
                     ],
                 ],
             ],
@@ -158,6 +366,15 @@ function getAcl()
                             'main_order' => 1,
                             'sub_order' => 10,
                         ],
+                        [
+                            'name' => 'user-delete',
+                            'permission_label' => 'User Delete',
+                            'guard_name' => 'web',
+                            'group' => 'user',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 4,
+                        ],
                     ],
                 ],
             ],
@@ -202,6 +419,15 @@ function getAcl()
                             'sub_group' => 0,
                             'main_order' => 1,
                             'sub_order' => 13,
+                        ],
+                        [
+                            'name' => 'user-group-delete',
+                            'permission_label' => 'User Group Delete',
+                            'guard_name' => 'web',
+                            'group' => 'user-group',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 4,
                         ],
                     ],
                 ],

@@ -82,7 +82,10 @@
       <Script>
 
     $(document).ready( function () {
-        $('#myTable').DataTable();
+
+        if('{!! count($products) !!}' > 0){
+            $('#myTable').DataTable();
+        }
     } );
         function deleteproduct(event,form_id) {
             event.preventDefault();

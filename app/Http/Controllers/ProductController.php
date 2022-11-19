@@ -13,6 +13,19 @@ use Illuminate\Support\Facades\DB;
 use Storage;
 class ProductController extends Controller
 {
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function __construct(Request $request)
+    {
+        $this->middleware('permission:inventory-list|inventory-create|inventory-edit|inventory-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:inventory-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:inventory-delete', ['only' => ['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      *

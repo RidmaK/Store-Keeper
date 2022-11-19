@@ -8,12 +8,16 @@
             <div class="table-responsive">
                 <x-flash-message type="success" key="success" />
                 <x-flash-message type="error" key="error" />
+                @can('user-create')
                 <a href="{{route('user.create')}}" class="btn btn-primary float-end" style="margin-right: 27px;">
                     {{ __('Add User +') }}
                 </a>
+                @endcan
+                @can('user-group-list')
                 <a href="{{route('user-group.index')}}" class="btn btn-primary float-end" style="margin-right: 27px;">
                     {{ __('User Groups') }}
                 </a>
+                @endcan
 
                 <table class="table table-bordered" id="usersListTable" style="width: 100% !important;">
                     <thead>
