@@ -7,6 +7,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PriceAllocationController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SellingController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\UserController;
@@ -39,6 +40,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('/product', ProductController::class)->except('show');
     Route::get('/product/show/{id}', [ProductController::class,'show']);
+    Route::get('/stock', [ProductController::class,'stock'])->name('stock');
 
     Route::resource('/user', UserController::class)->except('show');
     Route::get('/user/show/{id}', [UserController::class,'show'])->name('user.show');

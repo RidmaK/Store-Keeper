@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -111,7 +112,9 @@ class CategoryController extends Controller
 
     public function getRate(Request $request){
 
-        $categoey = Category::where('id',$request->category)->first();
-        return $categoey; // Returns all provinces
+        $data['category'] = Category::where('id',$request->category)->first();
+        $data['availabile_weight_recondition'] = Product::where('category',$request->category)->sum('weight_recondition');
+        $data['availabile_weight_reusable'] = Product::where('category',$request->category)->sum('weight_reusable');
+        return $data; // Returns all provinces
     }
 }

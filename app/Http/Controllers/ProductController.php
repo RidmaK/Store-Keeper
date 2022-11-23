@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\CategoryProduct;
 use App\Models\Image;
 use App\Models\Product;
+use App\Models\Stock;
 use App\Models\SubCategory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -25,6 +26,7 @@ class ProductController extends Controller
         $this->middleware('permission:inventory-list|inventory-create|inventory-edit|inventory-delete', ['only' => ['index', 'show']]);
         $this->middleware('permission:inventory-create', ['only' => ['create', 'store']]);
         $this->middleware('permission:inventory-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:stock-list', ['only' => ['stock']]);
     }
     /**
      * Display a listing of the resource.
@@ -34,7 +36,19 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::paginate(10);
-        return view('contents.Inventry.index',compact('products'));
+        $categories = Category::pluck('name','id')->toArray();
+        return view('contents.Inventry.index',compact('products','categories'));
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function stock(){
+        $products = Stock::get();
+        $categories = Category::pluck('name','id')->toArray();
+        return view('contents.Inventry.stock',compact('products','categories'));
     }
 
     /**
@@ -72,6 +86,18 @@ class ProductController extends Controller
         try {
 
             $product = Product::create($data);
+
+            $stockAvailable = Product::groupBy('category')
+            ->selectRaw('sum(weight_recondition) as sum_weight_recondition,sum(weight_reusable) as sum_weight_reusable, category')
+            ->get();
+            foreach ($stockAvailable as $key => $value) {
+                $stock = Stock::updateOrCreate(['category'=>$value->category],[
+                    'category'=>$value->category,
+                    'weight_reusable'=>$value->sum_weight_reusable,
+                    'weight_recondition'=>$value->sum_weight_recondition,
+                    ]);
+            }
+
             DB::commit();
             return redirect()->route('product.index')->with('success', 'RECORD HAS BEEN SUCCESSFULLY INSERTED!');
             } catch (\Exception $e) {
@@ -129,6 +155,17 @@ class ProductController extends Controller
         $product = Product::where('id',$id)
 
         ->update($data);
+
+        $stockAvailable = Product::groupBy('category')
+            ->selectRaw('sum(weight_recondition) as sum_weight_recondition,sum(weight_reusable) as sum_weight_reusable, category')
+            ->get();
+            foreach ($stockAvailable as $key => $value) {
+                $stock = Stock::updateOrCreate(['category'=>$value->category],[
+                    'category'=>$value->category,
+                    'weight_reusable'=>$value->sum_weight_reusable,
+                    'weight_recondition'=>$value->sum_weight_recondition,
+                    ]);
+            }
             return redirect()->route('product.index')->with('success', 'Record updated successfully !');
     }
 

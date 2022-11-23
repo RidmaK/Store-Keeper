@@ -44,13 +44,13 @@
                     <div class="col-md-3">
                             <div class="input-group input-group-outline my-3 is-filled weight_recondition" style="display: none">
                             <label class="form-label">Weight (Kg)</label>
-                            <input type="number" step="0.2" name="weight_recondition" id="weight_recondition" class="form-control" onchange="calReconditionPrice()">
+                            <input type="number" step="any" name="weight_recondition" id="weight_recondition" class="form-control" onchange="calReconditionPrice()">
                             </div>
                     </div>
                     <div class="col-md-3">
                             <div class="input-group input-group-outline my-3 is-filled price_recondition" style="display: none">
                             <label class="form-label">Price (LKR)</label>
-                            <input type="number" step="0.2" name="price_recondition" id="price_recondition" class="form-control">
+                            <input type="number" step="any" name="price_recondition" id="price_recondition" class="form-control">
                             </div>
                     </div>
                 </div>
@@ -64,13 +64,13 @@
                     <div class="col-md-3">
                             <div class="input-group input-group-outline my-3 is-filled weight_reusable" style="display: none">
                             <label class="form-label">Weight (Kg)</label>
-                            <input type="number" step="0.2"  name="weight_reusable" id="weight_reusable" class="form-control" onchange="calReusablePrice()">
+                            <input type="number" step="any"  name="weight_reusable" id="weight_reusable" class="form-control" onchange="calReusablePrice()">
                             </div>
                     </div>
                     <div class="col-md-3">
                             <div class="input-group input-group-outline my-3 is-filled price_reusable" style="display: none">
                             <label class="form-label">Price (LKR)</label>
-                            <input type="number" step="0.2" name="price_reusable" id="price_reusable" class="form-control">
+                            <input type="number" step="any" name="price_reusable" id="price_reusable" class="form-control">
                             </div>
                     </div>
                 </div>
@@ -133,7 +133,7 @@
             }, // serializes the form's elements.
             success: function(data)
             {
-                $('#rate').val(data.rate);
+                $('#rate').val(data.category.rate);
                 calReconditionPrice();
                 calReusablePrice();
             }

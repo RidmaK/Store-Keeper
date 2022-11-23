@@ -17,7 +17,7 @@
             <form  class="text-start" method="POST" action="{{ route('product.update',$product->id) }}">
                 @csrf
                 <input type="hidden" name="_method" value="PUT">
-                <input type="hidden" name="customer_id" id="customer_id" value="{{ $product->customer->id }}">
+                <input type="hidden" name="customer_id" id="customer_id" value="{{ request()->id }}">
                 <div class="input-group input-group-outline my-3 is-filled">
                 <label class="form-label">Item Name</label>
                 <input type="text" name="name" class="form-control" value="{{ $product->name }}">
@@ -27,15 +27,9 @@
                 <textarea type="text" name="description" class="form-control" value="{{ $product->description }}"></textarea>
                 </div>
                 <div class="input-group input-group-outline my-3 is-filled">
-                    <select class="form-control input-group input-group-outline my-3 is-filled js-example-basic-single" required name="category" id="category" onchange="getRate()">
-                        <option value="">Select Category</option>
-                        @foreach ($categories as $key => $category )
-                        <option value="{{ $category->id }}" {{ $product->category == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
-                        @endforeach
-                      </select>
+                <label class="form-label">Item Category</label>
+                <input type="text" name="category" class="form-control" value="{{ $product->category }}">
                 </div>
-
-                <input type="hidden" name="rate" id="rate">
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-check form-switch d-flex align-items-center mb-3">
@@ -77,7 +71,7 @@
                     </div>
                 </div>
                 <div class="text-center">
-                <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">ADD</button>
+                {{-- <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">ADD</button> --}}
                 </div>
             </form>
         </div>
@@ -89,8 +83,8 @@
 @section('scripts')
   <script type="text/javascript">
   $( document ).ready(function() {
-    // setReconditionWeight();
-    // setReusableWeight();
+    setReconditionWeight();
+    setReusableWeight();
     });
     function setReconditionWeight(){
         if($('#check_recondition').prop('checked')){
@@ -116,32 +110,15 @@
 
     function calReconditionPrice(){
         console.log();
-        var rate = $('#rate').val();
+        var rate = 100;
         var total = rate * (parseFloat($('#weight_recondition').val()))
         $('#price_recondition').val(total);
     }
 
     function calReusablePrice(){
-        var rate = $('#rate').val();
+        var rate = 100;
         var total = rate * (parseFloat($('#weight_reusable').val()))
         $('#price_reusable').val(total);
-    }
-
-
-    function getRate() {
-        $.ajax({
-            type: "GET",
-            url: "{!! route('category.getRate') !!}",
-            data: {
-                'category' : $('#category').val(),
-            }, // serializes the form's elements.
-            success: function(data)
-            {
-                $('#rate').val(data.category.rate);
-                calReconditionPrice();
-                calReusablePrice();
-            }
-        });
     }
   </script>
 

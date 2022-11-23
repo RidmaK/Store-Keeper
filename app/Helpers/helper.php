@@ -326,6 +326,31 @@ function getAcl()
             ],
         ],
         [
+            'name' => 'Stock',
+            'icon' => 'fa-boxes',
+            'order' => 1,
+            'status' => 1,
+            'permissions' => [
+                'stock' => [
+                    'label' => 'stock',
+                    'route' => route('product.index'),
+                    'status' => 1,
+                    'permissions_list' => [
+                        [
+
+                            'name' => 'stock-list',
+                            'permission_label' => 'Stock List',
+                            'guard_name' => 'web',
+                            'group' => 'stock',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 5,
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        [
             'name' => 'Users',
             'icon' => 'fa-user',
             'order' => 1,

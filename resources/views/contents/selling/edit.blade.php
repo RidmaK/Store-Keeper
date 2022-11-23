@@ -137,7 +137,7 @@
             }, // serializes the form's elements.
             success: function(data)
             {
-                $('#rate').val(data.category.rate);
+                $('#rate').val(data.rate);
                 calReconditionPrice();
                 calReusablePrice();
             }

@@ -18,5 +18,6 @@ class Customer extends Model
     'city',
     'phone',
     'type',
+    'customer_type',
    ];
 }

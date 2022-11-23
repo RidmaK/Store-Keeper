@@ -62,6 +62,7 @@ class CustomerController extends Controller
         $requestData['address2'] = $request->address2;
         $requestData['city'] = $request->city;
         $requestData['type'] = $request->type;
+        $requestData['customer_type'] = 1;
         if(count($Check_customer)>0){
             return redirect()->route('product.create',['id' => $Check_customer[0]['id']])->with('error', 'Customer allready exist !');
 
@@ -71,6 +72,7 @@ class CustomerController extends Controller
         }
 
     }
+
 
     /**
      * Display the specified resource.
@@ -114,6 +116,7 @@ class CustomerController extends Controller
         $requestData['city'] = $request->city;
         $requestData['phone'] = $request->phone;
         $requestData['type'] = $request->type;
+        $requestData['customer_type'] = 1;
         $Check_customer = Customer::where('id',$id)->update($requestData);
             return redirect()->route('customer.index')->with('success', 'Record updated successfully !');
     }

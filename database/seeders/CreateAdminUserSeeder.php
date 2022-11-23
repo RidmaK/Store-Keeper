@@ -24,6 +24,7 @@ class CreateAdminUserSeeder extends Seeder
             'password' => bcrypt('123456789'),
             'is_super_admin' => 1,
             'type' => 'admin',
+            'status' => 1,
         ]);
         $user = \App\Models\User::first();
         $roleAdmin = \App\Models\Role::first();

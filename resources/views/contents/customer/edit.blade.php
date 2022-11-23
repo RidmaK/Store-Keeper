@@ -31,12 +31,12 @@
                     <input type="text" name="address2" class="form-control" value="{{ $customer->address2 }}">
                     </div>
                     <div class="input-group input-group-outline my-3 is-filled">
-                    <select class="form-control input-group input-group-outline my-3 is-filled js-example-basic-single" required name="city" >
-                        <option value="">Select City</option>
-                        @foreach ($cities as $key => $city )
-                        <option value="{{ $key + 1 }}" value="{{ ($customer->city == $key + 1) ? 'selected' : ''  }}">{{ $city }}</option>
-                        @endforeach
-                      </select>
+                        <select class="form-control input-group input-group-outline my-3 is-filled js-example-basic-single" required name="city" >
+                            <option value="">Select City</option>
+                            @foreach ($cities as $key => $city )
+                            <option value="{{ $key }}" {{ ($customer->city == $key) ? 'selected' : ''  }}>{{ $city }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="input-group input-group-outline my-3 is-filled">
                     <label class="form-label">Phone No</label>
