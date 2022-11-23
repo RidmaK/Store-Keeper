@@ -45,7 +45,7 @@
               <div class="card-body">
                 <h6 class="mb-0 "> Daily Profit </h6>
                 <p class="text-sm "> (<span class="font-weight-bolder">
-                    {{ $totSales - $totBuy }}
+                    {{ $totSales - $totBuy }} LKR
                 </span>) increase in sales. </p>
                 <hr class="dark horizontal">
               </div>
@@ -61,7 +61,7 @@
               <div class="card-body">
                 <h6 class="mb-0 "> Daily Sales </h6>
                 <p class="text-sm "> (<span class="font-weight-bolder">
-                    {{ $totSales }}
+                    {{ $totSales }} LKR
                 </span>) increase in sales. </p>
                 <hr class="dark horizontal">
               </div>
