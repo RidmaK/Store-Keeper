@@ -2,9 +2,69 @@
 
 @section('mainContent')
 <div class="container-fluid py-4">
-    <div class="row mt-1 mb-1">
+    <div class="row p-3 pt-2">
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-3">
-            <div class="card">
+            <div class="card z-index-2 ">
+              <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+                <div class="bg-gradient-info shadow-info border-radius-lg py-3 pe-1">
+                    <center><h5 style="color: black">Customers</h5></center>
+                </div>
+              </div>
+              <div class="card-body">
+                <center><p class="mb-0 ">Selling <strong class=" ">{{ $selling }}</strong></p>
+
+                    <p class="mb-0 ">Buying <strong class=" ">{{ $buying }}</strong></p></center>
+                    <hr class="dark horizontal">
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-3">
+            <div class="card z-index-2 ">
+              <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+                <div class="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
+                    <center><h5 style="color: black">Employees</h5></center>
+                </div>
+              </div>
+              <div class="card-body">
+                <center><h2 class="mb-0 ">{{ $users }}</h2></center>
+                <hr class="dark horizontal">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-3">
+            <div class="card z-index-2  ">
+              <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+                <div class="bg-gradient-success shadow-success border-radius-lg py-3 pe-1">
+                    <center><h5 style="color: black">Profit</h5></center>
+                </div>
+              </div>
+              <div class="card-body">
+                <h6 class="mb-0 "> Daily Profit </h6>
+                <p class="text-sm "> (<span class="font-weight-bolder">+15%</span>) increase in today sales. </p>
+                <hr class="dark horizontal">
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-3">
+            <div class="card z-index-2  ">
+              <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+                <div class="bg-gradient-danger shadow-danger border-radius-lg py-3 pe-1">
+                    <center><h5 style="color: black">Sales</h5></center>
+                </div>
+              </div>
+              <div class="card-body">
+                <h6 class="mb-0 "> Daily Sales </h6>
+                <p class="text-sm "> (<span class="font-weight-bolder">+15%</span>) increase in today sales. </p>
+                <hr class="dark horizontal">
+              </div>
+            </div>
+          </div>
+    </div>
+    <div class="row p-3 pt-2">
+
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-3">
+            <div class="card p-3 pt-2">
                 <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
                 <i class="material-icons opacity-10">weekend</i>
                 </div>
@@ -27,7 +87,7 @@
             </div>
         </div>
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-3">
-            <div class="card">
+            <div class="card p-3 pt-2" >
                 <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
                 <i class="material-icons opacity-10">apartment</i>
                 </div>
@@ -49,34 +109,6 @@
                 @endforeach
             </div>
         </div>
-      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-3">
-        <div class="card z-index-2 ">
-          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
-            <div class="bg-gradient-info shadow-info border-radius-lg py-3 pe-1">
-                <center><h5 style="color: black">Customers</h5></center>
-            </div>
-          </div>
-          <div class="card-body">
-            <center><p class="mb-0 ">Selling <strong class=" ">{{ $selling }}</strong></p>
-
-                <hr class="dark horizontal">
-                <p class="mb-0 ">Buying <strong class=" ">{{ $buying }}</strong></p></center>
-          </div>
-        </div>
-      </div>
-      <div class="col-xl-3 col-sm-6 mb-xl-0 mb-3">
-        <div class="card z-index-2 ">
-          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
-            <div class="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
-                <center><h5 style="color: black">Employees</h5></center>
-            </div>
-          </div>
-          <div class="card-body">
-            <center><h1 class="mb-0 ">{{ $users }}</h1></center>
-            <hr class="dark horizontal">
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 @endsection
