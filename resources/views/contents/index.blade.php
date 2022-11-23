@@ -11,9 +11,9 @@
                 </div>
               </div>
               <div class="card-body">
-                <center><p class="mb-0 ">Selling <strong class=" ">{{ $selling }}</strong></p>
+                <center><p class="mb-0 ">Selling <strong class=" ">{{ $sellings }}</strong></p>
 
-                    <p class="mb-0 ">Buying <strong class=" ">{{ $buying }}</strong></p></center>
+                    <p class="mb-0 ">Buying <strong class=" ">{{ $buyings }}</strong></p></center>
                     <hr class="dark horizontal">
               </div>
             </div>
@@ -31,7 +31,10 @@
               </div>
             </div>
           </div>
-
+          @php
+              $totSales = (float)$sales['price_recondition'] + (float)$sales['price_reusable'];
+              $totBuy = (float)$buying['price_recondition'] + (float)$buying['price_reusable'];
+          @endphp
           <div class="col-xl-3 col-sm-6 mb-xl-0 mb-3">
             <div class="card z-index-2  ">
               <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
@@ -41,7 +44,9 @@
               </div>
               <div class="card-body">
                 <h6 class="mb-0 "> Daily Profit </h6>
-                <p class="text-sm "> (<span class="font-weight-bolder">+15%</span>) increase in today sales. </p>
+                <p class="text-sm "> (<span class="font-weight-bolder">
+                    {{ $totSales - $totBuy }}
+                </span>) increase in sales. </p>
                 <hr class="dark horizontal">
               </div>
             </div>
@@ -55,7 +60,9 @@
               </div>
               <div class="card-body">
                 <h6 class="mb-0 "> Daily Sales </h6>
-                <p class="text-sm "> (<span class="font-weight-bolder">+15%</span>) increase in today sales. </p>
+                <p class="text-sm "> (<span class="font-weight-bolder">
+                    {{ $totSales }}
+                </span>) increase in sales. </p>
                 <hr class="dark horizontal">
               </div>
             </div>
