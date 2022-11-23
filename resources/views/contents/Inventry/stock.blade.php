@@ -2,44 +2,36 @@
 
 @section('mainContent')
 <div class="container-fluid py-4">
-<div class="row">
-    <div class="card">
-        <div class="card-body px-0 pb-2">
-            <div class="table-responsive">
-                <x-flash-message type="success" key="success" />
-                <x-flash-message type="error" key="error" />
-                {{-- <a href="{{route('product.create')}}" class="btn btn-primary float-end" style="margin-right: 27px;">
-                    {{ __('Add New') }}
-                </a> --}}
-                <table class="table align-items-center mb-0" id="myTable">
-                    <thead>
-                        <tr>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Category</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Total Weight Recondition (Kg)</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Total Weight Reusable (Kg)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (count($products) > 0)
-                            @foreach ($products as $product)
-                            <tr>
-                                <td class="text-center">{{$categories[$product->category] ?? "-"}}</td>
-                                <td class="text-center">{{(float)$product->weight_recondition ?? '0'}}</td>
-                                <td class="text-center">{{(float)$product->weight_reusable ?? '0'}}</td>
-                            </tr>
-                            @endforeach
-                        @else
-                            <tr>
-                                <td colspan="6" class="text-danger text-center">No records found</td>
-                            </tr>
-                        @endif
-                    </tbody>
-                    </table>
+    <div class="row">
+        <div class="row">
+            <h2 style="margin-bottom: 20px;">Overall</h2>
+            @foreach ($products as $stock)
+            <div class="col-xl-3 col-sm-6 mb-xl-0 mb-3">
+                <div class="card">
+                  <div class="card-header p-3 pt-2">
+                    <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+                      <i class="material-icons opacity-10">person</i>
+                    </div>
+                    <div class="text-end pt-1">
+                      <p class="text-sm mb-0 text-capitalize">{{ $categories[$stock->category] }}</p>
+                      <h4 class="mb-0">{{ (float)$stock->weight_recondition + (float)$stock->weight_reusable  }} Kg</h4>
+                    </div>
+                  </div>
+                  <hr class="dark horizontal my-0">
+                  <div class="card-footer p-3">
+                    @php
+                        $total = 0;
+                        $total = (float)$stock->weight_recondition + (float)$stock->weight_reusable;
+                    @endphp
+                    <p class="mb-0"><span class="text-success text-sm font-weight-bolder">+{{ number_format((float)$stock->weight_recondition / $total * 100, 2, '.', '');  }}% </span>Reusable -> <strong>{{ (float)$stock->weight_recondition }} Kg</strong></p>
+                    <p class="mb-0"><span class="text-success text-sm font-weight-bolder">+{{ number_format((float)$stock->weight_reusable / $total * 100, 2, '.', '');  }}% </span>Recondition -> <strong>{{ (float)$stock->weight_reusable }} Kg</strong></p>
+                  </div>
                 </div>
-            </div>
+              </div>
+            @endforeach
         </div>
     </div>
-      </div>
+</div>
 
       @endsection
       @section('scripts')

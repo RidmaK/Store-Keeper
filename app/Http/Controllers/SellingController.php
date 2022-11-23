@@ -67,16 +67,21 @@ class SellingController extends Controller
             "weight_reusable" => $request['weight_reusable'],
             "price_reusable" => $request['price_reusable'],
             ];
+
             DB::beginTransaction();
             try {
 
             $sale = Sale::create($data);
+
             if($sale){
-                $stock = Stock::find($sale->category);
-                $stock->weight_recondition = $stock->weight_recondition - $sale->weight_recondition;
-                $stock->weight_reusable = $stock->weight_reusable - $sale->weight_reusable;
-                $stock->save();
+                $stock = Stock::where('category',$sale->category)->first();
+                if($stock){
+                    $stock->weight_recondition = $stock->weight_recondition - $sale->weight_recondition;
+                    $stock->weight_reusable = $stock->weight_reusable - $sale->weight_reusable;
+                    $stock->save();
+                }
             }
+
             DB::commit();
             } catch (\Exception $e) {
                 DB::rollback();

@@ -25,14 +25,14 @@
         </li>
         @endcan
         @canany('setting-list')
-        <li class="nav-item">
+        {{-- <li class="nav-item">
           <a class="nav-link text-white {{ request()->segment(1) == 'settings'  ? 'active' : '' }}" href="{{ route('settings.index') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">settings</i>
             </div>
             <span class="nav-link-text ms-1">Settings</span>
           </a>
-        </li>
+        </li> --}}
         @endcan
         @canany('company-list')
         <li class="nav-item">
@@ -96,7 +96,7 @@
         @endcan
         @can('stock-list')
         <li class="nav-item">
-          <a class="nav-link text-white " href="{{ route('stock') }}">
+          <a class="nav-link text-white {{ request()->segment(1) == 'stock' ? 'active' : '' }}" href="{{ route('stock') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">inventory</i>
             </div>
