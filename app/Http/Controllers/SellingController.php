@@ -21,9 +21,10 @@ class SellingController extends Controller
      */
     public function index()
     {
+        $companies = Company::pluck('name','id')->toArray();
         $sellings = Sale::paginate(10);
         $categories = Category::pluck('name','id')->toArray();
-        return view('contents.selling.index', compact('sellings','categories'));
+        return view('contents.selling.index', compact('sellings','categories','companies'));
     }
 
     /**
@@ -50,6 +51,8 @@ class SellingController extends Controller
         $requestData['phone'] = $request->phone;
         $Check_customer = Customer::orwhere($requestData)->get();
         $requestData['name'] = $request->name;
+        $requestData['rate'] = $request->rate;
+        $requestData['date'] = $request->date;
         $requestData['address1'] = $request->address1;
         $requestData['address2'] = $request->address2;
         $requestData['city'] = $request->city;
@@ -66,6 +69,8 @@ class SellingController extends Controller
             "price_recondition" => $request["price_recondition"],
             "weight_reusable" => $request['weight_reusable'],
             "price_reusable" => $request['price_reusable'],
+            "date" => $request['date'],
+            "rate" => $request['rate'],
             ];
 
             DB::beginTransaction();

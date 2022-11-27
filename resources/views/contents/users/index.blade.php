@@ -13,11 +13,6 @@
                     {{ __('Add User +') }}
                 </a>
                 @endcan
-                @can('user-group-list')
-                <a href="{{route('user-group.index')}}" class="btn btn-primary float-end" style="margin-right: 27px;">
-                    {{ __('User Groups') }}
-                </a>
-                @endcan
 
                 <table class="table table-bordered" id="usersListTable" style="width: 100% !important;">
                     <thead>

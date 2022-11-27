@@ -54,13 +54,23 @@
           </a>
         </li>
         @endcan
-        @canany(['user-list','user-group-list'])
+        @can('user-group-list')
         <li class="nav-item">
-          <a class="nav-link text-white {{ (request()->segment(1) == 'user' || request()->segment(1) == 'user-group') ? 'active' : '' }}" href="{{ route('user.index') }}">
+          <a class="nav-link text-white {{ (request()->segment(1) == 'user' || request()->segment(1) == 'user-group') ? 'active' : '' }}" href="{{ route('user-group.index') }}">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">account_circle</i>
             </div>
-            <span class="nav-link-text ms-1">User Management</span>
+            <span class="nav-link-text ms-1">User Group</span>
+          </a>
+        </li>
+        @endcan
+        @can('user-list')
+        <li class="nav-item">
+          <a class="nav-link text-white {{ (request()->segment(1) == 'user' || request()->segment(1) == 'user') ? 'active' : '' }}" href="{{ route('user.index') }}">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">account_circle</i>
+            </div>
+            <span class="nav-link-text ms-1">User</span>
           </a>
         </li>
         @endcan

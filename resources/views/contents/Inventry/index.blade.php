@@ -14,7 +14,9 @@
                 <table class="table align-items-center mb-0" id="myTable">
                     <thead>
                         <tr>
+                        <th class="text-start text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Date</th>
                         <th class="text-start text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Customer</th>
+                        <th class="text-start text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Factory</th>
                         <th class="text-start text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Category</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Weight Recondition (Kg)</th>
@@ -30,7 +32,9 @@
                         @if (count($products) > 0)
                             @foreach ($products as $product)
                             <tr>
+                                <th class="text-start" scope="row">{{$product->date ?? "-"}}</th>
                                 <th class="text-start" scope="row">{{$product->customer->name ?? "-"}}</th>
+                                <th class="text-start" scope="row">{{$companies[$product->customer->customer_type] ?? "-"}}</th>
                                 <th class="text-start" scope="row">{{$product->name ?? "-"}}</th>
                                 <td class="text-center">{{$categories[$product->category] ?? "-"}}</td>
                                 <td class="text-center">{{(float)$product->weight_recondition ?? 'N/A'}}</td>

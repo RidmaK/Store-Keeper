@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Sale;
 use App\Models\Stock;
 use Illuminate\Http\Request;
 
@@ -111,9 +112,16 @@ class CategoryController extends Controller
     }
 
 
-    public function getRate(Request $request){
+    public function getBuyingRate(Request $request){
 
-        $data['category'] = Category::where('id',$request->category)->first();
+        $data['category'] = Product::where('category',$request->category)->whereDate('date',$request->date)->first();
+        $data['availabile_weight_recondition'] = Stock::where('category',$request->category)->sum('weight_recondition');
+        $data['availabile_weight_reusable'] = Stock::where('category',$request->category)->sum('weight_reusable');
+        return $data; // Returns all provinces
+    }
+    public function getSellingRate(Request $request){
+
+        $data['category'] = Sale::where('category',$request->category)->whereDate('date',$request->date)->first();
         $data['availabile_weight_recondition'] = Stock::where('category',$request->category)->sum('weight_recondition');
         $data['availabile_weight_reusable'] = Stock::where('category',$request->category)->sum('weight_reusable');
         return $data; // Returns all provinces

@@ -27,7 +27,7 @@
                 <textarea type="text" name="description" class="form-control" value="{{ $product->description }}"></textarea>
                 </div>
                 <div class="input-group input-group-outline my-3 is-filled">
-                    <select class="form-control input-group input-group-outline my-3 is-filled js-example-basic-single" required name="category" id="category" onchange="getRate()">
+                    <select class="form-control input-group input-group-outline my-3 is-filled js-example-basic-single" required name="category" id="category" >
                         <option value="">Select Category</option>
                         @foreach ($categories as $key => $category )
                         <option value="{{ $category->id }}" {{ $product->category == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
@@ -35,7 +35,15 @@
                       </select>
                 </div>
 
-                <input type="hidden" name="rate" id="rate">
+
+                <div class="input-group input-group-outline my-3 is-filled date">
+                    <label class="form-label">Date</label>
+                    <input type="date" step="any" name="date" id="date" class="form-control" onchange="getRate()">
+                    </div>
+                    <div class="input-group input-group-outline my-3 is-filled rate">
+                    <label class="form-label">Rate</label>
+                    <input type="number" step="any" name="rate" id="rate" class="form-control" value="0">
+                    </div>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-check form-switch d-flex align-items-center mb-3">
@@ -87,16 +95,13 @@
   </div>
 @endsection
 @section('scripts')
+@section('scripts')
   <script type="text/javascript">
-  $( document ).ready(function() {
-    // setReconditionWeight();
-    // setReusableWeight();
-    });
     function setReconditionWeight(){
         if($('#check_recondition').prop('checked')){
             $('.weight_recondition').show();
+            $('#weight_recondition').val('');
             $('.price_recondition').show();
-            calReconditionPrice();
         }else{
             $('.weight_recondition').hide();
             $('.price_recondition').hide();
@@ -106,43 +111,117 @@
     function setReusableWeight(){
         if($('#check_reusable').prop('checked')){
             $('.weight_reusable').show();
+            $('#weight_reusable').val('');
             $('.price_reusable').show();
-            calReusablePrice();
         }else{
             $('.weight_reusable').hide();
             $('.price_reusable').hide();
         }
     }
 
+
+    function getRate() {
+        if($('#phone').val() != ''){
+            $.ajax({
+                type: "GET",
+                url: "{!! route('category.getSellingRate') !!}",
+                data: {
+                    'category' : $('#category').val(),
+                    'date' : $('#date').val(),
+                }, // serializes the form's elements.
+                success: function(data)
+                {
+                    if(data.category != null){
+                    $('#rate').val(data.category.rate);
+                    }
+                    $('#available_reusable').val(data.availabile_weight_reusable);
+                    $('#reusable').val(data.availabile_weight_reusable);
+                    $('#available_recondition').val(data.availabile_weight_recondition);
+                    $('#recondition').val(data.availabile_weight_recondition);
+                    calReconditionPrice();
+                    calReusablePrice();
+                }
+            });
+        }else{
+            $.alert({
+                    title: 'Alert!',
+                    type: 'red',
+                    content: 'Please enter Phone Number!',
+                });
+        }
+    }
+
+    function checkAvailability() {
+
+
+        $.ajax({
+            type: "GET",
+            url: "{!! route('customer.checkAvailability') !!}",
+            data: {
+                'phone' : $('#phone').val(),
+            }, // serializes the form's elements.
+            success: function(data)
+            {
+                $('#name').val(data.name);
+                $('#address1').val(data.address1);
+                $('#address2').val(data.address2);
+            }
+        });
+    }
+
+
+
     function calReconditionPrice(){
-        console.log();
+        console.log(parseFloat($('#weight_recondition').val()));
         var rate = $('#rate').val();
         var total = rate * (parseFloat($('#weight_recondition').val()))
         $('#price_recondition').val(total);
+        if($('#weight_recondition').val() != ''){
+            var x =parseFloat($('#recondition').val()) - parseFloat($('#weight_recondition').val());
+            if(x > 0){
+                $('#available_recondition').val(parseFloat($('#recondition').val()) - parseFloat($('#weight_recondition').val()));
+            }else{
+                $.alert({
+                    title: 'Alert!',
+                    type: 'red',
+                    content: 'Out Of Stock!',
+                });
+            $('#available_recondition').val(parseFloat($('#recondition').val()));
+            $('#weight_recondition').val('');
+            $('#price_recondition').val('');
+            }
+
+        }else{
+            $('#available_recondition').val(parseFloat($('#recondition').val()));
+        }
     }
 
     function calReusablePrice(){
         var rate = $('#rate').val();
         var total = rate * (parseFloat($('#weight_reusable').val()))
         $('#price_reusable').val(total);
-    }
+        if($('#weight_reusable').val() != ''){
 
+            var y =parseFloat($('#reusable').val()) - parseFloat($('#weight_reusable').val());
+            if(y > 0){
+                $('#available_reusable').val(parseFloat($('#reusable').val()) - parseFloat($('#weight_reusable').val()));
+            }else{
 
-    function getRate() {
-        $.ajax({
-            type: "GET",
-            url: "{!! route('category.getRate') !!}",
-            data: {
-                'category' : $('#category').val(),
-            }, // serializes the form's elements.
-            success: function(data)
-            {
-                $('#rate').val(data.rate);
-                calReconditionPrice();
-                calReusablePrice();
+                $.alert({
+                    title: 'Alert!',
+                    type: 'red',
+                    content: 'Out Of Stock!',
+                });
+            $('#available_reusable').val(parseFloat($('#reusable').val()));
+            $('#weight_reusable').val('');
+            $('#price_reusable').val('');
             }
-        });
+
+        }else{
+            $('#available_reusable').val(parseFloat($('#reusable').val()));
+        }
     }
+
   </script>
 
 @endsection

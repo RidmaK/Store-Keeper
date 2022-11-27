@@ -29,14 +29,22 @@
                 <input type="text" name="address1" id="address1" required class="form-control">
                 </div>
                 <div class="input-group input-group-outline my-3 is-filled">
-                    <select class="form-control input-group input-group-outline my-3 is-filled js-example-basic-single" required name="category" id="category" onchange="getRate()">
+                    <select class="form-control input-group input-group-outline my-3 is-filled js-example-basic-single" required name="category" id="category">
                         <option value="">Select Category</option>
                         @foreach ($categories as $key => $category )
                         <option value="{{ $key }}">{{ $category }}</option>
                         @endforeach
                       </select>
                 </div>
-                <input type="hidden" name="rate" id="rate">
+
+                <div class="input-group input-group-outline my-3 is-filled date">
+                    <label class="form-label">Date</label>
+                    <input type="date" step="any" name="date" id="date" class="form-control" onchange="getRate()">
+                    </div>
+                    <div class="input-group input-group-outline my-3 is-filled rate">
+                    <label class="form-label">Rate</label>
+                    <input type="number" step="any" name="rate" id="rate" class="form-control" value="0">
+                    </div>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-check form-switch d-flex align-items-center mb-3">
@@ -63,6 +71,7 @@
                             <input type="number" step="any" name="price_recondition" id="price_recondition" class="form-control">
                             </div>
                     </div>
+
                 </div>
                 <div class="row">
                     <div class="col-md-3">
@@ -130,13 +139,17 @@
         if($('#phone').val() != ''){
             $.ajax({
                 type: "GET",
-                url: "{!! route('category.getRate') !!}",
+                url: "{!! route('category.getSellingRate') !!}",
                 data: {
                     'category' : $('#category').val(),
+                    'date' : $('#date').val(),
                 }, // serializes the form's elements.
                 success: function(data)
                 {
+                    console.log(data)
+                    if(data.category != null){
                     $('#rate').val(data.category.rate);
+                    }
                     $('#available_reusable').val(data.availabile_weight_reusable);
                     $('#reusable').val(data.availabile_weight_reusable);
                     $('#available_recondition').val(data.availabile_weight_recondition);
@@ -176,6 +189,7 @@
 
     function calReconditionPrice(){
         console.log(parseFloat($('#weight_recondition').val()));
+        console.log("cwcwc",$('#rate').val());
         var rate = $('#rate').val();
         var total = rate * (parseFloat($('#weight_recondition').val()))
         $('#price_recondition').val(total);

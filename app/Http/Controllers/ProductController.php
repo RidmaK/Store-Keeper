@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\CategoryProduct;
+use App\Models\Company;
 use App\Models\Image;
 use App\Models\Product;
 use App\Models\Stock;
@@ -35,9 +36,10 @@ class ProductController extends Controller
      */
     public function index()
     {
+        $companies = Company::pluck('name','id')->toArray();
         $products = Product::paginate(10);
         $categories = Category::pluck('name','id')->toArray();
-        return view('contents.Inventry.index',compact('products','categories'));
+        return view('contents.Inventry.index',compact('products','categories','companies'));
     }
 
     /**
@@ -76,6 +78,8 @@ class ProductController extends Controller
         "name" => $request["name"],
         "description" => $request["description"],
         "category" => $request["category"],
+        "date" => $request["date"],
+        "rate" => $request["rate"],
         "weight_recondition" => $request["weight_recondition"],
         "price_recondition" => $request["price_recondition"],
         "weight_reusable" => $request['weight_reusable'],
@@ -147,6 +151,8 @@ class ProductController extends Controller
             "name" => $request["name"],
             "description" => $request["description"],
             "category" => $request["category"],
+            "date" => $request["date"],
+            "rate" => $request["rate"],
             "weight_recondition" => $request["weight_recondition"],
             "price_recondition" => $request["price_recondition"],
             "weight_reusable" => $request['weight_reusable'],

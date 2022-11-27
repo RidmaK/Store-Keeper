@@ -23,8 +23,8 @@
                         $total = 0;
                         $total = (float)$stock->weight_recondition + (float)$stock->weight_reusable;
                     @endphp
-                    <p class="mb-0"><span class="text-success text-sm font-weight-bolder">+{{ number_format((float)$stock->weight_recondition / $total * 100, 2, '.', '');  }}% </span>Reusable -> <strong>{{ (float)$stock->weight_recondition }} Kg</strong></p>
-                    <p class="mb-0"><span class="text-success text-sm font-weight-bolder">+{{ number_format((float)$stock->weight_reusable / $total * 100, 2, '.', '');  }}% </span>Recondition -> <strong>{{ (float)$stock->weight_reusable }} Kg</strong></p>
+                    <p class="mb-0"><span class="text-success text-sm font-weight-bolder">+{{ number_format((float)$stock->weight_recondition / $total * 100, 2, '.', '');  }}% </span>Recondition -> <strong>{{ (float)$stock->weight_recondition }} Kg</strong></p>
+                    <p class="mb-0"><span class="text-success text-sm font-weight-bolder">+{{ number_format((float)$stock->weight_reusable / $total * 100, 2, '.', '');  }}% </span>Recycling -> <strong>{{ (float)$stock->weight_reusable }} Kg</strong></p>
                   </div>
                 </div>
               </div>

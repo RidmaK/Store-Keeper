@@ -13,11 +13,6 @@
                     {{ __('Add New User Group +') }}
                 </a>
                 @endcan
-                @can('user-create')
-                <a href="{{route('user.create')}}" class="btn btn-primary float-end" style="margin-right: 27px;">
-                    {{ __('Add User +') }}
-                </a>
-                @endcan
                 <table class="table table-bordered" id="rolesListTable">
                     <thead>
                         <tr>
