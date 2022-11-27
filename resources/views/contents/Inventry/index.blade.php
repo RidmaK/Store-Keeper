@@ -19,10 +19,11 @@
                         <th class="text-start text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Factory</th>
                         <th class="text-start text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Category</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Rate</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Weight Recondition (Kg)</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Price Recondition (LKR)</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Weight Reusable (Kg)</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Price Reusable (LKR)</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Weight Recycling (Kg)</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Price Recycling (LKR)</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Total Price (LKR)</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
@@ -37,6 +38,7 @@
                                 <th class="text-start" scope="row">{{$companies[$product->customer->customer_type] ?? "-"}}</th>
                                 <th class="text-start" scope="row">{{$product->name ?? "-"}}</th>
                                 <td class="text-center">{{$categories[$product->category] ?? "-"}}</td>
+                                <td class="text-center">{{$product->rate ?? "-"}}</td>
                                 <td class="text-center">{{(float)$product->weight_recondition ?? 'N/A'}}</td>
                                 <td class="text-center">{{$product->price_recondition ?? 'N/A'}}</td>
                                 <td class="text-center">{{(float)$product->weight_reusable ?? 'N/A'}}</td>
