@@ -115,6 +115,9 @@ class CategoryController extends Controller
     public function getBuyingRate(Request $request){
 
         $data['category'] = Product::where('category',$request->category)->whereDate('date',$request->date)->first();
+        if($data['category'] == null){
+            $data['category'] = Product::where('category',$request->category)->latest()->first();
+        }
         $data['availabile_weight_recondition'] = Stock::where('category',$request->category)->sum('weight_recondition');
         $data['availabile_weight_reusable'] = Stock::where('category',$request->category)->sum('weight_reusable');
         return $data; // Returns all provinces
@@ -122,6 +125,9 @@ class CategoryController extends Controller
     public function getSellingRate(Request $request){
 
         $data['category'] = Sale::where('category',$request->category)->whereDate('date',$request->date)->first();
+        if($data['category'] == null){
+            $data['category'] = Sale::where('category',$request->category)->latest()->first();
+        }
         $data['availabile_weight_recondition'] = Stock::where('category',$request->category)->sum('weight_recondition');
         $data['availabile_weight_reusable'] = Stock::where('category',$request->category)->sum('weight_reusable');
         return $data; // Returns all provinces
