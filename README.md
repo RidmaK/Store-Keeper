@@ -4,6 +4,6 @@ Credentials
 
 ```
 email : admin@sales.com
-password : admin@123
+password : 123456789
 ```
 
