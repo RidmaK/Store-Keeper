@@ -1,4 +1,4 @@
-@extends('dashboard.dashboard')
+@extends('dashboard.index')
 
 @section('mainContent')
 <div class="container-fluid py-4">

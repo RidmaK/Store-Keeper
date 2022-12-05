@@ -30,17 +30,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-    $currentDate = now()->format('Y-m-d');
-      $data['stocks'] = Stock::get();
-      $data['buyings'] = Customer::where('customer_type',1)->count();
-      $data['sellings'] = Customer::where('customer_type',2)->count();
-      $data['users'] = User::count();
-      $data['sales'] = Sale::selectRaw('sum(price_recondition) as price_recondition,sum(price_reusable) as price_reusable')->first();
-      $data['buying'] = Product::selectRaw('sum(price_recondition) as price_recondition,sum(price_reusable) as price_reusable')->first();
-      $data['stockDay'] = Product::whereDate('created_at',$currentDate)->groupBy('category')
-            ->selectRaw('sum(weight_recondition) as weight_recondition,sum(weight_reusable) as weight_reusable, category')
-            ->get();
-      $data['categories'] = Category::pluck('name','id')->toArray();
-        return view('contents.index',$data);
+        return view('contents.index');
     }
 }

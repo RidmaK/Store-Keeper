@@ -1,4 +1,3 @@
-@extends('dashboard.dashboard')
 
 @section('mainContent')
 <div class="container-fluid py-4">
