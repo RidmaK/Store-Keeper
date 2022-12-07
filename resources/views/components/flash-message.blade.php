@@ -1,13 +1,13 @@
 
 
-{{-- 
+{{--
     Handle all the flash messages
 
     1st parameter
-        There are two type of messages as error and success. When using the component those type should use and it will identify the message type. 
+        There are two type of messages as error and success. When using the component those type should use and it will identify the message type.
         1. error (shown in red)
         2. success - (green theme)
-    
+
     2nd parameter
         key is the second parameter. When sending flash/session message use can use the key to identify individual message. As a result you are able to use multiple component with unique keys.
  --}}
@@ -48,7 +48,6 @@
         <strong>
             {{ session()->get($key) }}
         </strong>
-        <button style="outline: none; font-size: 10px; font-weight: bold; padding: 10px;" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
 

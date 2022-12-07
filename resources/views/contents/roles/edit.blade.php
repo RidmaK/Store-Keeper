@@ -1,29 +1,42 @@
-@extends('dashboard.index')
+@extends('master.index')
 
 @section('mainContent')
-<div class="container-fluid py-4">
-    <div class="row"><div class="card">
-        <div class="card-header p-3 pt-2">
-          <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-            <i class="material-icons opacity-10">weekend</i>
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Users Groups</h1>
           </div>
-          <div class="text-end pt-1">
-            <p class="text-sm mb-0 text-capitalize">Inventory</p>
-            <h4 class="mb-0">ADD</h4>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Users Groups</li>
+            </ol>
           </div>
         </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+        <div class="card">
         <hr class="dark horizontal my-0">
         <div class="card-footer p-3">
-            <form  class="text-start" method="POST" action="{{ route('user-group.update',$role->id) }}">
+            <form  class="text-start" method="POST" action="{{ route('role.update',$role->id) }}">
                 @csrf
                 <input type="hidden" name="_method" value="PUT">
                 <div>
 
 
                     {{-- Start Form grop  --}}
-                    <div class="input-group input-group-outline my-3 is-filled">
-                        <label class="form-label">Name</label>
-                        <input type="text" name="display_name" class="form-control" value="{{ $role->display_name }}">
+                    <div class="form-group">
+                        <label for="display_name">Name</label>
+                        <input type="text" name="display_name" class="form-control" id="display_name" placeholder="Enter Role Name" value="{{ $role->display_name }}">
                     </div>
                     {{-- End Form grop  --}}
 
@@ -274,9 +287,11 @@
                     {{-- End Form grop  --}}
 
 
-                    @can('user-group-edit')
-                    <div class="text-center">
-                        <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">Submit</button>
+                    @can('role-edit')
+                    <div class="card-footer">
+                        <div class="text-center">
+                            <button type="submit" class="btn bg-gradient-primary w-100 my-4 mb-2">Submit</button>
+                        </div>
                     </div>
                     @endcan
 
@@ -287,7 +302,12 @@
       </div>
     </div>
     </div>
-  </div>
+    <!-- /.row -->
+</div>
+<!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+</div>
 @endsection
 @section('scripts')
 <script type="text/javascript">

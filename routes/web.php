@@ -42,11 +42,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/product/show/{id}', [ProductController::class,'show']);
     Route::get('/stock', [ProductController::class,'stock'])->name('stock');
 
-    Route::resource('/user', UserController::class)->except('show');
-    Route::get('/user/show/{id}', [UserController::class,'show'])->name('user.show');
+    Route::resource('user', UserController::class)->except('show');
+    Route::get('user/show/{id}', [UserController::class,'show'])->name('user.show');
 
-    Route::resource('/user-group', RoleController::class)->except('show');
-    Route::get('/user-group/show/{id}', [RoleController::class,'show'])->name('user-group.show');
+    Route::resource('role', RoleController::class)->except('show');
+    Route::get('role/show/{id}', [RoleController::class,'show'])->name('role.show');
 
     Route::resource('/selling', SellingController::class)->except('show');
     Route::get('/selling/show/{id}', [SellingController::class,'show'])->name('selling.show');

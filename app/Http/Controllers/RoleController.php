@@ -20,10 +20,10 @@ class RoleController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('permission:user-group-list|user-group-create|user-group-edit|user-group-delete', ['only' => ['index', 'store']]);
-        $this->middleware('permission:user-group-create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:user-group-edit', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:user-group-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:role-list|role-create|role-edit|role-delete', ['only' => ['index', 'store']]);
+        $this->middleware('permission:role-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:role-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:role-delete', ['only' => ['destroy']]);
     }
 
     /**
@@ -111,7 +111,7 @@ class RoleController extends Controller
         $role = Role::create(['name' => $request['name'], 'display_name' => $request['display_name']]);
         $role->syncPermissions($request->input('permission'));
 
-        return redirect()->route('user-group.index')
+        return redirect()->route('role.index')
             ->with('success', 'User Group has been created successfully');
     }
 
@@ -275,7 +275,7 @@ class RoleController extends Controller
 
         $role->syncPermissions($request->input('permission'));
 
-        return redirect()->route('user-group.index')
+        return redirect()->route('role.index')
             ->with('success', 'User Group has been updated successfully');
     }
 
@@ -290,7 +290,7 @@ class RoleController extends Controller
         $id = decrypt($id);
         DB::table('roles')->where('id', $id)->delete();
 
-        return redirect()->route('user-group.index')
+        return redirect()->route('role.index')
             ->with('success', 'Department has been deleted successfully');
     }
 }

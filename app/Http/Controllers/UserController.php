@@ -65,14 +65,13 @@ class UserController extends Controller
         $this->validate($request, [
             'name' => 'required',
             //'title' => 'required',
-            //'phone' => 'required',
+            'roles' => 'required',
             //'organization' => 'required',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|same:confirm-password|min:6',
-            'confirm-password' => 'required|min:6',
+            'password' => 'required|same:confirm_password|min:6',
+            'confirm_password' => 'required|min:6',
             'image' => 'nullable|mimes:jpeg,png,jpg',
-            //'phone' => 'nullable|min:0|max:10',
-            'roles' => 'required',
+            'phone' => 'required|min:0|max:10|unique:users,phone',
         ]);
 
         $input = $request->all();
@@ -155,9 +154,9 @@ class UserController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$id,
-            'password' => 'nullable|same:confirm-password|min:8',
-            'roles' => 'required',
-           // 'phone' => 'required|numeric'
+            'password' => 'nullable|same:confirm_password|min:8',
+            'phone' => 'required|numeric|unique:users,phone,'.$id,
+            'roles' => 'required'
         ]);
 
         $input = $request->all();

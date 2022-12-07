@@ -380,21 +380,5 @@
 @endsection
 @section('scripts')
 
-<script type="text/javascript">
-    function pushmenuHandler(){
-        if($('#brand-image-check').val() == 1){
-            $('.brand-image').hide();
-            $('.brand-image-icon').show();
-            $('.brand-text').show();
-            $('#brand-image-check').val(0);
-        }else{
-            $('.brand-image').show();
-            $('.brand-image-icon').hide();
-            $('.brand-text').hide();
-            $('#brand-image-check').val(1);
-        }
-
-    }
-</script>
 
 @endsection

@@ -410,46 +410,46 @@ function getAcl()
             'order' => 1,
             'status' => 1,
             'permissions' => [
-                'user-group' => [
-                    'label' => 'user-group',
-                    'route' => route('user-group.index'),
+                'role' => [
+                    'label' => 'role',
+                    'route' => route('role.index'),
                     'status' => 1,
                     'permissions_list' => [
                         [
 
-                            'name' => 'user-group-list',
+                            'name' => 'role-list',
                             'permission_label' => 'User Group List',
                             'guard_name' => 'web',
-                            'group' => 'user-group',
+                            'group' => 'role',
                             'sub_group' => 0,
                             'main_order' => 1,
                             'sub_order' => 11,
                         ],
 
                         [
-                            'name' => 'user-group-edit',
+                            'name' => 'role-edit',
                             'permission_label' => 'User Group Edit',
                             'guard_name' => 'web',
-                            'group' => 'user-group',
+                            'group' => 'role',
                             'sub_group' => 0,
                             'main_order' => 1,
                             'sub_order' => 12,
                         ],
 
                         [
-                            'name' => 'user-group-create',
+                            'name' => 'role-create',
                             'permission_label' => 'User Group Create',
                             'guard_name' => 'web',
-                            'group' => 'user-group',
+                            'group' => 'role',
                             'sub_group' => 0,
                             'main_order' => 1,
                             'sub_order' => 13,
                         ],
                         [
-                            'name' => 'user-group-delete',
+                            'name' => 'role-delete',
                             'permission_label' => 'User Group Delete',
                             'guard_name' => 'web',
-                            'group' => 'user-group',
+                            'group' => 'role',
                             'sub_group' => 0,
                             'main_order' => 1,
                             'sub_order' => 4,
