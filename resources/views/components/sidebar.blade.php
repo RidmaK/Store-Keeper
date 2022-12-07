@@ -3,9 +3,11 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
-      <img src="{{ asset('assets/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">Canmo</span>
+    <a href="/home" class="brand-link">
+        <input type="hidden" name="brand-image-check" id="brand-image-check" value="1">
+      <img src="{{ asset('assets/img/Canmo.png') }}" alt="AdminLTE Logo" class="brand-image" style="margin-left: 2.8rem;">
+      <img src="{{ asset('assets/img/Canmo-icon.png') }}" alt="AdminLTE Logo" class="brand-image-icon img-circle elevation-3" style="display:none;margin-left:.8rem;" height="40" width="40">
+      <span class="brand-text font-weight-light" style="display:none;">CANMO</span>
     </a>
 
     <!-- Sidebar -->
