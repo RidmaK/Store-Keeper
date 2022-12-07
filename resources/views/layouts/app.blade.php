@@ -83,5 +83,10 @@
         }
 
     }
+
+
+    setTimeout(function(){
+        $('.alert').hide();
+    }, 4000);
 </script>
 </html>
