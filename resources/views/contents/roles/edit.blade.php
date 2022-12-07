@@ -7,7 +7,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Users Groups</h1>
+            <h1><a onclick="history.back()"><i class="fa fa-chevron-left" style="margin-right: 20px;cursor: pointer;" aria-hidden="true"></i></a>Users Groups</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">

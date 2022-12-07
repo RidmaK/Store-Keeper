@@ -7,7 +7,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Users</h1>
+            <h1><a onclick="history.back()"><i class="fa fa-chevron-left" style="margin-right: 20px;cursor: pointer;" aria-hidden="true"></i></a>Users</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -57,7 +57,7 @@
                  <div class="form-group">
                     <label>Role</label>
                     <div class="select2-purple">
-                      <select class="select2" multiple="multiple" name="roles[]" data-placeholder="Select a Role" data-dropdown-css-class="select2-purple" style="width: 100%;">
+                      <select class="select2 custom-control-input" multiple="multiple" name="roles[]" id="roles" data-placeholder="Select a Role" data-dropdown-css-class="select2-purple" style="width: 100%;">
                         @foreach ($roles as $key =>$role)
                             <option value="{{ $key }}">{{ $role }}</option>
                         @endforeach
@@ -111,7 +111,7 @@ $('.select2bs4').select2({
       phone: {
         required: true,
       },
-      roles: {
+      'roles[]': {
         required: true,
       },
       email: {
@@ -139,9 +139,8 @@ $('.select2bs4').select2({
         required: "Please enter a phone number",
         email: "Please enter a valid phone number"
       },
-      role: {
+      'roles[]': {
         required: "Please select role",
-        email: "Please enter a valid phone number"
       },
       email: {
         required: "Please enter a email address",
@@ -169,6 +168,10 @@ $('.select2bs4').select2({
       $(element).removeClass('is-invalid');
     }
   });
+
+    $('#roles').change(function(){
+        $(this).valid()
+    });
 
   $('.submit').click(function(event){
     event.preventDefault()

@@ -1,4 +1,3 @@
-
 @extends('master.index')
 
 @section('mainContent')
@@ -8,12 +7,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1><a onclick="history.back()"><i class="fa fa-chevron-left" style="margin-right: 20px;cursor: pointer;" aria-hidden="true"></i></a>Users</h1>
+            <h1><a onclick="history.back()"><i class="fa fa-chevron-left" style="margin-right: 20px;cursor: pointer;" aria-hidden="true"></i></a>Orders</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Users</li>
+              <li class="breadcrumb-item active">Orders</li>
             </ol>
           </div>
         </div>
@@ -28,25 +27,24 @@
             <!-- jquery validation -->
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">User Information Form</small></h3>
+                <h3 class="card-title">User Registration Form</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form  class="text-start" method="POST" id="quickForm" action="{{ route('user.update',$user->id) }}">
+              <form  class="text-start" method="POST" id="quickForm" action="{{ route('user.store') }}">
                 @csrf
-                <input type="hidden" name="_method" value="PUT">
                 <div class="card-body">
                   <div class="form-group">
                     <label for="exampleInputName">Name</label>
-                    <input type="text" name="name" class="form-control" id="exampleInputName" value="{{ $user->name }}" placeholder="Enter Name">
+                    <input type="text" name="name" class="form-control" id="exampleInputName" placeholder="Enter Name">
                   </div>
                   <div class="form-group">
                     <label for="exampleInputEmail1">Email</label>
-                    <input type="email" name="email" class="form-control" id="exampleInputEmail1" value="{{ $user->email }}" placeholder="Enter email">
+                    <input type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
                   </div>
                   <div class="form-group">
                     <label for="exampleInputPhone">Phone</label>
-                    <input type="text" name="phone" class="form-control" id="exampleInputPhone" value="{{ $user->phone }}" placeholder="Enter phone">
+                    <input type="text" name="phone" class="form-control" id="exampleInputPhone" placeholder="Enter phone">
                   </div>
                   <div class="form-group">
                     <label for="exampleInputPassword1">Password</label>
@@ -56,10 +54,10 @@
                     <label for="exampleInputPassword1Confirm">Confirm Password</label>
                     <input type="password" name="confirm_password" class="form-control" id="exampleInputPassword1Confirm" placeholder="Confirm Password">
                   </div>
-                  <div class="form-group">
+                 <div class="form-group">
                     <label>Role</label>
                     <div class="select2-purple">
-                      <select class="select2" multiple="multiple" name="roles[]" id="roles" data-placeholder="Select a Role" data-dropdown-css-class="select2-purple" style="width: 100%;">
+                      <select class="select2 custom-control-input" multiple="multiple" name="roles[]" id="roles" data-placeholder="Select a Role" data-dropdown-css-class="select2-purple" style="width: 100%;">
                         @foreach ($roles as $key =>$role)
                             <option value="{{ $key }}">{{ $role }}</option>
                         @endforeach
@@ -68,7 +66,7 @@
                   </div>
                   <div class="form-group">
                     <div class="custom-control custom-switch">
-                      <input type="checkbox" class="custom-control-input" {{ $user->status == 1 ? "checked" : "" }} name="status" id="customSwitch1">
+                      <input type="checkbox" class="custom-control-input" name="status"  id="customSwitch1">
                       <label class="custom-control-label" for="customSwitch1">Status</label>
                     </div>
                   </div>
@@ -98,15 +96,13 @@
 @section('scripts')
 <script type="text/javascript">
 $(function () {
+  //Initialize Select2 Elements
+  $('.select2').select2()
 
-    //Initialize Select2 Elements
-    $('.select2').select2()
-
-    //Initialize Select2 Elements
-    $('.select2bs4').select2({
-      theme: 'bootstrap4'
-    })
-
+//Initialize Select2 Elements
+$('.select2bs4').select2({
+  theme: 'bootstrap4'
+})
   $('#quickForm').validate({
     rules: {
       name: {
@@ -123,11 +119,11 @@ $(function () {
         email: true,
       },
       password: {
-        required: false,
+        required: true,
         minlength: 8
       },
       confirm_password: {
-        required: false,
+        required: true,
         minlength: 8
       },
       terms: {
@@ -145,7 +141,6 @@ $(function () {
       },
       'roles[]': {
         required: "Please select role",
-        email: "Please enter a valid phone number"
       },
       email: {
         required: "Please enter a email address",
@@ -174,7 +169,7 @@ $(function () {
     }
   });
 
-  $('#roles').change(function(){
+    $('#roles').change(function(){
         $(this).valid()
     });
 
@@ -185,18 +180,6 @@ $(function () {
     }
 });
 });
-    $( document ).ready(function() {
-
-        const userRole = '<?php echo json_encode($userRole) ?? '[]' ?>';
-
-        var arrUserRole = $.parseJSON(userRole); //convert to javascript array
-        console.log()
-        var splasrolesArray = new Array();
-        for (i = 0; i < arrUserRole.length; ++i) {
-            splasrolesArray.push(arrUserRole[i]);
-        }
-        $('select[name="roles[]"]').val(splasrolesArray).change();
-    });
   </script>
 
 @endsection

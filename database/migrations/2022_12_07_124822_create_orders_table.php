@@ -17,8 +17,10 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->bigInteger('waybill_id');
             $table->bigInteger('order_id');
+            $table->string('source');
             $table->string('full_name');
             $table->string('phone')->nullable();
+            $table->string('email')->nullable();
             $table->string('address')->nullable();
             $table->string('district')->nullable();
             $table->string('description')->nullable();

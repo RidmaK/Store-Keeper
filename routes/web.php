@@ -49,6 +49,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('/order', OrderController::class)->except('show');
     Route::get('/order/show/{id}', [OrderController::class,'show']);
+    Route::get('/order/get-order-details', [OrderController::class,'getOrderDetails'])->name('order.getOrderDetails');
 
     Route::resource('user', UserController::class)->except('show');
     Route::get('user/show/{id}', [UserController::class,'show'])->name('user.show');
@@ -62,10 +63,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/settings', SettingController::class)->except('show');
     Route::get('/settings/show/{id}', [SettingController::class,'show'])->name('settings.show');
 
-    Route::resource('/category', CategoryController::class)->except('show');
-    Route::get('/category/show/{id}', [CategoryController::class,'show'])->name('category.show');
-    Route::get('/category/get_buying_rate', [CategoryController::class,'getBuyingRate'])->name('category.getBuyingRate');
-    Route::get('/category/get_selling_rate', [CategoryController::class,'getSellingRate'])->name('category.getSellingRate');
 
     Route::resource('/company', CompanyController::class)->except('show');
     Route::get('/company/show/{id}', [CompanyController::class,'show'])->name('company.show');
