@@ -49,7 +49,26 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+        $latest = Order::latest()->first();
+        $request['waybill_id'] = $latest->waybill_id +1;
+        $request['order_id'] = $latest->order_id +1;
+        $order = Order::create([
+            'waybill_id' => $request['waybill_id'],
+            'order_id' => $request['order_id'],
+            'stage' => $request['stage'],
+            'full_name' => $request['name'],
+            'email' => $request['email'],
+            'phone' => $request['phone'],
+            'address' => $request['address'],
+            'district' => $request['district'],
+            'description' => $request['description'],
+            'cod' => $request['cod'],
+            'actual_value' => $request['actual_value'],
+            'source' => 'CANVO ONLINE STORE',
+        ]);
 
+        return redirect()->route('order.index')
+            ->with('success', 'Order created successfully');
     }
     /**
      * Store a newly created resource in storage.

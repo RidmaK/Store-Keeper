@@ -29,8 +29,8 @@
             <div class="card">
               <div class="card-header">
                 @can('user-create')
-                <a href="{{route('user.create')}}" class="btn btn-primary float-end" style="margin-right: 27px;">
-                    {{ __('Add New User +') }}
+                <a data-toggle="modal" data-target="#modal-default" data-backdrop="static" data-keyboard="false" class="btn btn-primary float-end" style="margin-right: 27px;">
+                    {{ __('Add New Order +') }}
                 </a>
                 @endcan
                 <x-flash-message type="success" key="success" />
@@ -87,6 +87,7 @@
                   </tbody>
                   <tfoot>
                   <tr>
+                    <th></th>
                     <th>Created</th>
                     <th>Name</th>
                     <th>Email</th>
@@ -187,6 +188,72 @@
     <!-- /.content -->
   </div>
 
+
+  <div class="modal fade" id="modal-default">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Order Form</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form  class="text-start" method="POST" id="quickForm" action="{{ route('order.store') }}">
+            @csrf
+        <div class="modal-body">
+            <div class="card-body">
+                <div class="form-group">
+                <label for="exampleInputName">Full Name</label>
+                <input type="text" name="name" class="form-control" id="exampleInputName" placeholder="Enter Name">
+                </div>
+                <div class="form-group">
+                <label for="exampleInputEmail1">Email</label>
+                <input type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                <label for="exampleInputPhone">Phone</label>
+                <input type="text" name="phone" class="form-control" id="exampleInputPhone" placeholder="Enter phone">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputAddress">Address</label>
+                    <textarea class="form-control" id="exampleInputAddress" name="address" rows="3" placeholder="Enter ..."></textarea>
+                </div>
+                <div class="form-group">
+                <label for="exampleInputDistrict">District</label>
+                <input type="text" name="district" class="form-control" id="exampleInputDistrict" placeholder="Enter phone">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputDescription">Description</label>
+                    <textarea class="form-control" id="exampleInputDescription" name="description" rows="3" placeholder="Enter ..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Stage</label>
+                    <select class="form-control" id="stage" name="stage">
+                        @foreach (config('constants.stages') as $key => $stage)
+                        <option value="{{ $key }}">{{ $stage }}</option>
+                        @endforeach
+                    </select>
+                  </div>
+                <div class="form-group">
+                <label for="exampleInputCOD">COD</label>
+                <input type="text" name="cod" class="form-control" id="exampleInputCOD" placeholder="Enter phone">
+                </div>
+                <div class="form-group">
+                <label for="exampleInputActual">Actual Value</label>
+                <input type="text" name="actual_value" class="form-control" id="exampleInputActual" placeholder="Enter phone">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary submit">Submit</button>
+        </div>
+    </form>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
 @endsection
 @section('scripts')
 <Script>
@@ -314,5 +381,72 @@ $(function () {
         })
         }
     </script>
+
+<script type="text/javascript">
+    $(function () {
+      //Initialize Select2 Elements
+      $('.select2').select2()
+
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    })
+      $('#quickForm').validate({
+        rules: {
+          name: {
+            required: true,
+          },
+          phone: {
+            required: true,
+          },
+          address: {
+            required: true,
+          },
+          email: {
+            required: false,
+            email: true,
+          },
+        },
+        messages: {
+          name: {
+            required: "Please enter a name",
+            email: "Please enter a valid name"
+          },
+          phone: {
+            required: "Please enter a phone number",
+            email: "Please enter a valid phone number"
+          },
+          address: {
+            required: "Please enter an Address",
+          },
+          email: {
+            email: "Please enter a valid email address"
+          },
+        },
+        errorElement: 'span',
+        errorPlacement: function (error, element) {
+          error.addClass('invalid-feedback');
+          element.closest('.form-group').append(error);
+        },
+        highlight: function (element, errorClass, validClass) {
+          $(element).addClass('is-invalid');
+        },
+        unhighlight: function (element, errorClass, validClass) {
+          $(element).removeClass('is-invalid');
+        }
+      });
+
+        $('#roles').change(function(){
+            $(this).valid()
+        });
+
+      $('.submit').click(function(event){
+        event.preventDefault()
+        if($('#quickForm').valid()){
+            $('#quickForm').submit();
+        }
+    });
+    });
+      </script>
     @endsection
 
