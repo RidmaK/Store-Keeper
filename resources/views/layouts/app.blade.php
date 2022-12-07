@@ -23,6 +23,7 @@
   <!-- Select2 -->
   <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
   <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+  <script src="https://unpkg.com/sweetalert2@7.19.3/dist/sweetalert2.all.js"></script>
 </head>
 @yield('content')
 
@@ -30,6 +31,13 @@
 
 <!-- REQUIRED SCRIPTS -->
 <!-- jQuery -->
+<script>
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+</script>
 <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
 <!-- Bootstrap -->
 <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -69,6 +77,10 @@
 <script src="{{ asset('assets/js/demo.js') }}"></script>
 
 <script type="text/javascript">
+    function selectElement(id, valueToSelect) {
+        let element = document.getElementById(id);
+        element.value = valueToSelect;
+    }
     function pushmenuHandler(){
         if($('#brand-image-check').val() == 1){
             $('.brand-image').hide();

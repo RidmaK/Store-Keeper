@@ -26,8 +26,8 @@ class CreateOrdersTable extends Migration
             $table->string('description')->nullable();
             $table->string('actual_value')->nullable();
             $table->decimal('cod',10,2)->nullable();
-            $table->string('status')->nullable();
-            $table->boolean('available')->default('1');
+            $table->string('stage')->nullable();
+            $table->boolean('status')->default('1');
             $table->softDeletes();
             $table->timestamps();
         });

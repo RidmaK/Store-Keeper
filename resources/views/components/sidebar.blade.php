@@ -65,12 +65,12 @@
                   <p>Store</p>
                 </a>
               </li>
-              <li class="nav-item">
+              {{-- <li class="nav-item">
                 <a href="{{ route('store.index') }}" class="nav-link {{ request()->segment(1) == 'store' ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Transactions</p>
                 </a>
-              </li>
+              </li> --}}
             </ul>
           </li>
 
@@ -89,12 +89,12 @@
                   <p>Oders</p>
                 </a>
               </li>
-              <li class="nav-item">
+              {{-- <li class="nav-item">
                 <a href="{{ route('order.index') }}" class="nav-link {{ request()->segment(1) == 'order' ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Transactions</p>
                 </a>
-              </li>
+              </li> --}}
             </ul>
           </li>
 

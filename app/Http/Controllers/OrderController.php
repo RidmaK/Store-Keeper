@@ -49,7 +49,17 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $latest = Order::latest()->first();
+        $request['waybill_id'] = $latest->waybill_id ++;
+        $request['order_id'] = $latest->order_id ++;
+        // $request['source'] = isset($request->source) ? $request->source : '';
+       $order = Order::create([
+        'waybill_id' => $request['waybill_id'],
+        'order_id' => $request['order_id'],
+        'waybill_id' => $request['waybill_id'],
+       ]);
+
+        dd($order);
     }
 
     /**
@@ -83,7 +93,23 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if($request->has('type') && $request->get('type') == 1){
+            $latest = Order::latest()->first();
+            $request['waybill_id'] = $latest->waybill_id ++;
+            $request['order_id'] = $latest->order_id ++;
+            // $request['source'] = isset($request->source) ? $request->source : '';
+            $order = Order::where('id',$request->id)->update([
+                'waybill_id' => $request['waybill_id'],
+                'order_id' => $request['order_id'],
+                'description' => $request['description'],
+                'stage' => $request['stage'],
+                'district' => $request['district'],
+                'cod' => $request['cod'],
+                'actual_value' => $request['actual_value'],
+            ]);
+
+        }
+
     }
 
     /**
