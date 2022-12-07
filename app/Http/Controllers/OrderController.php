@@ -49,17 +49,28 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $latest = Order::latest()->first();
-        $request['waybill_id'] = $latest->waybill_id ++;
-        $request['order_id'] = $latest->order_id ++;
-        // $request['source'] = isset($request->source) ? $request->source : '';
-       $order = Order::create([
-        'waybill_id' => $request['waybill_id'],
-        'order_id' => $request['order_id'],
-        'waybill_id' => $request['waybill_id'],
-       ]);
 
-        dd($order);
+    }
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function setStage(Request $request)
+    {
+        $latest = Order::latest()->first();
+        $request['waybill_id'] = $latest->waybill_id +1;
+        $request['order_id'] = $latest->order_id +1;
+        $order = Order::where('id',$request->id)->update([
+            'waybill_id' => $request['waybill_id'],
+            'order_id' => $request['order_id'],
+            'stage' => $request['stage'],
+        ]);
+            $getOrder = Order::find($request->id);
+            $data['id'] = $getOrder->id;
+            $data['stage'] = config('constants.stages')[$getOrder->stage];
+        return $data;
     }
 
     /**
@@ -107,6 +118,8 @@ class OrderController extends Controller
                 'cod' => $request['cod'],
                 'actual_value' => $request['actual_value'],
             ]);
+
+            return Order::find($request->id);
 
         }
 

@@ -50,6 +50,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/order', OrderController::class)->except('show');
     Route::get('/order/show/{id}', [OrderController::class,'show']);
     Route::get('/order/get-order-details', [OrderController::class,'getOrderDetails'])->name('order.getOrderDetails');
+    Route::post('/order/stage-change', [OrderController::class,'setStage'])->name('order.setStage');
 
     Route::resource('user', UserController::class)->except('show');
     Route::get('user/show/{id}', [UserController::class,'show'])->name('user.show');

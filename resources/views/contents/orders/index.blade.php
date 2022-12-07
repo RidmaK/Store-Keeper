@@ -69,9 +69,9 @@
                             <td>{{ $order->phone }}</td>
                             <td>
                                 <div class="form-group">
-                                <select class="form-control">
-                                    @foreach (config('constants.stages') as $key => $satge)
-                                    <option value="{{ $key }}">{{ $satge }}</option>
+                                <select class="form-control" id="stage_{{ $order->id }}" name="stage_{{ $order->id }}" onchange="setStage({{ $order->id }})">
+                                    @foreach (config('constants.stages') as $key => $stage)
+                                    <option value="{{ $key }}" {{ $order->stage == $key ? 'selected' : '' }}>{{ $stage }}</option>
                                     @endforeach
                                 </select>
                               </div>
@@ -274,12 +274,41 @@ $(function () {
             success: function (data) {
                     Swal.fire({
                         type: "success",
-                        title: 'Company Return Confirmed Successfully',
+                        title: 'Order details updated successfully',
                         text: '',
                         confirmButtonClass: 'btn btn-success',
                     }).then((value)=>{
                         // window.location.href="company_return_notes/view"
-                        location.reload();
+                        // location.reload();
+                        getOrder(data.id);
+                    })
+                }
+        })
+        }
+
+        function setStage(id){
+        var stage = $('#stage_'+id).val();
+        $.ajax({
+            type: "post",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            async: false,
+            url: '{!! route('order.setStage') !!}',
+            data: {
+                stage :stage,
+                id :id,
+            },
+            success: function (data) {
+                    Swal.fire({
+                        type: "success",
+                        title: 'Stage change as '+data.stage+' successfully',
+                        text: '',
+                        confirmButtonClass: 'btn btn-success',
+                    }).then((value)=>{
+                        // window.location.href="company_return_notes/view"
+                        // location.reload();
+                        getOrder(id);
                     })
                 }
         })
