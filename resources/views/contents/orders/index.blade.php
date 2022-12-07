@@ -107,7 +107,7 @@
                 <form  class="text-start" id="updateOrderDetails">
                     @csrf
                 <div class="card-header">
-                    <h1 id="name">Name</h1>
+                    <h1 id="name">Name</h1><span class="badge bg-danger is_deleted" style="display: none">DELETED</span><span class="badge bg-success is_converted" style="display: none">Converted</span>
                     <input type="hidden" class="form-control" id="id" name="id" >
                     <input type="hidden" class="form-control" id="type" name="type" value="1">
                 </div>
@@ -246,7 +246,7 @@
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary submit">Submit</button>
+          <button type="button" class="btn btn-primary hide">Submit</button>
         </div>
     </form>
       </div>
@@ -322,6 +322,16 @@ $(function () {
                     $('#cod').val(data.cod);
                     $('#actual_value').val(data.actual_value);
                     selectElement('stage', data.stage);
+                    if(data.stage == 2){
+                        $('.is_converted').show();
+                        $('.is_deleted').hide();
+                    }else if(data.stage == 5){
+                        $('.is_deleted').show();
+                        $('.is_converted').hide();
+                    }else{
+                        $('.is_converted').hide();
+                        $('.is_deleted').hide();
+                    }
 
                 }
             });
@@ -346,8 +356,7 @@ $(function () {
                         confirmButtonClass: 'btn btn-success',
                     }).then((value)=>{
                         // window.location.href="company_return_notes/view"
-                        // location.reload();
-                        getOrder(data.id);
+                        location.reload();
                     })
                 }
         })
@@ -440,7 +449,7 @@ $(function () {
             $(this).valid()
         });
 
-      $('.submit').click(function(event){
+      $('.hide').click(function(event){
         event.preventDefault()
         if($('#quickForm').valid()){
             $('#quickForm').submit();

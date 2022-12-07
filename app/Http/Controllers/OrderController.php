@@ -49,9 +49,9 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $latest = Order::latest()->first();
-        $request['waybill_id'] = $latest->waybill_id +1;
-        $request['order_id'] = $latest->order_id +1;
+
+        $request['waybill_id'] = $this->latest()['waybill_id'] + 1;
+        $request['order_id'] = $this->latest()['order_id'] + 1;
         $order = Order::create([
             'waybill_id' => $request['waybill_id'],
             'order_id' => $request['order_id'],
@@ -64,7 +64,7 @@ class OrderController extends Controller
             'description' => $request['description'],
             'cod' => $request['cod'],
             'actual_value' => $request['actual_value'],
-            'source' => 'CANVO ONLINE STORE',
+            'source' => 'CANMO ONLINE STORE',
         ]);
 
         return redirect()->route('order.index')
@@ -78,9 +78,8 @@ class OrderController extends Controller
      */
     public function setStage(Request $request)
     {
-        $latest = Order::latest()->first();
-        $request['waybill_id'] = $latest->waybill_id +1;
-        $request['order_id'] = $latest->order_id +1;
+        $request['waybill_id'] = $this->latest()['waybill_id'] + 1;
+        $request['order_id'] = $this->latest()['order_id'] + 1;
         $order = Order::where('id',$request->id)->update([
             'waybill_id' => $request['waybill_id'],
             'order_id' => $request['order_id'],
@@ -124,9 +123,9 @@ class OrderController extends Controller
     public function update(Request $request, $id)
     {
         if($request->has('type') && $request->get('type') == 1){
-            $latest = Order::latest()->first();
-            $request['waybill_id'] = $latest->waybill_id ++;
-            $request['order_id'] = $latest->order_id ++;
+
+            $request['waybill_id'] = $this->latest()['waybill_id'] + 1;
+            $request['order_id'] = $this->latest()['order_id'] + 1;
             // $request['source'] = isset($request->source) ? $request->source : '';
             $order = Order::where('id',$request->id)->update([
                 'waybill_id' => $request['waybill_id'],
@@ -154,4 +153,20 @@ class OrderController extends Controller
     {
         //
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function latest()
+    {
+        $data['waybill_id'] = Order::whereRaw('waybill_id = (select max(`waybill_id`) from orders)')->first()->waybill_id ?? 100000000;
+        $data['order_id'] = Order::whereRaw('order_id = (select max(`order_id`) from orders)')->first()->order_id ?? 100000000;
+
+        return $data;
+    }
+
+
 }
