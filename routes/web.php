@@ -4,6 +4,8 @@ use App\Http\Controllers\CategoryAllocationController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\StoreController;
 use App\Http\Controllers\PriceAllocationController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
@@ -41,6 +43,12 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/product', ProductController::class)->except('show');
     Route::get('/product/show/{id}', [ProductController::class,'show']);
     Route::get('/stock', [ProductController::class,'stock'])->name('stock');
+
+    Route::resource('/store', StoreController::class)->except('show');
+    Route::get('/store/show/{id}', [StoreController::class,'show']);
+
+    Route::resource('/order', OrderController::class)->except('show');
+    Route::get('/order/show/{id}', [OrderController::class,'show']);
 
     Route::resource('user', UserController::class)->except('show');
     Route::get('user/show/{id}', [UserController::class,'show'])->name('user.show');

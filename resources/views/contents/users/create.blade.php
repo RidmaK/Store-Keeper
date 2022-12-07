@@ -64,6 +64,12 @@
                       </select>
                     </div>
                   </div>
+                  <div class="form-group">
+                    <div class="custom-control custom-switch">
+                      <input type="checkbox" class="custom-control-input" name="status"  id="customSwitch1">
+                      <label class="custom-control-label" for="customSwitch1">Status</label>
+                    </div>
+                  </div>
                   <div class="form-group mb-0">
                     <div class="custom-control custom-checkbox">
                       <input type="checkbox" name="terms" class="custom-control-input" id="exampleCheck1">

@@ -24,7 +24,7 @@
     <section class="content">
       <div class="container-fluid">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
             <!-- jquery validation -->
             <div class="card card-primary">
               <div class="card-header">
@@ -64,6 +64,12 @@
                             <option value="{{ $key }}">{{ $role }}</option>
                         @endforeach
                       </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="custom-control custom-switch">
+                      <input type="checkbox" class="custom-control-input" {{ $user->status == 1 ? "checked" : "" }} name="status" id="customSwitch1">
+                      <label class="custom-control-label" for="customSwitch1">Status</label>
                     </div>
                   </div>
                   <div class="form-group mb-0">
