@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ImportOder;
 use App\Exports\ExportOrder;
+use App\Exports\ExportSingleOrder;
 use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
@@ -197,7 +198,7 @@ class OrderController extends Controller
         }
 
         DB::commit();
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Order uploaded successfully');;
         } catch (\Exception $e) {
             // dd($e);
             // something went wrong
@@ -205,8 +206,12 @@ class OrderController extends Controller
         }
     }
 
-    public function exportUsers(Request $request){
+    public function exportOrders(Request $request){
         return Excel::download(new ExportOrder, 'orders.xlsx');
+    }
+
+    public function exportOrder(Request $request,$id){
+        return Excel::download(new ExportSingleOrder($id), 'order_'.$id.'.xlsx');
     }
 
 

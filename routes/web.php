@@ -53,7 +53,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/order/stage-change', [OrderController::class,'setStage'])->name('order.setStage');
     Route::get('/file-import',[OrderController::class,'importView'])->name('order.import-view');
     Route::post('/import',[OrderController::class,'import'])->name('order.import');
-    Route::get('/export-orders',[OrderController::class,'exportUsers'])->name('order.export-orders');
+    Route::get('/export-orders',[OrderController::class,'exportOrders'])->name('order.export-orders');
+    Route::get('/export-order/{id}',[OrderController::class,'exportOrder'])->name('order.export-order');
 
     Route::resource('user', UserController::class)->except('show');
     Route::get('user/show/{id}', [UserController::class,'show'])->name('user.show');

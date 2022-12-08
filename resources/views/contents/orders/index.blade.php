@@ -136,7 +136,7 @@
                     <div class="card-tools">
                         <span class="badge bg-danger is_deleted" style="display: none">DELETED</span><span class="badge bg-success is_converted" style="display: none">Converted</span>
 
-                        <a href="{{ route('order.export-orders') }}" class="btn btn-tool btn-sm">
+                        <a onclick="export_excel()" class="btn btn-tool btn-sm">
                             <i class="fas fa-download"></i>
                           </a>
                       </div>
@@ -475,6 +475,14 @@ $(function () {
         }
     });
     });
+
+
+    function export_excel(){
+        $id =$('#id').val();
+        var url = '{{route("order.export-order", ":id")}}';
+        url = url.replace(':id', $id);
+        window.location.replace(url);
+    }
       </script>
     @endsection
 
