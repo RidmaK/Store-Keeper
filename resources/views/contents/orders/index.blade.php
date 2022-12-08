@@ -29,12 +29,35 @@
             <div class="card">
               <div class="card-header">
                 @can('user-create')
-                <a data-toggle="modal" data-target="#modal-default" data-backdrop="static" data-keyboard="false" class="btn btn-primary float-end" style="margin-right: 27px;">
-                    {{ __('Add New Order +') }}
-                </a>
+
+                <div class="btn-group">
+                    <button type="button" data-toggle="modal" data-target="#modal-default" data-backdrop="static" data-keyboard="false" class="btn btn-primary float-end" style="margin-right: 27px;" class="btn btn-default">{{ __('Add New Order +') }}</button>
+                    <form action="{{ route('order.import') }}" method="POST" enctype="multipart/form-data" class="form form-horizontal">
+                    @csrf
+                    <button class="file btn btn-danger" style="position: relative;overflow: hidden;">
+                        CHOOSE FILE
+                        <input type="file" id="file-upload" name="file" style="position: absolute;font-size: 50px;opacity: 0;right: 0;top: 0;"/>
+                    </button>
+
+                    <input type="hidden" value="region_file" name="db_file" id="db_file">
+                    <button type="submit" class="btn btn-default">Upload</button>
+
+                </form>
+                  </div>
+                  <div class="card-tools">
+                    {{-- <a href="#" class="btn btn-tool btn-sm">
+                      <i class="fas fa-download"></i>
+                    </a> --}}
+                    <a class="btn btn-warning"
+                    href="{{ route('order.export-orders') }}">
+                            Export Order Data
+                    </a>
+                  </div>
+
                 @endcan
                 <x-flash-message type="success" key="success" />
                 <x-flash-message type="error" key="error" />
+
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -107,9 +130,16 @@
                 <form  class="text-start" id="updateOrderDetails">
                     @csrf
                 <div class="card-header">
-                    <h1 id="name">Name</h1><span class="badge bg-danger is_deleted" style="display: none">DELETED</span><span class="badge bg-success is_converted" style="display: none">Converted</span>
+                    <h1 style="float: left;" id="name">Name</h1>
                     <input type="hidden" class="form-control" id="id" name="id" >
                     <input type="hidden" class="form-control" id="type" name="type" value="1">
+                    <div class="card-tools">
+                        <span class="badge bg-danger is_deleted" style="display: none">DELETED</span><span class="badge bg-success is_converted" style="display: none">Converted</span>
+
+                        <a href="{{ route('order.export-orders') }}" class="btn btn-tool btn-sm">
+                            <i class="fas fa-download"></i>
+                          </a>
+                      </div>
                 </div>
 
                 <!-- /.card-header -->
@@ -175,7 +205,6 @@
                   <div class="card-footer">
                     <button type="button" onclick="updateOrderDetails()" class="btn btn-primary submit">Submit</button>
                 </div>
-                </form>
                 <!-- /.card-body -->
               </div>
           </div>
@@ -260,18 +289,8 @@
 
 $(function () {
     getOrder(1);
-    $("#example1").DataTable({
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
-    });
+    $("#example1").DataTable();
+
   });
         function deleteproduct(event,form_id) {
             event.preventDefault();

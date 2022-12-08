@@ -51,6 +51,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/order/show/{id}', [OrderController::class,'show']);
     Route::get('/order/get-order-details', [OrderController::class,'getOrderDetails'])->name('order.getOrderDetails');
     Route::post('/order/stage-change', [OrderController::class,'setStage'])->name('order.setStage');
+    Route::get('/file-import',[OrderController::class,'importView'])->name('order.import-view');
+    Route::post('/import',[OrderController::class,'import'])->name('order.import');
+    Route::get('/export-orders',[OrderController::class,'exportUsers'])->name('order.export-orders');
 
     Route::resource('user', UserController::class)->except('show');
     Route::get('user/show/{id}', [UserController::class,'show'])->name('user.show');

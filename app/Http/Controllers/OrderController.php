@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ImportOder;
+use App\Exports\ExportOrder;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -166,6 +170,43 @@ class OrderController extends Controller
         $data['order_id'] = Order::whereRaw('order_id = (select max(`order_id`) from orders)')->first()->order_id ?? 100000000;
 
         return $data;
+    }
+
+    public function importView(Request $request){
+        return view('importFile');
+    }
+
+    public function import(Request $request){
+        DB::beginTransaction();
+                try {
+        if(isset($request->file)){
+            $headers = ['form_name','FULL_NAME','PHONE','STREET_ADDRESS'];
+            $csv_data = CsvImportController::import_csv($request,$headers);
+            if(!empty($csv_data)){
+                foreach ($csv_data as $key => $value) {
+                    $street = str_replace('±', '', $value['STREET_ADDRESS']);
+                    $order = Order::create([
+                        'full_name' => $value['FULL_NAME'],
+                        'phone' => str_replace("p:","",$value['PHONE']),
+                        'address' => $street,
+                        'source' => $value['form_name']
+                    ]);
+                }
+
+            }
+        }
+
+        DB::commit();
+        return redirect()->back();
+        } catch (\Exception $e) {
+            // dd($e);
+            // something went wrong
+            DB::rollback();
+        }
+    }
+
+    public function exportUsers(Request $request){
+        return Excel::download(new ExportOrder, 'orders.xlsx');
     }
 
 
