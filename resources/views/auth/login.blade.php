@@ -188,13 +188,26 @@
     }
 
     .circles li:nth-child(10){
-        left: 85%;
+        left: 40%;
         width: 150px;
         height: 150px;
+        animation-delay: 3s;
+        animation-duration: 11s;
+    }
+    .circles li:nth-child(11){
+        left: 10%;
+        width: 150px;
+        height: 150px;
+        animation-delay: 2s;
+        animation-duration: 11s;
+    }
+    .circles li:nth-child(12){
+        left: 85%;
+        width: 200px;
+        height: 200px;
         animation-delay: 0s;
         animation-duration: 11s;
     }
-
 
 
     @keyframes animate {
