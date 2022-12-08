@@ -24,6 +24,7 @@
   <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
   <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
   <script src="https://unpkg.com/sweetalert2@7.19.3/dist/sweetalert2.all.js"></script>
+  @yield('styles')
 </head>
 @yield('content')
 
