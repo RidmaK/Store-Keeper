@@ -50,7 +50,7 @@
             </ul>
           </li>
 
-          <li class="nav-item {{ (request()->segment(1) == 'store') ? 'menu-open' : '' }}  ">
+          {{-- <li class="nav-item {{ (request()->segment(1) == 'store') ? 'menu-open' : '' }}  ">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-box"></i>
               <p>
@@ -65,14 +65,14 @@
                   <p>Store</p>
                 </a>
               </li>
-              {{-- <li class="nav-item">
+              <li class="nav-item">
                 <a href="{{ route('store.index') }}" class="nav-link {{ request()->segment(1) == 'store' ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Transactions</p>
                 </a>
-              </li> --}}
+              </li>
             </ul>
-          </li>
+          </li> --}}
 
           <li class="nav-item {{ (request()->segment(1) == 'order') ? 'menu-open' : '' }}  ">
             <a href="#" class="nav-link">
