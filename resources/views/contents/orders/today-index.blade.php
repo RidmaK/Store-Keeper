@@ -34,6 +34,15 @@
                     <button type="button" data-toggle="modal" data-target="#modal-default" data-backdrop="static" data-keyboard="false" class="btn btn-primary float-end" style="margin-right: 27px;" class="btn btn-default">{{ __('Add New Order +') }}</button>
                     <form action="{{ route('order.import') }}" method="POST" enctype="multipart/form-data" class="form form-horizontal">
                     @csrf
+
+                    <div class="form-group">
+                      <label>Product</label>
+                      <select class="form-control" id="product" name="product">
+                        @foreach ($product as $key => $item)
+                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                        @endforeach
+                      </select>
+                    </div>
                     <button class="file btn btn-danger" style="position: relative;overflow: hidden;">
                         CHOOSE FILE
                         <input type="file" id="file-upload" name="file" style="position: absolute;font-size: 50px;opacity: 0;right: 0;top: 0;"/>
@@ -59,22 +68,29 @@
                 <x-flash-message type="error" key="error" />
               </div>
                 <div class="card-header">
+                  <p>filters</p>
                 <div class="row">
                   <div class="col-md-3">
+                    <div class="form-group">
                     <label>Product</label>
-                    <select class="form-control" id="product" name="product">
+                    <select class="form-control" id="product_filter" name="product_filter">
+                      <option value="0">select</option>
+                      @foreach ($product as $key => $item)
+                      <option value="{{ $item->id }}">{{ $item->name }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                    <label>Stage</label>
+                    <select class="form-control" id="stage" name="stage">
+                      <option value="0">select</option>
                         @foreach (config('constants.stages') as $key => $stage)
                         <option value="{{ $key }}">{{ $stage }}</option>
                         @endforeach
                     </select>
                   </div>
-                  <div class="col-md-3">
-                    <label>Stage</label>
-                    <select class="form-control" id="stage" name="stage">
-                        @foreach (config('constants.stages') as $key => $stage)
-                        <option value="{{ $key }}">{{ $stage }}</option>
-                        @endforeach
-                    </select>
                   </div>
                   <div class="col-md-3">
                     <div class="form-group">
@@ -180,7 +196,7 @@
                     <strong><i class="fas fa-address-book mr-1"></i> Description</strong>
 
                     <div class="form-group">
-                        <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter ..."></textarea>
+                        <textarea class="form-control" readonly id="description" name="description" rows="3" placeholder="Enter ..."></textarea>
                     </div>
                     <hr>
 
@@ -223,6 +239,14 @@
             @csrf
         <div class="modal-body">
             <div class="card-body">
+              <div class="form-group">
+                <label>Product</label>
+                <select class="form-control" id="product" name="product">
+                  @foreach ($product as $key => $item)
+                  <option value="{{ $item->id }}">{{ $item->name }}</option>
+                  @endforeach
+                </select>
+              </div>
                 <div class="form-group">
                 <label for="exampleInputName">Full Name</label>
                 <input type="text" name="name" class="form-control" id="exampleInputName" placeholder="Enter Name">
@@ -290,7 +314,7 @@ $(function () {
               url: "{!! route('order.data') !!}",
               data: function (d) {
                         d.type = 1,
-                        d.product = $('#product').val(),
+                        d.product = $("#product_filter  option:selected").text(),
                         d.stage = $('#stage').val(),
                         d.from_date = $('#p-from-date').val(),
                         d.to_date = $('#p-to-date').val()
@@ -307,7 +331,7 @@ $(function () {
               { data: 'updated_at', name: 'updated_at', orderable: false, searchable: true, visible: false }
           ],
           order: [
-              [6, "desc"]
+              [0, "desc"]
           ]
       });
 

@@ -24,9 +24,9 @@ class ProductController extends Controller
      */
     public function __construct(Request $request)
     {
-        $this->middleware('permission:inventory-list|inventory-create|inventory-edit|inventory-delete', ['only' => ['index', 'show']]);
-        $this->middleware('permission:inventory-create', ['only' => ['create', 'store']]);
-        $this->middleware('permission:inventory-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:product-list|product-create|product-edit|product-delete', ['only' => ['index', 'show']]);
+        $this->middleware('permission:product-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:product-delete', ['only' => ['destroy']]);
         $this->middleware('permission:stock-list', ['only' => ['stock']]);
     }
     /**
@@ -36,22 +36,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $companies = Company::pluck('name','id')->toArray();
-        $products = Product::paginate(10);
-        $categories = Category::pluck('name','id')->toArray();
-        return view('contents.Inventry.index',compact('products','categories','companies'));
+        $data = Product::paginate(10);
+        return view('contents.product.index',compact('data'));
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function stock(){
-        $products = Stock::get();
-        $categories = Category::pluck('name','id')->toArray();
-        return view('contents.Inventry.stock',compact('products','categories'));
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -60,8 +48,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = Category::paginate(10);
-        return view('contents.Inventry.create',compact('categories'));
+        return view('contents.product.create');
     }
 
     /**
@@ -74,33 +61,13 @@ class ProductController extends Controller
     {
 
        $data = [
-        "customer_id" => $request["customer_id"],
         "name" => $request["name"],
-        "description" => $request["description"],
-        "category" => $request["category"],
-        "date" => $request["date"],
-        "rate" => $request["rate"],
-        "weight_recondition" => $request["weight_recondition"],
-        "price_recondition" => $request["price_recondition"],
-        "weight_reusable" => $request['weight_reusable'],
-        "price_reusable" => $request['price_reusable'],
         ];
 
         DB::beginTransaction();
         try {
 
             $product = Product::create($data);
-
-            $stockAvailable = Product::groupBy('category')
-            ->selectRaw('sum(weight_recondition) as sum_weight_recondition,sum(weight_reusable) as sum_weight_reusable, category')
-            ->get();
-            foreach ($stockAvailable as $key => $value) {
-                $stock = Stock::updateOrCreate(['category'=>$value->category],[
-                    'category'=>$value->category,
-                    'weight_reusable'=>$value->sum_weight_reusable,
-                    'weight_recondition'=>$value->sum_weight_recondition,
-                    ]);
-            }
 
             DB::commit();
             return redirect()->route('product.index')->with('success', 'RECORD HAS BEEN SUCCESSFULLY INSERTED!');
@@ -120,8 +87,8 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::where('id',$id)->latest()->first();
-        return view('contents.Inventry.show', compact('product'));
+        $product = Product::where('id',decrypt($id))->latest()->first();
+        return view('contents.product.show', compact('product'));
     }
 
     /**
@@ -132,9 +99,8 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $categories = Category::paginate(10);
         $product = Product::where('id',$id)->latest()->first();
-        return view('contents.Inventry.edit', compact('product','categories'));
+        return view('contents.product.edit', compact('product','categories'));
     }
 
     /**
@@ -147,31 +113,12 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $data = [
-            "customer_id" => $request["customer_id"],
             "name" => $request["name"],
-            "description" => $request["description"],
-            "category" => $request["category"],
-            "date" => $request["date"],
-            "rate" => $request["rate"],
-            "weight_recondition" => $request["weight_recondition"],
-            "price_recondition" => $request["price_recondition"],
-            "weight_reusable" => $request['weight_reusable'],
-            "price_reusable" => $request['price_reusable'],
             ];
         $product = Product::where('id',$id)
 
         ->update($data);
 
-        $stockAvailable = Product::groupBy('category')
-            ->selectRaw('sum(weight_recondition) as sum_weight_recondition,sum(weight_reusable) as sum_weight_reusable, category')
-            ->get();
-            foreach ($stockAvailable as $key => $value) {
-                $stock = Stock::updateOrCreate(['category'=>$value->category],[
-                    'category'=>$value->category,
-                    'weight_reusable'=>$value->sum_weight_reusable,
-                    'weight_recondition'=>$value->sum_weight_recondition,
-                    ]);
-            }
             return redirect()->route('product.index')->with('success', 'Record updated successfully !');
     }
 

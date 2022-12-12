@@ -136,6 +136,60 @@ function getAcl()
             ],
         ],
         [
+            'name' => 'Products',
+            'icon' => 'fa-user',
+            'order' => 1,
+            'status' => 1,
+            'permissions' => [
+                'product' => [
+                    'label' => 'product',
+                    'route' => route('product.index'),
+                    'status' => 1,
+                    'permissions_list' => [
+                        [
+
+                            'name' => 'product-list',
+                            'permission_label' => 'Product List',
+                            'guard_name' => 'web',
+                            'group' => 'product',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 11,
+                        ],
+
+                        [
+                            'name' => 'product-edit',
+                            'permission_label' => 'Product Edit',
+                            'guard_name' => 'web',
+                            'group' => 'product',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 12,
+                        ],
+
+                        [
+                            'name' => 'product-create',
+                            'permission_label' => 'Product Create',
+                            'guard_name' => 'web',
+                            'group' => 'product',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 13,
+                        ],
+                        [
+                            'name' => 'product-delete',
+                            'permission_label' => 'Product Delete',
+                            'guard_name' => 'web',
+                            'group' => 'product',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 4,
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        [
             'name' => 'Manage Order',
             'icon' => 'fa-user',
             'order' => 1,

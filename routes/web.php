@@ -41,7 +41,7 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::resource('/product', ProductController::class)->except('show');
-    Route::get('/product/show/{id}', [ProductController::class,'show']);
+    Route::get('/product/show/{id}', [ProductController::class,'show'])->name('product.show');
     Route::get('/stock', [ProductController::class,'stock'])->name('stock');
 
     Route::resource('/store', StoreController::class)->except('show');

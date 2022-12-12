@@ -10,6 +10,7 @@ use App\Imports\ImportOder;
 use Yajra\DataTables\DataTables;
 use App\Exports\ExportOrder;
 use App\Exports\ExportSingleOrder;
+use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
@@ -22,8 +23,8 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $data = Order::OrderBy('id', 'DESC')->paginate(500);
-
-        return view('contents.orders.index', compact('data'))
+        $product = Product::all();
+        return view('contents.orders.index', compact('data','product'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
     /**
@@ -34,8 +35,8 @@ class OrderController extends Controller
     public function todayOrder(Request $request)
     {
         $data = Order::whereDate('created_at',now())->OrderBy('id', 'DESC')->paginate(500);
-
-        return view('contents.orders.today-index', compact('data'))
+        $product = Product::all();
+        return view('contents.orders.today-index', compact('data','product'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
 
@@ -67,19 +68,19 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-
+        $product = Product::all()->pluck('name','id')->toArray();
         $request['waybill_id'] = $this->latest()['waybill_id'] + 1;
         $request['order_id'] = $this->latest()['order_id'] + 1;
         $order = Order::create([
             'waybill_id' => $request['waybill_id'],
             'order_id' => $request['order_id'],
-            'stage' => $request['stage'],
+            'stage' => $request['stage'] ?? 1,
             'full_name' => $request['name'],
             'email' => $request['email'],
             'phone' => $request['phone'],
             'address' => $request['address'],
             'district' => $request['district'],
-            'description' => $request['description'],
+            'description' => $product[$request['product']],
             'cod' => $request['cod'],
             'actual_value' => $request['actual_value'],
             'source' => 'CANMO ONLINE STORE',
@@ -134,8 +135,12 @@ class OrderController extends Controller
                     $query->whereDate('created_at',now());
                 }
 
-                if ($request->has('stage') && $request->get('stage') != '') {
+                if ($request->has('stage') && $request->get('stage') != '' && $request->get('stage') != '0') {
                     $query->where('stage',$request->get('stage'));
+                }
+
+                if ($request->has('product') && $request->get('product') != '' && $request->get('product') != 'select') {
+                    $query->where('description',$request->get('product'));
                 }
 
                 if ($request->has('from_date') && $request->get('from_date') != '' && $request->has('to_date') && $request->get('to_date') != '') {
@@ -239,6 +244,7 @@ class OrderController extends Controller
     public function import(Request $request){
         DB::beginTransaction();
                 try {
+                    $product = Product::all()->pluck('name','id')->toArray();
         if(isset($request->file)){
             $headers = ['form_name','FULL_NAME','PHONE','STREET_ADDRESS'];
             $csv_data = CsvImportController::import_csv($request,$headers);
@@ -249,7 +255,9 @@ class OrderController extends Controller
                         'full_name' => $value['FULL_NAME'],
                         'phone' => str_replace("p:","",$value['PHONE']),
                         'address' => $street,
-                        'source' => $value['form_name']
+                        'source' => $value['form_name'],
+                        'description' => $product[$request['product']],
+                        'stage' => 1
                     ]);
                 }
 
@@ -270,7 +278,7 @@ class OrderController extends Controller
     }
 
     public function exportOrder(Request $request,$id){
-        return Excel::download(new ExportSingleOrder($id), 'order_'.$id.'.xlsx');
+        return Excel::download(new ExportSingleOrder($id), 'koombiyo_Order_Upload_New_Template.xlsx');
     }
 
 

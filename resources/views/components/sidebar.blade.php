@@ -56,7 +56,8 @@
             </ul>
           </li>
           @endcan
-          {{-- <li class="nav-item {{ (request()->segment(1) == 'store') ? 'menu-open' : '' }}  ">
+          @canany(['product-list'])
+          <li class="nav-item {{ (request()->segment(1) == 'product') ? 'menu-open' : '' }}  ">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-box"></i>
               <p>
@@ -65,7 +66,15 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+              @can('product-list')
               <li class="nav-item">
+                <a href="{{ route('product.index') }}" class="nav-link {{ request()->segment(1) == 'product' ? 'active' : '' }} ">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Products</p>
+                </a>
+              </li>
+              @endcan
+              {{-- <li class="nav-item">
                 <a href="{{ route('store.index') }}" class="nav-link {{ request()->segment(1) == 'store' ? 'active' : '' }} ">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Store</p>
@@ -76,9 +85,10 @@
                   <i class="far fa-circle nav-icon"></i>
                   <p>Transactions</p>
                 </a>
-              </li>
+              </li> --}}
             </ul>
-          </li> --}}
+          </li>
+          @endcan
           @canany(['order-list','today-order-list'])
           <li class="nav-item {{ (request()->segment(1) == 'order') ? 'menu-open' : '' }} {{ (request()->segment(1) == 'today-order') ? 'menu-open' : '' }}  ">
             <a href="#" class="nav-link">
