@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ImportOder;
+use Yajra\DataTables\DataTables;
 use App\Exports\ExportOrder;
 use App\Exports\ExportSingleOrder;
 use Illuminate\Support\Facades\DB;
@@ -23,6 +24,18 @@ class OrderController extends Controller
         $data = Order::OrderBy('id', 'DESC')->paginate(500);
 
         return view('contents.orders.index', compact('data'))
+            ->with('i', ($request->input('page', 1) - 1) * 5);
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function todayOrder(Request $request)
+    {
+        $data = Order::whereDate('created_at',now())->OrderBy('id', 'DESC')->paginate(500);
+
+        return view('contents.orders.today-index', compact('data'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
 
@@ -72,7 +85,7 @@ class OrderController extends Controller
             'source' => 'CANMO ONLINE STORE',
         ]);
 
-        return redirect()->route('order.index')
+        return redirect()->route('order.today')
             ->with('success', 'Order created successfully');
     }
     /**
@@ -106,6 +119,29 @@ class OrderController extends Controller
     {
         //
     }
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getOrderData(Request $request)
+    {
+        $data = Order::whereNotNull('created_at');
+        return Datatables()->of($data)
+            ->editColumn('updated_at', function ($pns) {
+                return ($pns->updated_at);
+            })
+            ->addColumn('name', function ($pns) {
+                return '<a onclick="getOrder('.$pns->id.')" style="cursor: pointer;" class="cm-status success">'.strLimit($pns->full_name).'</a>';
+            })
+            ->addColumn('stages', function ($pns) {
+                return view('contents.orders.stage',compact('pns'));
+            })
+            ->escapeColumns(['id'])
+
+            ->make(true);
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -129,20 +165,25 @@ class OrderController extends Controller
     {
         if($request->has('type') && $request->get('type') == 1){
 
-            $request['waybill_id'] = $this->latest()['waybill_id'] + 1;
-            $request['order_id'] = $this->latest()['order_id'] + 1;
-            // $request['source'] = isset($request->source) ? $request->source : '';
-            $order = Order::where('id',$request->id)->update([
-                'waybill_id' => $request['waybill_id'],
-                'order_id' => $request['order_id'],
-                'description' => $request['description'],
-                'stage' => $request['stage'],
-                'district' => $request['district'],
-                'cod' => $request['cod'],
-                'actual_value' => $request['actual_value'],
-            ]);
+            if($request['stage'] != 5){
+                $request['waybill_id'] = $this->latest()['waybill_id'] + 1;
+                $request['order_id'] = $this->latest()['order_id'] + 1;
+                // $request['source'] = isset($request->source) ? $request->source : '';
+                $order = Order::where('id',$request->id)->update([
+                    'waybill_id' => $request['waybill_id'],
+                    'order_id' => $request['order_id'],
+                    'description' => $request['description'],
+                    'stage' => $request['stage'],
+                    'district' => $request['district'],
+                    'cod' => $request['cod'],
+                    'actual_value' => $request['actual_value'],
+                ]);
+                return Order::find($request->id);
+            }else{
+                $order = Order::where('id',$request->id)->forceDelete();
+                return Order::latest()->first();
+            }
 
-            return Order::find($request->id);
 
         }
 

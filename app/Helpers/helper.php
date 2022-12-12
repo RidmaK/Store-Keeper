@@ -135,6 +135,106 @@ function getAcl()
                 ],
             ],
         ],
+        [
+            'name' => 'Manage Order',
+            'icon' => 'fa-user',
+            'order' => 1,
+            'status' => 1,
+            'permissions' => [
+                'order' => [
+                    'label' => 'order',
+                    'route' => route('order.index'),
+                    'status' => 1,
+                    'permissions_list' => [
+                        [
+
+                            'name' => 'order-list',
+                            'permission_label' => 'Orders List',
+                            'guard_name' => 'web',
+                            'group' => 'order',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 11,
+                        ],
+
+                        [
+                            'name' => 'order-edit',
+                            'permission_label' => 'Orders Edit',
+                            'guard_name' => 'web',
+                            'group' => 'order',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 12,
+                        ],
+
+                        [
+                            'name' => 'order-create',
+                            'permission_label' => 'Orders Create',
+                            'guard_name' => 'web',
+                            'group' => 'order',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 13,
+                        ],
+                        [
+                            'name' => 'order-delete',
+                            'permission_label' => 'Orders Delete',
+                            'guard_name' => 'web',
+                            'group' => 'order',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 4,
+                        ],
+                    ],
+                ],
+                'today-order' => [
+                    'label' => 'today-order',
+                    'route' => route('order.today'),
+                    'status' => 1,
+                    'permissions_list' => [
+                        [
+
+                            'name' => 'today-order-list',
+                            'permission_label' => 'Today Orders List',
+                            'guard_name' => 'web',
+                            'group' => 'order',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 11,
+                        ],
+
+                        [
+                            'name' => 'today-order-edit',
+                            'permission_label' => 'Today Orders Edit',
+                            'guard_name' => 'web',
+                            'group' => 'order',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 12,
+                        ],
+
+                        [
+                            'name' => 'today-order-create',
+                            'permission_label' => 'Today Orders Create',
+                            'guard_name' => 'web',
+                            'group' => 'order',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 13,
+                        ],
+                        [
+                            'name' => 'today-order-delete',
+                            'permission_label' => 'Today Orders Delete',
+                            'guard_name' => 'web',
+                            'group' => 'order',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 4,
+                        ],
+                    ],
+                ],
+            ],
+        ],
     ];
 }
 

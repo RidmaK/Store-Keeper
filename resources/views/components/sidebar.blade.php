@@ -17,6 +17,7 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+          @can('dashboard-list')
           <li class="nav-item">
             <a href="/home" class="nav-link {{ request()->segment(1) == 'home' ? 'active' : '' }} " >
                 <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -25,7 +26,8 @@
               </p>
             </a>
           </li>
-
+          @endcan
+          @canany(['user-list','role-list'])
           <li class="nav-item {{ (request()->segment(1) == 'role' || request()->segment(1) == 'user') ? 'menu-open' : '' }} ">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
@@ -35,21 +37,25 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+              @can('user-list')
               <li class="nav-item">
                 <a href="{{ route('role.index') }}" class="nav-link {{ request()->segment(1) == 'role' ? 'active' : '' }} ">
                   <i class="far fa-circle nav-icon"></i>
                   <p>User Groups</p>
                 </a>
               </li>
+              @endcan
+              @can('role-list')
               <li class="nav-item">
                 <a href="{{ route('user.index') }}" class="nav-link {{ request()->segment(1) == 'user' ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>User</p>
                 </a>
               </li>
+              @endcan
             </ul>
           </li>
-
+          @endcan
           {{-- <li class="nav-item {{ (request()->segment(1) == 'store') ? 'menu-open' : '' }}  ">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-box"></i>
@@ -73,8 +79,8 @@
               </li>
             </ul>
           </li> --}}
-
-          <li class="nav-item {{ (request()->segment(1) == 'order') ? 'menu-open' : '' }}  ">
+          @canany(['order-list','today-order-list'])
+          <li class="nav-item {{ (request()->segment(1) == 'order') ? 'menu-open' : '' }} {{ (request()->segment(1) == 'today-order') ? 'menu-open' : '' }}  ">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-cart-plus"></i>
               <p>
@@ -83,12 +89,22 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+              @can('order-list')
               <li class="nav-item">
                 <a href="{{ route('order.index') }}" class="nav-link {{ request()->segment(1) == 'order' ? 'active' : '' }} ">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Oders</p>
                 </a>
               </li>
+              @endcan
+              @can('today-order-list')
+              <li class="nav-item">
+                <a href="{{ route('order.today') }}" class="nav-link {{ request()->segment(1) == 'today-order' ? 'active' : '' }} ">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Today Oders</p>
+                </a>
+              </li>
+              @endcan
               {{-- <li class="nav-item">
                 <a href="{{ route('order.index') }}" class="nav-link {{ request()->segment(1) == 'order' ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
@@ -97,7 +113,7 @@
               </li> --}}
             </ul>
           </li>
-
+          @endcan
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

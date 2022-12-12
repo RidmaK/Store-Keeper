@@ -161,7 +161,7 @@
                   <div class="card-footer">
                     <button type="button" onclick="updateOrderDetails()" class="btn btn-primary submit">Submit</button>
                 </div>
-              </form>
+                </form>
                 <!-- /.card-body -->
               </div>
           </div>
@@ -243,13 +243,12 @@
 @endsection
 @section('scripts')
 <Script>
-
 $(function () {
     getOrder(1);
 
   });
   $(document).ready(function() {
-      var table = appDataTable('#example1',{
+      var table1 = appDataTable('#example1',{
           serverSide: true,
           searching: true,
           ajax: {
@@ -351,7 +350,6 @@ $(function () {
             url: '{!! route('order.update',1) !!}',
             data: $('#updateOrderDetails').serialize(),
             success: function (data) {
-              console.log(data);
                     Swal.fire({
                         type: "success",
                         title: 'Order details updated successfully',
@@ -359,7 +357,7 @@ $(function () {
                         confirmButtonClass: 'btn btn-success',
                     }).then((value)=>{
                         // window.location.href="company_return_notes/view"
-                        getOrder(data.id);
+                        getOrder(data.id)
                         $('#example1').DataTable().ajax.reload();
                     })
                 }
@@ -386,10 +384,8 @@ $(function () {
                         text: '',
                         confirmButtonClass: 'btn btn-success',
                     }).then((value)=>{
-                        // window.location.href="company_return_notes/view"
-                        // location.reload();
+                      $('#example1').DataTable().ajax.reload();
                         getOrder(id);
-                        $('#example1').DataTable().ajax.reload();
                     })
                 }
         })

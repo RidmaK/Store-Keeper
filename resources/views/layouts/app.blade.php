@@ -76,6 +76,69 @@
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+function appDataTable(el, option, sortColums = null) {
+
+    if (sortColums == null) {
+        sortColums = [];
+    }
+
+    var defOpt = {
+        // "bLengthChange": false,
+        "processing": true,
+        // "deferLoading": 57,
+        // "destroy": true,
+        // "serverSide": true,
+        "lengthMenu": [[25, 50, 75, 100], [25, 50, 75, 100]],
+        "language": {
+            "search": "",
+            "searchPlaceholder": "Search",
+            "lengthMenu": "Rows per page _MENU_",
+            "info": "_START_ - _END_ of _TOTAL_",
+            "infoEmpty": "0 - 0 of 0",
+            "infoFiltered": "(_MAX_)",
+            "paginate": {
+                "first": "",
+                "last": "",
+                "next": "next",
+                "previous": "prev"
+            },
+            "processing": '<div class="table-loader"></div>'
+        },
+        "responsive": true,
+        "stripeClasses": [],
+        "scrollX": true,
+        "dom": '<"content-wrp" <"top"<"filters"f><"add-btn-wrp"><"leng">><"tb-content"r<"t-wrp"t><"p-content"lip>>>',
+        'aoColumnDefs': [{
+            'bSortable': false,
+            'aTargets': sortColums /* 1st one, start by the right */
+        }],
+        "initComplete": function (settings, json) {
+            // alert('DataTables has finished its initialisation.');
+        }
+
+    };
+
+    $(el).find('th').append('<span class="sort">');
+
+    var extOptions = $.extend({}, defOpt, option);
+
+    var dataTable = $(el).DataTable(extOptions);
+
+    if ($(el).hasClass('inner-table')) {
+        $(el).parents('.dataTables_wrapper').addClass('inner-dataTable-wrp')
+    }
+
+    if ($(el).attr('data-class')) {
+        $(el).parents('.dataTables_wrapper').addClass($(el).attr('data-class'));
+    }
+
+    if (extOptions.hasOwnProperty('searching') && extOptions['searching'] === false) {
+        $(el).parents('.dataTables_wrapper').addClass('no-searching');
+    }
+
+    return dataTable;
+    }
 </script>
 <script type="text/javascript">
     function selectElement(id, valueToSelect) {
