@@ -25,6 +25,15 @@
   <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
   <script src="https://unpkg.com/sweetalert2@7.19.3/dist/sweetalert2.all.js"></script>
   @yield('styles')
+  <style>
+    .test {
+    width: 60%;
+    display: inline;
+    overflow: auto;
+    white-space: nowrap;
+    margin: 0px auto;
+    }
+  </style>
 </head>
 @yield('content')
 

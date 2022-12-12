@@ -57,8 +57,43 @@
                 @endcan
                 <x-flash-message type="success" key="success" />
                 <x-flash-message type="error" key="error" />
-
               </div>
+                <div class="card-header">
+                <div class="row">
+                  <div class="col-md-3">
+                    <label>Product</label>
+                    <select class="form-control" id="product" name="product">
+                        @foreach (config('constants.stages') as $key => $stage)
+                        <option value="{{ $key }}">{{ $stage }}</option>
+                        @endforeach
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <label>Stage</label>
+                    <select class="form-control" id="stage" name="stage">
+                        @foreach (config('constants.stages') as $key => $stage)
+                        <option value="{{ $key }}">{{ $stage }}</option>
+                        @endforeach
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label for="exampleInputDistrict">From</label>
+                      <input type="date" class="form-control" id="p-from-date" name="p-from-date">
+                  </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label for="exampleInputDistrict">To</label>
+                      <input type="date" class="form-control" id="p-to-date" name="p-to-date">
+                  </div>
+                  </div>
+                </div>
+                <div class="row test">
+                  <button type="button" id="result" class="btn btn-primary " style="float: right">Search</button>
+                </div>
+              </div>
+
               <!-- /.card-header -->
               <div class="card-body">
 
@@ -253,6 +288,13 @@ $(function () {
           searching: true,
           ajax: {
               url: "{!! route('order.data') !!}",
+              data: function (d) {
+                        d.type = 1,
+                        d.product = $('#product').val(),
+                        d.stage = $('#stage').val(),
+                        d.from_date = $('#p-from-date').val(),
+                        d.to_date = $('#p-to-date').val()
+                    }
           },
 
           columns: [
@@ -269,10 +311,9 @@ $(function () {
           ]
       });
 
-      $(".name").keyup(function(){
-          table.draw();
-      });
-
+      $("#result").click(function () {
+        table1.draw();
+            });
   });
         function deleteproduct(event,form_id) {
             event.preventDefault();

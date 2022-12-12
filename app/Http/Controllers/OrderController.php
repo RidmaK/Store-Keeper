@@ -129,6 +129,24 @@ class OrderController extends Controller
     {
         $data = Order::whereNotNull('created_at');
         return Datatables()->of($data)
+            ->filter(function ($query) use ($request) {
+                if ($request->has('type') && $request->get('type') != '') {
+                    $query->whereDate('created_at',now());
+                }
+
+                if ($request->has('stage') && $request->get('stage') != '') {
+                    $query->where('stage',$request->get('stage'));
+                }
+
+                if ($request->has('from_date') && $request->get('from_date') != '' && $request->has('to_date') && $request->get('to_date') != '') {
+                    if ($request->get('from_date') == $request->get('to_date')) {
+                        $query->whereDate('created_at', '=', $request->get('from_date'));
+                    } else {
+                        $query->whereDate('created_at', '>=', $request->get('from_date'));
+                        $query->whereDate('created_at', '<=', $request->get('to_date'));
+                    }
+                }
+            })
             ->editColumn('updated_at', function ($pns) {
                 return ($pns->updated_at);
             })
