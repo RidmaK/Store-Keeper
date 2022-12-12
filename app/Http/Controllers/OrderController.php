@@ -155,6 +155,9 @@ class OrderController extends Controller
             ->editColumn('updated_at', function ($pns) {
                 return ($pns->updated_at);
             })
+            ->editColumn('created_at', function ($pns) {
+                return (date_format($pns->created_at,"Y-m-d H:i:s"));
+            })
             ->addColumn('name', function ($pns) {
                 return '<a onclick="getOrder('.$pns->id.')" style="cursor: pointer;" class="cm-status success">'.strLimit($pns->full_name).'</a>';
             })

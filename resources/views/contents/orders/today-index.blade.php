@@ -84,7 +84,7 @@
                   <div class="col-md-3">
                     <div class="form-group">
                     <label>Stage</label>
-                    <select class="form-control" id="stage" name="stage">
+                    <select class="form-control" id="stage_filter" name="stage_filter">
                       <option value="0">select</option>
                         @foreach (config('constants.stages') as $key => $stage)
                         <option value="{{ $key }}">{{ $stage }}</option>
@@ -315,7 +315,7 @@ $(function () {
               data: function (d) {
                         d.type = 1,
                         d.product = $("#product_filter  option:selected").text(),
-                        d.stage = $('#stage').val(),
+                        d.stage = $('#stage_filter').val(),
                         d.from_date = $('#p-from-date').val(),
                         d.to_date = $('#p-to-date').val()
                     }

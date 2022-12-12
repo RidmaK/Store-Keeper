@@ -85,7 +85,7 @@
                   <div class="col-md-3">
                     <div class="form-group">
                     <label>Stage</label>
-                    <select class="form-control" id="stage" name="stage">
+                    <select class="form-control" id="stage_filter" name="stage_filter">
                       <option value="0">select</option>
                         @foreach (config('constants.stages') as $key => $stage)
                         <option value="{{ $key }}">{{ $stage }}</option>
