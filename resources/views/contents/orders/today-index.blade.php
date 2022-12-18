@@ -23,40 +23,16 @@
     <section class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-8">
+          <div class="col-md-8">
             <!-- /.card -->
 
             <div class="card">
               <div class="card-header">
                 @can('user-create')
 
-                <div class="btn-group">
-                    <button type="button" data-toggle="modal" data-target="#modal-default" data-backdrop="static" data-keyboard="false" class="btn btn-primary float-end" style="margin-right: 27px;" class="btn btn-default">{{ __('Add New Order +') }}</button>
-                    <form action="{{ route('order.import') }}" method="POST" enctype="multipart/form-data" class="form form-horizontal">
-                    @csrf
-
-                    <div class="form-group">
-                      <label>Product</label>
-                      <select class="form-control" id="product" name="product">
-                        @foreach ($product as $key => $item)
-                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                        @endforeach
-                      </select>
-                    </div>
-                    <button class="file btn btn-danger" style="position: relative;overflow: hidden;">
-                        CHOOSE FILE
-                        <input type="file" id="file-upload" name="file" style="position: absolute;font-size: 50px;opacity: 0;right: 0;top: 0;"/>
-                    </button>
-
-                    <input type="hidden" value="region_file" name="db_file" id="db_file">
-                    <button type="submit" class="btn btn-default">Upload</button>
-
-                </form>
-                  </div>
-                  <div class="card-tools">
-                    {{-- <a href="#" class="btn btn-tool btn-sm">
-                      <i class="fas fa-download"></i>
-                    </a> --}}
+                  <div class="btn-group">
+                    <button type="button" data-toggle="modal" data-target="#modal-default" data-backdrop="static" data-keyboard="false" class="btn btn-primary float-end" class="btn btn-default">{{ __('Add New Order +') }}</button>
+                    <button type="button" data-toggle="modal" data-target="#modal-import" data-backdrop="static" data-keyboard="false" class="btn btn-success float-end" class="btn btn-default">{{ __('Order Import +') }}</button>
                     <a class="btn btn-warning"
                     href="{{ route('order.export-orders') }}">
                             Export Order Data
@@ -292,6 +268,49 @@
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary hide">Submit</button>
+        </div>
+    </form>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
+
+
+  <div class="modal fade" id="modal-import">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Order Import</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <form action="{{ route('order.import') }}" method="POST" enctype="multipart/form-data" class="form form-horizontal">
+          @csrf
+
+        <div class="modal-body">
+            <div class="card-body">
+                <div class="form-group">
+                  <label>Product</label>
+                  <select class="form-control" id="product" name="product">
+                    @foreach ($product as $key => $item)
+                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                    @endforeach
+                  </select>
+                </div>
+                <button class="file btn btn-danger" style="position: relative;overflow: hidden;">
+                    CHOOSE FILE
+                    <input type="file" id="file-upload" name="file" style="position: absolute;font-size: 50px;opacity: 0;right: 0;top: 0;"/>
+                </button>
+
+            </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <input type="hidden" value="region_file" name="db_file" id="db_file">
+          <button type="submit" class="btn btn-default">Upload</button>
         </div>
     </form>
       </div>

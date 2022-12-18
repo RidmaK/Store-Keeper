@@ -23,62 +23,36 @@
     <section class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-8">
+          <div class="col-md-8">
             <!-- /.card -->
 
             <div class="card">
               <div class="card-header">
                 @can('user-create')
 
-                <div class="btn-group">
-                    <button type="button" data-toggle="modal" data-target="#modal-default" data-backdrop="static" data-keyboard="false" class="btn btn-primary float-end" style="margin-right: 27px;" class="btn btn-default">{{ __('Add New Order +') }}</button>
-                    <form action="{{ route('order.import') }}" method="POST" enctype="multipart/form-data" class="form form-horizontal">
-                    @csrf
-
-                  <div class="form-group">
-                    <label>Product</label>
-                    <select class="form-control" id="product" name="product">
-                      @foreach ($product as $key => $item)
-                      <option value="{{ $item->id }}">{{ $item->name }}</option>
-                      @endforeach
-                    </select>
-                  </div>
-                    <button class="file btn btn-danger" style="position: relative;overflow: hidden;">
-                        CHOOSE FILE
-                        <input type="file" id="file-upload" name="file" style="position: absolute;font-size: 50px;opacity: 0;right: 0;top: 0;"/>
-                    </button>
-
-                    <input type="hidden" value="region_file" name="db_file" id="db_file">
-                    <button type="submit" class="btn btn-default">Upload</button>
-
-                </form>
-                  </div>
-                  <div class="card-tools">
-                    {{-- <a href="#" class="btn btn-tool btn-sm">
-                      <i class="fas fa-download"></i>
-                    </a> --}}
+                  <div class="btn-group">
+                    <button type="button" data-toggle="modal" data-target="#modal-default" data-backdrop="static" data-keyboard="false" class="btn btn-primary float-end" class="btn btn-default">{{ __('Add New Order +') }}</button>
+                    <button type="button" data-toggle="modal" data-target="#modal-import" data-backdrop="static" data-keyboard="false" class="btn btn-success float-end" class="btn btn-default">{{ __('Order Import +') }}</button>
                     <a class="btn btn-warning"
                     href="{{ route('order.export-orders') }}">
                             Export Order Data
                     </a>
                   </div>
-
                 @endcan
                 <x-flash-message type="success" key="success" />
                 <x-flash-message type="error" key="error" />
-
               </div>
-              <div class="card-header">
-                <p>filters</p>
+                <div class="card-header">
+                  <p>filters</p>
                 <div class="row">
                   <div class="col-md-3">
                     <div class="form-group">
                     <label>Product</label>
                     <select class="form-control" id="product_filter" name="product_filter">
                       <option value="0">select</option>
-                        @foreach ($product as $key => $item)
-                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                        @endforeach
+                      @foreach ($product as $key => $item)
+                      <option value="{{ $item->id }}">{{ $item->name }}</option>
+                      @endforeach
                     </select>
                   </div>
                   </div>
@@ -110,6 +84,7 @@
                   <button type="button" id="result" class="btn btn-primary " style="float: right">Search</button>
                 </div>
               </div>
+
               <!-- /.card-header -->
               <div class="card-body">
 
@@ -212,7 +187,7 @@
                   <div class="card-footer">
                     <button type="button" onclick="updateOrderDetails()" class="btn btn-primary submit">Submit</button>
                 </div>
-              </form>
+                </form>
                 <!-- /.card-body -->
               </div>
           </div>
@@ -299,23 +274,63 @@
     </div>
     <!-- /.modal-dialog -->
   </div>
+
+  <div class="modal fade" id="modal-import">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Order Import</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <form action="{{ route('order.import') }}" method="POST" enctype="multipart/form-data" class="form form-horizontal">
+          @csrf
+
+        <div class="modal-body">
+            <div class="card-body">
+                <div class="form-group">
+                  <label>Product</label>
+                  <select class="form-control" id="product" name="product">
+                    @foreach ($product as $key => $item)
+                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                    @endforeach
+                  </select>
+                </div>
+                <button class="file btn btn-danger" style="position: relative;overflow: hidden;">
+                    CHOOSE FILE
+                    <input type="file" id="file-upload" name="file" style="position: absolute;font-size: 50px;opacity: 0;right: 0;top: 0;"/>
+                </button>
+
+            </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <input type="hidden" value="region_file" name="db_file" id="db_file">
+          <button type="submit" class="btn btn-default">Upload</button>
+        </div>
+    </form>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
 @endsection
 @section('scripts')
 <Script>
-
 $(function () {
     getOrder(1);
 
   });
   $(document).ready(function() {
-      var table = appDataTable('#example1',{
+      var table1 = appDataTable('#example1',{
           serverSide: true,
           searching: true,
           ajax: {
               url: "{!! route('order.data') !!}",
               data: function (d) {
                         d.product = $("#product_filter  option:selected").text(),
-                        d.stage = $('#stage').val(),
+                        d.stage = $('#stage_filter').val(),
                         d.from_date = $('#p-from-date').val(),
                         d.to_date = $('#p-to-date').val()
                     }
@@ -336,9 +351,8 @@ $(function () {
       });
 
       $("#result").click(function () {
-                table.draw();
+        table1.draw();
             });
-
   });
         function deleteproduct(event,form_id) {
             event.preventDefault();
@@ -416,7 +430,6 @@ $(function () {
             url: '{!! route('order.update',1) !!}',
             data: $('#updateOrderDetails').serialize(),
             success: function (data) {
-              console.log(data);
                     Swal.fire({
                         type: "success",
                         title: 'Order details updated successfully',
@@ -424,7 +437,7 @@ $(function () {
                         confirmButtonClass: 'btn btn-success',
                     }).then((value)=>{
                         // window.location.href="company_return_notes/view"
-                        getOrder(data.id);
+                        getOrder(data.id)
                         $('#example1').DataTable().ajax.reload();
                     })
                 }
@@ -451,10 +464,8 @@ $(function () {
                         text: '',
                         confirmButtonClass: 'btn btn-success',
                     }).then((value)=>{
-                        // window.location.href="company_return_notes/view"
-                        // location.reload();
+                      $('#example1').DataTable().ajax.reload();
                         getOrder(id);
-                        $('#example1').DataTable().ajax.reload();
                     })
                 }
         })
