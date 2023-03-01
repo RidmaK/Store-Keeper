@@ -10,6 +10,8 @@ use App\Imports\ImportOder;
 use Yajra\DataTables\DataTables;
 use App\Exports\ExportOrder;
 use App\Exports\ExportSingleOrder;
+use App\Models\Dealer;
+use App\Models\DealerProduct;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 
@@ -24,7 +26,55 @@ class OrderController extends Controller
     {
         $data = Order::OrderBy('id', 'DESC')->paginate(500);
         $product = Product::all();
-        return view('contents.orders.index', compact('data','product'))
+        $dealers = Dealer::all();
+        return view('contents.orders.index', compact('data','product','dealers'))
+            ->with('i', ($request->input('page', 1) - 1) * 5);
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function deliveyIndex(Request $request)
+    {
+        $data = Order::OrderBy('id', 'DESC')->paginate(500);
+        $product = Product::all();
+        $dealers = Dealer::all();
+        $deliveries = DealerProduct::all();
+        return view('contents.orders.index', compact('data','product','dealers','deliveries'))
+            ->with('i', ($request->input('page', 1) - 1) * 5);
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function in(Request $request)
+    {
+        $data = DealerProduct::where('reason','in')->OrderBy('id', 'DESC')->paginate(500);
+        return view('contents.orders.delivery', compact('data'))
+            ->with('i', ($request->input('page', 1) - 1) * 5);
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function out(Request $request)
+    {
+        $data = DealerProduct::where('reason','dealer')->OrderBy('id', 'DESC')->paginate(500);
+        return view('contents.orders.delivery', compact('data'))
+            ->with('i', ($request->input('page', 1) - 1) * 5);
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function return(Request $request)
+    {
+        $data = DealerProduct::where('reason','return')->OrderBy('id', 'DESC')->paginate(500);
+        return view('contents.orders.delivery', compact('data'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
     /**
@@ -47,7 +97,7 @@ class OrderController extends Controller
      */
     public function getOrderDetails(Request $request)
     {
-        $data = Order::find($request->id);
+        $data = Product::find($request->id);
         return $data;
     }
     /**
@@ -128,15 +178,13 @@ class OrderController extends Controller
      */
     public function getOrderData(Request $request)
     {
-        $data = Order::whereNotNull('created_at');
+
+        $product = Product::all()->pluck('name','id')->toArray();
+        $data = Product::whereNotNull('created_at');
         return Datatables()->of($data)
             ->filter(function ($query) use ($request) {
                 if ($request->has('type') && $request->get('type') != '') {
                     $query->whereDate('created_at',now());
-                }
-
-                if ($request->has('stage') && $request->get('stage') != '' && $request->get('stage') != '0') {
-                    $query->where('stage',$request->get('stage'));
                 }
 
                 if ($request->has('product') && $request->get('product') != '' && $request->get('product') != 'select') {
@@ -153,16 +201,22 @@ class OrderController extends Controller
                 }
             })
             ->editColumn('updated_at', function ($pns) {
-                return ($pns->updated_at);
+                return (date_format($pns->updated_at,"Y-m-d H:i:s"));
             })
             ->editColumn('created_at', function ($pns) {
                 return (date_format($pns->created_at,"Y-m-d H:i:s"));
             })
             ->addColumn('name', function ($pns) {
-                return '<a onclick="getOrder('.$pns->id.')" style="cursor: pointer;" class="cm-status success">'.strLimit($pns->full_name).'</a>';
+                return '<a onclick="getOrder('.$pns->id.')" style="cursor: pointer;" class="cm-status success">'.strLimit($pns->name).'</a>';
             })
-            ->addColumn('stages', function ($pns) {
-                return view('contents.orders.stage',compact('pns'));
+            ->addColumn('unit_price', function ($pns) use($product) {
+                return $pns->unit_price;
+            })
+            ->addColumn('qty', function ($pns) use($product) {
+                return $pns->qty + $pns->in_qty - $pns->out_qty;
+            })
+            ->addColumn('description', function ($pns) use($product) {
+                return $pns->description;
             })
             ->escapeColumns(['id'])
 
@@ -211,6 +265,122 @@ class OrderController extends Controller
             }
 
 
+        }
+
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateStockInDetails(Request $request, $id)
+    {
+        $productfind = Product::find($request['id']);
+
+        $data = [
+        "in_qty" => $productfind->in_qty + $request["qty"],
+        ];
+        $product = Product::where('id',$request['id'])
+        ->update($data);
+
+
+
+        $productDealer = DealerProduct::create([
+            'product_id' => $request['id'],
+            'qty' => $request["qty"],
+            'reason' => 'in'
+        ]);
+
+        $data =[
+                    'id' => $productfind->id,
+                    'status' => true,
+                ];
+        return $data;
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateStockWarrentyDetails(Request $request, $id)
+    {
+        $productfind = Product::find($request['id']);
+        $data = [
+            "out_qty" => $productfind->out_qty + $request["qty"],
+        ];
+        $currentStock = $productfind->qty + $productfind->in_qty -$productfind->out_qty;
+        if(($currentStock - $request["qty"]) >= 0){
+            $product = Product::where('id',$request['id'])
+            ->update($data);
+
+            $qty = $request["qty"];
+
+
+            $productDealer = DealerProduct::create([
+                'product_id' => $request['id'],
+                'qty' => $qty,
+                'reason' => 'return'
+            ]);
+
+                $data =[
+                    'id' => $productfind->id,
+                    'status' => true,
+                ];
+            return $data;
+        }else{
+            $data =[
+                    'id' => '',
+                    'status' => false,
+                ];
+            return $data;
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateStockOutDetails(Request $request, $id)
+    {
+        $productfind = Product::find($request['id']);
+        $data = [
+            "out_qty" => $productfind->out_qty + $request["qty"],
+        ];
+        $currentStock = $productfind->qty + $productfind->in_qty -$productfind->out_qty;
+        if(($currentStock - $request["qty"]) >= 0){
+            $product = Product::where('id',$request['id'])
+            ->update($data);
+
+
+            $qty = $request["qty"];
+
+            $productDealer = DealerProduct::create([
+                'product_id' => $request['id'],
+                'dealer_id' => $request['dealer'],
+                'qty' => $qty,
+                'reason' => 'dealer'
+            ]);
+
+                $data =[
+                    'id' => $productfind->id,
+                    'status' => true,
+                ];
+            return $data;
+        }else{
+            $data =[
+                    'id' => '',
+                    'status' => false,
+                ];
+            return $data;
         }
 
     }
@@ -276,13 +446,27 @@ class OrderController extends Controller
         }
     }
 
-    public function exportOrders(Request $request){
-        return Excel::download(new ExportOrder, 'orders.xlsx');
-    }
+    // public function exportOrders(Request $request){
+    //     return Excel::download(new ExportOrder, 'orders.xlsx');
+    // }
 
     public function exportOrder(Request $request,$id){
         return Excel::download(new ExportSingleOrder($id), 'koombiyo_Order_Upload_New_Template.xlsx');
     }
+
+    public function exportOrders(Request $request){
+
+        dd($request->all());
+        $myFile = Excel::download(new ExportOrder($request), 'koombiyo_Order_Upload_New_Template.xlsx');
+
+        $response = [
+            'name' => 'Invoice-list-'.now().'.xlsx',
+            'file' => 'data:application/vnd.ms-excel;base64,'.base64_encode($myFile),
+        ];
+
+        return response()->json($response);
+    }
+
 
 
 }

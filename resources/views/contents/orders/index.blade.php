@@ -1,6 +1,15 @@
 @extends('master.index')
 
 @section('mainContent')
+<style>
+    .select2-container--default.select2-container--focus .select2-selection--multiple, .select2-container--default.select2-container--focus .select2-selection--single {
+    border-color: #80bdff;
+    height: auto;
+}
+    .select2-container--default.select2-container .select2-selection--multiple, .select2-container--default.select2-container .select2-selection--single {
+    height: 37px;
+}
+</style>
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -28,17 +37,6 @@
 
             <div class="card">
               <div class="card-header">
-                @can('user-create')
-
-                  <div class="btn-group">
-                    <button type="button" data-toggle="modal" data-target="#modal-default" data-backdrop="static" data-keyboard="false" class="btn btn-primary float-end" class="btn btn-default">{{ __('Add New Order +') }}</button>
-                    <button type="button" data-toggle="modal" data-target="#modal-import" data-backdrop="static" data-keyboard="false" class="btn btn-success float-end" class="btn btn-default">{{ __('Order Import +') }}</button>
-                    <a class="btn btn-warning"
-                    href="{{ route('order.export-orders') }}">
-                            Export Order Data
-                    </a>
-                  </div>
-                @endcan
                 <x-flash-message type="success" key="success" />
                 <x-flash-message type="error" key="error" />
               </div>
@@ -48,8 +46,8 @@
                   <div class="col-md-3">
                     <div class="form-group">
                     <label>Product</label>
-                    <select class="form-control" id="product_filter" name="product_filter">
-                      <option value="0">select</option>
+                    <select class="select2 js-example-responsive js-states form-control" style="height:auto" id="product_filter" name="product_filter">
+                        <option value="0">select</option>
                       @foreach ($product as $key => $item)
                       <option value="{{ $item->id }}">{{ $item->name }}</option>
                       @endforeach
@@ -59,7 +57,7 @@
                   <div class="col-md-3">
                     <div class="form-group">
                     <label>Stage</label>
-                    <select class="form-control" id="stage_filter" name="stage_filter">
+                    <select class="form-control" id="stage_filter" name="stage_filter" onchange="changeHandler()">
                       <option value="0">select</option>
                         @foreach (config('constants.stages') as $key => $stage)
                         <option value="{{ $key }}">{{ $stage }}</option>
@@ -91,12 +89,12 @@
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
-                    <th>Created</th>
+                    <th width="150px">Created</th>
                     <th width="200px">Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th width="200px">Stage</th>
-                    <th>Source</th>
+                    {{-- <th>Email</th> --}}
+                    <th>Unit Price</th>
+                    <th width="200px">Qty</th>
+                    <th>Description</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -108,88 +106,202 @@
             <!-- /.card -->
           </div>
           <div class="col-md-4">
-            <div class="card">
-                <form  class="text-start" id="updateOrderDetails">
-                    @csrf
-                <div class="card-header">
-                    <h1 style="float: left;" id="name">Name</h1>
-                    <input type="hidden" class="form-control" id="id" name="id" >
-                    <input type="hidden" class="form-control" id="type" name="type" value="1">
-                    <div class="card-tools">
-                        <span class="badge bg-danger is_deleted" style="display: none">DELETED</span><span class="badge bg-success is_converted" style="display: none">Converted</span>
-
-                        <a onclick="export_excel()" class="btn btn-tool btn-sm">
-                            <i class="fas fa-download"></i>
-                          </a>
-                      </div>
+            <div class="row">
+            <div class="col-12">
+                <div class="card card-primary card-tabs">
+                <div class="card-header p-0 pt-1">
+                    <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true">IN</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">OUT</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-return" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">Return</a>
+                    </li>
+                    </ul>
                 </div>
-
-                <!-- /.card-header -->
                 <div class="card-body">
-                    <strong><i class="fas fa-phone mr-1"></i> Phone</strong>
+                    <div class="tab-content" id="custom-tabs-one-tabContent">
+                    <div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
+                        <form  class="text-start" id="updateStockInDetails">
+                                @csrf
+                            <div class="card-header">
+                                <h1 style="float: left;" id="name">Name</h1>
+                                <input type="hidden" class="form-control" id="id" name="id" >
+                                <input type="hidden" class="form-control" id="type" name="type" value="in">
+                                <div class="card-tools">
+                                    <span class="badge bg-danger is_deleted" style="display: none">DELETED</span><span class="badge bg-success is_converted" style="display: none">Converted</span>
 
-                    <p class="text-muted" id="phone">
-                      B.S. in Computer Science from the University of Tennessee at Knoxville
-                    </p>
-                    <hr>
-                    <strong><i class="fas fa-envelope mr-1"></i> Email</strong>
+                                    <a onclick="export_excel()" class="btn btn-tool btn-sm">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                </div>
+                            </div>
 
-                    <p class="text-muted" id="email">
-                      B.S. in Computer Science from the University of Tennessee at Knoxville
-                    </p>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <strong> Unit Price</strong>
 
-                    <hr>
+                                <p class="text-muted" id="unit_price">
+                                B.S. in Computer Science from the University of Tennessee at Knoxville
+                                </p>
+                                <hr>
+                                <strong>MRP</strong>
 
-                    <strong><i class="fas fa-map-marker-alt mr-1"></i> Address</strong>
+                                <p class="text-muted" id="mrp">
+                                B.S. in Computer Science from the University of Tennessee at Knoxville
+                                </p>
 
-                    <p class="text-muted" id="address">Malibu, California</p>
+                                <hr>
 
-                    <hr>
+                                <strong>Current Stock</strong>
 
-                    <strong><i class="far fa-file-alt mr-1"></i> Source</strong>
+                                <p class="text-muted" id="qty">Malibu, California</p>
 
-                    <p class="text-muted" id="source">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
-                    <hr>
+                                <hr>
 
-                    <strong><i class="fas fa-bullseye mr-1"></i> Stage</strong>
-                    <div class="form-group">
-                        <select class="form-control" id="stage" name="stage">
-                            @foreach (config('constants.stages') as $key => $stage)
-                            <option value="{{ $key }}">{{ $stage }}</option>
-                            @endforeach
-                        </select>
-                      </div>
-                    <hr>
+                                <strong> Description</strong>
 
-                    <strong><i class="fas fa-location-arrow mr-1"></i> District</strong>
+                                <div class="form-group">
+                                    <textarea class="form-control" readonly id="description" name="description" rows="3" placeholder="Enter ..."></textarea>
+                                </div>
+                                <hr>
+                                <strong> In Qty</strong>
 
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="district" name="district" placeholder="Enter ...">
+                                <input type="text" class="form-control in_qty" id="qty" name="qty" placeholder="Enter ...">
+                            </div>
+                            <div class="card-footer">
+                                <button type="button" onclick="updateStockInDetails()" class="btn btn-primary submit">Submit</button>
+                            </div>
+                            </form>
                     </div>
-                    <hr>
+                    <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab">
+                        <form  class="text-start" id="updateStockOutDetails">
+                                @csrf
+                            <div class="card-header">
+                                <h1 style="float: left;" id="name1">Name</h1>
+                                <input type="hidden" class="form-control" id="id1" name="id" >
+                                <input type="hidden" class="form-control" id="type" name="type" value="out">
+                                <div class="card-tools">
+                                    <span class="badge bg-danger is_deleted" style="display: none">DELETED</span><span class="badge bg-success is_converted" style="display: none">Converted</span>
 
-                    <strong><i class="fas fa-address-book mr-1"></i> Description</strong>
+                                    <a onclick="export_excel()" class="btn btn-tool btn-sm">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                </div>
+                            </div>
 
-                    <div class="form-group">
-                        <textarea class="form-control" readonly id="description" name="description" rows="3" placeholder="Enter ..."></textarea>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <strong> Unit Price</strong>
+
+                                <p class="text-muted" id="unit_price1">
+                                B.S. in Computer Science from the University of Tennessee at Knoxville
+                                </p>
+                                <hr>
+                                <strong>MRP</strong>
+
+                                <p class="text-muted" id="mrp1">
+                                B.S. in Computer Science from the University of Tennessee at Knoxville
+                                </p>
+
+                                <hr>
+
+                                <strong>Current Stock</strong>
+
+                                <p class="text-muted" id="qty1">Malibu, California</p>
+
+                                <hr>
+
+                                <strong> Description</strong>
+
+                                <div class="form-group">
+                                    <textarea class="form-control" readonly id="description1" name="description" rows="3" placeholder="Enter ..."></textarea>
+                                </div>
+                                <hr>
+
+                                <div class="form-group">
+                                    <label for="exampleInputName">Dealer</label>
+                                    <select class="form-control select2" id="dealer" name="dealer">
+                                    @foreach ($dealers as $key => $item)
+                                    <option value="{{ $item->id }}">{{ $item->contact_person }}</option>
+                                    @endforeach
+                                    </select>
+                                </div>
+                                <hr>
+                                <strong> Out Qty</strong>
+
+                                <input type="text" class="form-control out_qty" id="qty" name="qty" placeholder="Enter ...">
+
+                            </div>
+                            <div class="card-footer">
+                                <button type="button" onclick="updateStockOutDetails()" class="btn btn-primary submit">Submit</button>
+                            </div>
+                            </form>
                     </div>
-                    <hr>
+                    <div class="tab-pane fade" id="custom-tabs-one-return" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab">
+                        <form  class="text-start" id="updateStockWarrentyDetails">
+                                @csrf
+                            <div class="card-header">
+                                <h1 style="float: left;" id="name2">Name</h1>
+                                <input type="hidden" class="form-control" id="id2" name="id" >
+                                <input type="hidden" class="form-control" id="type" name="type" value="out">
+                                <div class="card-tools">
+                                    <span class="badge bg-danger is_deleted" style="display: none">DELETED</span><span class="badge bg-success is_converted" style="display: none">Converted</span>
 
-                    <strong><i class="fas fa-bookmark mr-1"></i> COD</strong>
+                                    <a onclick="export_excel()" class="btn btn-tool btn-sm">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                </div>
+                            </div>
 
-                    <input type="text" class="form-control" id="cod" name="cod" placeholder="Enter ...">
-                    <hr>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <strong> Unit Price</strong>
 
-                    <strong><i class="fas fa-balance-scale mr-1"></i> Actual Value</strong>
+                                <p class="text-muted" id="unit_price2">
+                                B.S. in Computer Science from the University of Tennessee at Knoxville
+                                </p>
+                                <hr>
+                                <strong>MRP</strong>
 
-                    <input type="text" class="form-control" id="actual_value" name="actual_value" placeholder="Enter ...">
-                  </div>
-                  <div class="card-footer">
-                    <button type="button" onclick="updateOrderDetails()" class="btn btn-primary submit">Submit</button>
+                                <p class="text-muted" id="mrp2">
+                                B.S. in Computer Science from the University of Tennessee at Knoxville
+                                </p>
+
+                                <hr>
+
+                                <strong>Current Stock</strong>
+
+                                <p class="text-muted" id="qty2">Malibu, California</p>
+
+                                <hr>
+
+                                <strong> Description</strong>
+
+                                <div class="form-group">
+                                    <textarea class="form-control" readonly id="description2" name="description" rows="3" placeholder="Enter ..."></textarea>
+                                </div>
+                                <hr>
+                                <hr>
+                                <strong> Return Qty</strong>
+
+                                <input type="text" class="form-control out_qty" id="qty" name="qty" placeholder="Enter ...">
+
+                            </div>
+                            <div class="card-footer">
+                                <button type="button" onclick="updateStockWarrentyDetails()" class="btn btn-primary submit">Submit</button>
+                            </div>
+                            </form>
+                    </div>
+                    </div>
                 </div>
-                </form>
-                <!-- /.card-body -->
-              </div>
+                <!-- /.card -->
+                </div>
+            </div>
+            </div>
           </div>
           <!-- /.col -->
         </div>
@@ -198,81 +310,6 @@
       <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
-  </div>
-
-
-  <div class="modal fade" id="modal-default">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Order Form</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <form  class="text-start" method="POST" id="quickForm" action="{{ route('order.store') }}">
-            @csrf
-        <div class="modal-body">
-            <div class="card-body">
-              <div class="form-group">
-                <label>Product</label>
-                <select class="form-control" id="product" name="product">
-                  @foreach ($product as $key => $item)
-                  <option value="{{ $item->id }}">{{ $item->name }}</option>
-                  @endforeach
-                </select>
-              </div>
-                <div class="form-group">
-                <label for="exampleInputName">Full Name</label>
-                <input type="text" name="name" class="form-control" id="exampleInputName" placeholder="Enter Name">
-                </div>
-                <div class="form-group">
-                <label for="exampleInputEmail1">Email</label>
-                <input type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                </div>
-                <div class="form-group">
-                <label for="exampleInputPhone">Phone</label>
-                <input type="text" name="phone" class="form-control" id="exampleInputPhone" placeholder="Enter phone">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputAddress">Address</label>
-                    <textarea class="form-control" id="exampleInputAddress" name="address" rows="3" placeholder="Enter ..."></textarea>
-                </div>
-                <div class="form-group">
-                <label for="exampleInputDistrict">District</label>
-                <input type="text" name="district" class="form-control" id="exampleInputDistrict" placeholder="Enter phone">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputDescription">Description</label>
-                    <textarea class="form-control" id="exampleInputDescription" name="description" rows="3" placeholder="Enter ..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Stage</label>
-                    <select class="form-control" id="stage" name="stage">
-                        @foreach (config('constants.stages') as $key => $stage)
-                        <option value="{{ $key }}">{{ $stage }}</option>
-                        @endforeach
-                    </select>
-                  </div>
-                <div class="form-group">
-                <label for="exampleInputCOD">COD</label>
-                <input type="text" name="cod" class="form-control" id="exampleInputCOD" placeholder="Enter phone">
-                </div>
-                <div class="form-group">
-                <label for="exampleInputActual">Actual Value</label>
-                <input type="text" name="actual_value" class="form-control" id="exampleInputActual" placeholder="Enter phone">
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary hide">Submit</button>
-        </div>
-    </form>
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
   </div>
 
   <div class="modal fade" id="modal-import">
@@ -319,6 +356,7 @@
 @section('scripts')
 <Script>
 $(function () {
+
     getOrder(1);
 
   });
@@ -337,12 +375,12 @@ $(function () {
           },
 
           columns: [
-              { data: 'created_at', name: 'created_at', orderable: false, searchable: false },
+              { data: 'updated_at', name: 'updated_at', orderable: false, searchable: false },
               { data: 'name', name: 'full_name', orderable: true, searchable: true },
-              { data: 'email', name: 'email', orderable: false, searchable: true },
-              { data: 'phone', name: 'phone', orderable: true, searchable: true },
-              { data: 'stages', name: 'stage', orderable: true, searchable: true },
-              { data: 'source', name: 'source', orderable: true, searchable: true },
+            //   { data: 'email', name: 'email', orderable: false, searchable: true },
+              { data: 'unit_price', name: 'unit_price', orderable: true, searchable: true },
+              { data: 'qty', name: 'qty', orderable: true, searchable: true },
+              { data: 'description', name: 'description', orderable: true, searchable: true },
               { data: 'updated_at', name: 'updated_at', orderable: false, searchable: true, visible: false }
           ],
           order: [
@@ -354,29 +392,7 @@ $(function () {
         table1.draw();
             });
   });
-        function deleteproduct(event,form_id) {
-            event.preventDefault();
-            $.confirm({
-            title: 'Confirm?',
-                content: 'Are you sure you want to delete this record?',
-                type: 'blue',
-                buttons: {
-                    Okey: {
-                        text: 'confirm',
-                        btnClass: 'btn-blue',
-                        action: function () {
-                            $(`#${form_id}`).submit();
-                        }
-                    },
-                    cancel: {
-                        text: 'cancel',
-                        btnClass: 'btn-red',
-                        action: function () {
-                        }
-                    }
-                }
-            });
-        }
+
 
         $("#flowcheckall").click(function () {
             var checkBox = document.getElementById("flowcheckall");
@@ -392,54 +408,123 @@ $(function () {
                 }, // serializes the form's elements.
                 success: function(data)
                 {
-                    $('#id').val(data.id);
-                    $('#name').html(data.full_name);
-                    $('#phone').html(data.phone);
-                    $('#email').html(data.email);
-                    $('#address').html(data.address);
-                    $('#source').html(data.source);
+                    $('#id').val(data.id ?? id);
+                    $('#name').html(data.name);
+                    $('#unit_price').html(data.unit_price);
+                    $('#mrp').html(data.mrp);
+                    $('#qty').html(data.qty + data.in_qty - data.out_qty);
                     $('#description').val(data.description);
-                    $('#district').val(data.district);
-                    $('#cod').val(data.cod);
-                    $('#actual_value').val(data.actual_value);
-                    selectElement('stage', data.stage);
-                    if(data.stage == 2){
-                        $('.is_converted').show();
-                        $('.is_deleted').hide();
-                    }else if(data.stage == 5){
-                        $('.is_deleted').show();
-                        $('.is_converted').hide();
-                    }else{
-                        $('.is_converted').hide();
-                        $('.is_deleted').hide();
-                    }
+
+                    $('#id1').val(data.id ?? id);
+                    $('#name1').html(data.name);
+                    $('#unit_price1').html(data.unit_price);
+                    $('#mrp1').html(data.mrp);
+                    $('#qty1').html(data.qty + data.in_qty - data.out_qty);
+                    $('#description1').val(data.description);
+
+                    $('#id2').val(data.id ?? id);
+                    $('#name2').html(data.name);
+                    $('#unit_price2').html(data.unit_price);
+                    $('#mrp2').html(data.mrp);
+                    $('#qty2').html(data.qty + data.in_qty - data.out_qty);
+                    $('#description2').val(data.description);
 
                 }
             });
         }
 
-        function updateOrderDetails(){
+        function updateStockInDetails(){
 
-        var data = $('#updateOrderDetails').serialize();
+        var data = $('#updateStockInDetails').serialize();
         $.ajax({
-            type: "PUT",
+            type: "POST",
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             async: false,
-            url: '{!! route('order.update',1) !!}',
-            data: $('#updateOrderDetails').serialize(),
+            url: '{!! route('order.updateStockInDetails',"in") !!}',
+            data: $('#updateStockInDetails').serialize(),
             success: function (data) {
                     Swal.fire({
                         type: "success",
-                        title: 'Order details updated successfully',
+                        title: 'Stock Added successfully',
                         text: '',
                         confirmButtonClass: 'btn btn-success',
                     }).then((value)=>{
                         // window.location.href="company_return_notes/view"
                         getOrder(data.id)
                         $('#example1').DataTable().ajax.reload();
+                        $('.in_qty').empty();
+                        $('.out_qty').empty();
                     })
+
+                }
+        })
+        }
+
+        function updateStockWarrentyDetails(){
+
+        var data = $('#updateStockWarrentyDetails').serialize();
+        $.ajax({
+            type: "POST",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            async: false,
+            url: '{!! route('order.updateStockWarrentyDetails',"in") !!}',
+            data: $('#updateStockWarrentyDetails').serialize(),
+            success: function (data) {
+                    Swal.fire({
+                        type: "success",
+                        title: 'Stock Return successfully',
+                        text: '',
+                        confirmButtonClass: 'btn btn-success',
+                    }).then((value)=>{
+                        // window.location.href="company_return_notes/view"
+                        getOrder(data.id)
+                        $('#example1').DataTable().ajax.reload();
+                        $('.in_qty').empty();
+                        $('.out_qty').empty();
+                    })
+
+                }
+        })
+        }
+
+        function updateStockOutDetails(){
+
+        var data = $('#updateStockOutDetails').serialize();
+        $.ajax({
+            type: "POST",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            async: false,
+            url: '{!! route('order.updateStockOutDetails',"out") !!}',
+            data: $('#updateStockOutDetails').serialize(),
+            success: function (data) {
+                    console.log(data);
+                    if(data.status == true){
+                        Swal.fire({
+                            type: "success",
+                            title: 'Stock Out successfully',
+                            text: '',
+                            confirmButtonClass: 'btn btn-success',
+                        }).then((value)=>{
+                            // window.location.href="company_return_notes/view"
+                            getOrder(data.id)
+                            $('#example1').DataTable().ajax.reload();
+                            $('.in_qty').empty();
+                            $('.out_qty').empty();
+                        })
+                    }else{
+                        Swal.fire({
+                            type: "error",
+                            title: 'Out Of Stock',
+                            text: '',
+                            confirmButtonClass: 'btn btn-success',
+                        });
+                    }
                 }
         })
         }

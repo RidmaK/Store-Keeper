@@ -30,8 +30,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::paginate(10);
-        return view('contents.category.index', compact('categories'));
+        $data = Category::paginate(10);
+        return view('contents.category.index', compact('data'));
     }
 
     /**
@@ -53,7 +53,6 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $requestData['name'] = $request->name;
-        $requestData['rate'] = $request->rate;
 
            $category = Category::create($requestData);
             return redirect()->route('category.index')->with('success', 'Category added successfully !');
@@ -68,7 +67,7 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        $category = Category::where('id',$id)->latest()->first();
+        $category = Category::where('id',decrypt($id))->latest()->first();
         return view('contents.category.show', compact('category'));
     }
 
@@ -94,7 +93,6 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $requestData['name'] = $request->name;
-        $requestData['rate'] = $request->rate;
         $Check_category = Category::where('id',$id)->update($requestData);
             return redirect()->route('category.index')->with('success', 'Record updated successfully !');
     }
@@ -111,25 +109,4 @@ class CategoryController extends Controller
         return redirect()->route('category.index')->with('success', 'Record deleted successfully !');
     }
 
-
-    public function getBuyingRate(Request $request){
-
-        $data['category'] = Product::where('category',$request->category)->whereDate('date',$request->date)->first();
-        if($data['category'] == null){
-            $data['category'] = Product::where('category',$request->category)->latest()->first();
-        }
-        $data['availabile_weight_recondition'] = Stock::where('category',$request->category)->sum('weight_recondition');
-        $data['availabile_weight_reusable'] = Stock::where('category',$request->category)->sum('weight_reusable');
-        return $data; // Returns all provinces
-    }
-    public function getSellingRate(Request $request){
-
-        $data['category'] = Sale::where('category',$request->category)->whereDate('date',$request->date)->first();
-        if($data['category'] == null){
-            $data['category'] = Sale::where('category',$request->category)->latest()->first();
-        }
-        $data['availabile_weight_recondition'] = Stock::where('category',$request->category)->sum('weight_recondition');
-        $data['availabile_weight_reusable'] = Stock::where('category',$request->category)->sum('weight_reusable');
-        return $data; // Returns all provinces
-    }
 }

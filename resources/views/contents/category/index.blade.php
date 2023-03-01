@@ -7,12 +7,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Product</h1>
+            <h1>Category</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Product</li>
+              <li class="breadcrumb-item active">Category</li>
             </ol>
           </div>
         </div>
@@ -28,14 +28,10 @@
 
             <div class="card">
               <div class="card-header">
-                @can('product-create')
-
-                <div class="btn-group">
-                    <a href="{{route('product.create')}}" class="btn btn-primary float-end" >
-                        {{ __('Add New product +') }}
-                    </a>
-                    <button type="button" data-toggle="modal" data-target="#modal-import" data-backdrop="static" data-keyboard="false" class="btn btn-success float-end" class="btn btn-default">{{ __('Product Import +') }}</button>
-                </div>
+                @can('category-create')
+                <a href="{{route('category.create')}}" class="btn btn-primary float-end" style="margin-right: 27px;">
+                    {{ __('Add New category +') }}
+                </a>
                 @endcan
                 <x-flash-message type="success" key="success" />
                 <x-flash-message type="error" key="error" />
@@ -46,23 +42,18 @@
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
-                    <th width="20%">Name</th>
-                    <th width="20%">Unit Price</th>
-                    <th width="20%">MRP</th>
-                    <th width="20%">Current Stock</th>
+                    <th width="70%">Name</th>
                     <th>Status</th>
                   </tr>
                   </thead>
                   <tbody>
                     @if (!empty($data))
 
-                        @foreach ($data as $key => $product)
+                        @foreach ($data as $key => $category)
                         <tr>
-                            <td class="clickable-row" ><a href="{{ route('product.show',encrypt($product->id)) }}">{{strLimit($product->name)}}</a></td>
-                            <td>{{ $product->unit_price }}</td>
-                            <td>{{ $product->mrp }}</td>
-                            <td>{{ $product->qty + $product->in_qty - $product->out_qty }}</td>
-                            <td> @if($product->status == 1 )
+                            <td class="clickable-row" ><a href="{{ route('category.show',encrypt($category->id)) }}">{{strLimit($category->name)}}</a></td>
+
+                            <td> @if($category->status == 1 )
                                 <span class='cm-status success'>Enabled</span>
                             @else
                                 <span
@@ -78,10 +69,7 @@
                   </tbody>
                   <tfoot>
                   <tr>
-                    <th width="20%">Name</th>
-                    <th width="20%">Unit Price</th>
-                    <th width="20%">MRP</th>
-                    <th width="20%">Current Stock</th>
+                    <th width="70%">Name</th>
                     <th>Status</th>
                   </tr>
                   </tfoot>
@@ -100,38 +88,6 @@
     <!-- /.content -->
   </div>
 
-<div class="modal fade" id="modal-import">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Product Import</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-
-        <form action="{{ route('product.importProductExcel') }}" method="POST" enctype="multipart/form-data" class="form form-horizontal">
-          @csrf
-
-        <div class="modal-body">
-            <div class="card-body">
-                <button class="file btn btn-danger" style="position: relative;overflow: hidden;">
-                    CHOOSE FILE
-                    <input type="file" id="file-upload" name="file" style="position: absolute;font-size: 50px;opacity: 0;right: 0;top: 0;"/>
-                </button>
-
-            </div>
-        <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <input type="hidden" value="region_file" name="db_file" id="db_file">
-          <button type="submit" class="btn btn-default">Upload</button>
-        </div>
-    </form>
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-  </div>
 @endsection
 @section('scripts')
 <Script>
@@ -151,7 +107,7 @@ $(function () {
       "responsive": true,
     });
   });
-        function deleteproduct(event,form_id) {
+        function deletecategory(event,form_id) {
             event.preventDefault();
             $.confirm({
             title: 'Confirm?',

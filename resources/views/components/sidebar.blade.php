@@ -5,9 +5,8 @@
     <!-- Brand Logo -->
     <a href="/home" class="brand-link">
         <input type="hidden" name="brand-image-check" id="brand-image-check" value="1">
-      <img src="{{ asset('assets/img/Canmo.png') }}" alt="AdminLTE Logo" class="brand-image elevation-5" style="margin-left: 2.8rem;">
-      <img src="{{ asset('assets/img/Canmo-icon.png') }}" alt="AdminLTE Logo" class="brand-image-icon img-circle elevation-5" style="display:none;margin-left:.6rem;" height="40" width="40">
-      <span class="brand-text font-weight-light" style="display:none;">CANMO</span>
+      <img src="{{ asset('assets/img/logo.png') }}" alt="AdminLTE Logo" class="brand-image" style="margin-left: 2.8rem;">
+      <img src="{{ asset('assets/img/logo-icon.png') }}" alt="AdminLTE Logo" class="brand-image-icon " style="display:none;margin-left:.6rem;margin-top: -6px;" height="40" width="40">
     </a>
 
     <!-- Sidebar -->
@@ -57,7 +56,7 @@
           </li>
           @endcan
           @canany(['product-list'])
-          <li class="nav-item {{ (request()->segment(1) == 'product') ? 'menu-open' : '' }}  ">
+          <li class="nav-item {{ (request()->segment(1) == 'product') || (request()->segment(1) == 'category') || (request()->segment(1) == 'dealer') ? 'menu-open' : '' }}  ">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-box"></i>
               <p>
@@ -66,11 +65,27 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
+              @can('category-list')
+              <li class="nav-item">
+                <a href="{{ route('category.index') }}" class="nav-link {{ request()->segment(1) == 'category' ? 'active' : '' }} ">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Categories</p>
+                </a>
+              </li>
+              @endcan
               @can('product-list')
               <li class="nav-item">
                 <a href="{{ route('product.index') }}" class="nav-link {{ request()->segment(1) == 'product' ? 'active' : '' }} ">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Products</p>
+                </a>
+              </li>
+              @endcan
+              @can('dealer-list')
+              <li class="nav-item">
+                <a href="{{ route('dealer.index') }}" class="nav-link {{ request()->segment(1) == 'dealer' ? 'active' : '' }} ">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Dealers</p>
                 </a>
               </li>
               @endcan
@@ -103,24 +118,47 @@
               <li class="nav-item">
                 <a href="{{ route('order.index') }}" class="nav-link {{ request()->segment(1) == 'order' ? 'active' : '' }} ">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Oders</p>
+                  <p>Store</p>
                 </a>
               </li>
               @endcan
-              @can('today-order-list')
+            </ul>
+          </li>
+          @endcan
+          @canany(['order-list','today-order-list'])
+          <li class="nav-item {{ (request()->segment(1) == 'delivery') ? 'menu-open' : '' }}  ">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-cart-plus"></i>
+              <p>
+                Deliveries
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              @can('order-list')
               <li class="nav-item">
-                <a href="{{ route('order.today') }}" class="nav-link {{ request()->segment(1) == 'today-order' ? 'active' : '' }} ">
+                <a href="{{ route('order.in') }}" class="nav-link {{ request()->segment(2) == 'in' ? 'active' : '' }} ">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Today Oders</p>
+                  <p>In</p>
                 </a>
               </li>
               @endcan
-              {{-- <li class="nav-item">
-                <a href="{{ route('order.index') }}" class="nav-link {{ request()->segment(1) == 'order' ? 'active' : '' }}">
+              @can('order-list')
+              <li class="nav-item">
+                <a href="{{ route('order.out') }}" class="nav-link {{ request()->segment(2) == 'out' ? 'active' : '' }} ">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Transactions</p>
+                  <p>OUT</p>
                 </a>
-              </li> --}}
+              </li>
+              @endcan
+              @can('order-list')
+              <li class="nav-item">
+                <a href="{{ route('order.return') }}" class="nav-link {{ request()->segment(2) == 'return' ? 'active' : '' }} ">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Return</p>
+                </a>
+              </li>
+              @endcan
             </ul>
           </li>
           @endcan

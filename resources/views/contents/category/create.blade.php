@@ -7,12 +7,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1><a onclick="history.back()"><i class="fa fa-chevron-left" style="margin-right: 20px;cursor: pointer;" aria-hidden="true"></i></a>Product</h1>
+            <h1><a onclick="history.back()"><i class="fa fa-chevron-left" style="margin-right: 20px;cursor: pointer;" aria-hidden="true"></i></a>category</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Product</li>
+              <li class="breadcrumb-item active">Category</li>
             </ol>
           </div>
         </div>
@@ -27,45 +27,16 @@
             <!-- jquery validation -->
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Product Form</h3>
+                <h3 class="card-title">Category Form</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form  class="text-start" method="POST" id="quickForm" action="{{ route('product.store') }}">
+              <form  class="text-start" method="POST" id="quickForm" action="{{ route('category.store') }}">
                 @csrf
                 <div class="card-body">
                   <div class="form-group">
                     <label for="exampleInputName">Name</label>
                     <input type="text" name="name" class="form-control" id="exampleInputName" placeholder="Enter Name">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputName">Part Number</label>
-                    <input type="text" name="part_number" class="form-control" id="exampleInputName" placeholder="Enter Part Number">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputName">Category</label>
-                    <select class="form-control" id="category" name="category">
-                      <option value="0">select</option>
-                      @foreach ($categories as $key => $item)
-                      <option value="{{ $item->id }}">{{ $item->name }}</option>
-                      @endforeach
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputName">Unit Price</label>
-                    <input type="text" name="unit_price" class="form-control" id="exampleInputName" placeholder="Enter Unit Price">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputName">MRP</label>
-                    <input type="text" name="mrp" class="form-control" id="exampleInputName" placeholder="Enter MRP">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputName">Open Stock</label>
-                    <input type="text" name="qty" class="form-control" id="exampleInputName" placeholder="Enter Open Stock">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputDescription">Description</label>
-                    <textarea class="form-control" id="exampleInputDescription" name="description" rows="3" placeholder="Enter ..."></textarea>
                   </div>
                 </div>
                 <!-- /.card-body -->
@@ -97,24 +68,6 @@ $('.select2bs4').select2({
   $('#quickForm').validate({
     rules: {
       name: {
-        required: true,
-      },
-      part_number: {
-        required: true,
-      },
-      category: {
-        required: true,
-      },
-      unit_price: {
-        required: true,
-      },
-      description: {
-        required: true,
-      },
-      qty: {
-        required: true,
-      },
-      mrp: {
         required: true,
       },
     },

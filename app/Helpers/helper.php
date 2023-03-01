@@ -141,6 +141,52 @@ function getAcl()
             'order' => 1,
             'status' => 1,
             'permissions' => [
+                'category' => [
+                    'label' => 'category',
+                    'route' => route('category.index'),
+                    'status' => 1,
+                    'permissions_list' => [
+                        [
+
+                            'name' => 'category-list',
+                            'permission_label' => 'category List',
+                            'guard_name' => 'web',
+                            'group' => 'category',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 11,
+                        ],
+
+                        [
+                            'name' => 'category-edit',
+                            'permission_label' => 'category Edit',
+                            'guard_name' => 'web',
+                            'group' => 'category',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 12,
+                        ],
+
+                        [
+                            'name' => 'category-create',
+                            'permission_label' => 'category Create',
+                            'guard_name' => 'web',
+                            'group' => 'category',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 13,
+                        ],
+                        [
+                            'name' => 'category-delete',
+                            'permission_label' => 'category Delete',
+                            'guard_name' => 'web',
+                            'group' => 'category',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 4,
+                        ],
+                    ],
+                ],
                 'product' => [
                     'label' => 'product',
                     'route' => route('product.index'),
@@ -181,6 +227,52 @@ function getAcl()
                             'permission_label' => 'Product Delete',
                             'guard_name' => 'web',
                             'group' => 'product',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 4,
+                        ],
+                    ],
+                ],
+                'dealer' => [
+                    'label' => 'dealer',
+                    'route' => route('dealer.index'),
+                    'status' => 1,
+                    'permissions_list' => [
+                        [
+
+                            'name' => 'dealer-list',
+                            'permission_label' => 'dealer List',
+                            'guard_name' => 'web',
+                            'group' => 'dealer',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 11,
+                        ],
+
+                        [
+                            'name' => 'dealer-edit',
+                            'permission_label' => 'dealer Edit',
+                            'guard_name' => 'web',
+                            'group' => 'dealer',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 12,
+                        ],
+
+                        [
+                            'name' => 'dealer-create',
+                            'permission_label' => 'dealer Create',
+                            'guard_name' => 'web',
+                            'group' => 'dealer',
+                            'sub_group' => 0,
+                            'main_order' => 1,
+                            'sub_order' => 13,
+                        ],
+                        [
+                            'name' => 'dealer-delete',
+                            'permission_label' => 'dealer Delete',
+                            'guard_name' => 'web',
+                            'group' => 'dealer',
                             'sub_group' => 0,
                             'main_order' => 1,
                             'sub_order' => 4,

@@ -7,12 +7,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Product</h1>
+            <h1>Delivery - {{ strtoupper(request()->segment(2)) }}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Product</li>
+              <li class="breadcrumb-item active">Delivery</li>
             </ol>
           </div>
         </div>
@@ -27,47 +27,37 @@
             <!-- /.card -->
 
             <div class="card">
-              <div class="card-header">
-                @can('product-create')
-
-                <div class="btn-group">
-                    <a href="{{route('product.create')}}" class="btn btn-primary float-end" >
-                        {{ __('Add New product +') }}
-                    </a>
-                    <button type="button" data-toggle="modal" data-target="#modal-import" data-backdrop="static" data-keyboard="false" class="btn btn-success float-end" class="btn btn-default">{{ __('Product Import +') }}</button>
-                </div>
-                @endcan
-                <x-flash-message type="success" key="success" />
-                <x-flash-message type="error" key="error" />
-              </div>
               <!-- /.card-header -->
               <div class="card-body">
 
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
-                    <th width="20%">Name</th>
-                    <th width="20%">Unit Price</th>
-                    <th width="20%">MRP</th>
-                    <th width="20%">Current Stock</th>
-                    <th>Status</th>
+                    @if (request()->segment(2) == 'out')
+                    <th width="20%">Dealer</th>
+                    @endif
+                    <th width="20%">Product</th>
+                    <th width="15%">Unit Price</th>
+                    <th width="15%">MRP</th>
+                    <th width="10%">Qty</th>
+                    <th width="20%">Total</th>
+                    <th width="20%">Transaction On</th>
                   </tr>
                   </thead>
                   <tbody>
                     @if (!empty($data))
 
-                        @foreach ($data as $key => $product)
+                        @foreach ($data as $key => $d)
                         <tr>
-                            <td class="clickable-row" ><a href="{{ route('product.show',encrypt($product->id)) }}">{{strLimit($product->name)}}</a></td>
-                            <td>{{ $product->unit_price }}</td>
-                            <td>{{ $product->mrp }}</td>
-                            <td>{{ $product->qty + $product->in_qty - $product->out_qty }}</td>
-                            <td> @if($product->status == 1 )
-                                <span class='cm-status success'>Enabled</span>
-                            @else
-                                <span
-                                class='cm-status danger'>Disabled</span>
-                                @endif</td>
+                             @if (request()->segment(2) == 'out')
+                            <td >{{ strLimit($d->dealer->contact_person) }}</td>
+                            @endif
+                            <td >{{ strLimit($d->product->name) }}</td>
+                            <td>{{ $d->product->unit_price }}</td>
+                            <td>{{ $d->product->mrp }}</td>
+                            <td>{{ $d->qty}}</td>
+                            <td>{{ number_format($d->qty * $d->product->unit_price,2)}}</td>
+                            <td>{{ $d->created_at}}</td>
                         </tr>
                         @endforeach
                         @else
@@ -78,11 +68,15 @@
                   </tbody>
                   <tfoot>
                   <tr>
-                    <th width="20%">Name</th>
-                    <th width="20%">Unit Price</th>
-                    <th width="20%">MRP</th>
-                    <th width="20%">Current Stock</th>
-                    <th>Status</th>
+                    @if (request()->segment(2) == 'out')
+                    <th width="20%">Dealer</th>
+                    @endif
+                    <th width="20%">Product</th>
+                    <th width="15%">Unit Price</th>
+                    <th width="15%">MRP</th>
+                    <th width="10%">Qty</th>
+                    <th width="20%">Total</th>
+                    <th width="20%">Transaction On</th>
                   </tr>
                   </tfoot>
                 </table>
